@@ -1,5 +1,10 @@
 package requests;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Request {
 
     public static Request from(String message) {
@@ -21,14 +26,34 @@ public class Request {
         return message.split("\s+");
     }
 
-    private final String[] args;
+    private final List<String> posargs;
+    private final Map<String, String> kwargs;
 
     protected Request(String[] args) {
-        this.args = args;
+        this.posargs = new ArrayList<>();
+        this.kwargs = new HashMap<>();
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            if (this.isKeyword(arg)) {
+                i++;
+                String val = args[i];
+                kwargs.put(arg, val);
+            } else {
+                posargs.add(arg);
+            }
+        }
     }
 
     public String getArg(int at) {
-        return this.args[at];
+        return this.posargs.get(at);
+    }
+
+    public String getArg(String key) {
+        return this.kwargs.get(key);
+    }
+
+    private boolean isKeyword(String arg) {
+        return arg.startsWith("\\");
     }
 }
 
