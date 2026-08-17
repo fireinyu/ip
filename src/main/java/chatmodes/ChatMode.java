@@ -1,5 +1,7 @@
 package chatmodes;
 
+import exceptions.InvalidCommandException;
+import exceptions.TweakingException;
 import requests.*;
 import responses.Response;
 import responses.ExitResponse;
@@ -25,7 +27,9 @@ public abstract class ChatMode {
             return this.respondToRemaining(request);
         }
     }
-    protected abstract Response respondToRemaining(Request request);
+    protected Response respondToRemaining(Request request) {
+        throw new InvalidCommandException(request);
+    }
     protected Response respondToTodo(TodoRequest request) {
         return this.respondToRemaining(request);
     }

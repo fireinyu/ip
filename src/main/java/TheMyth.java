@@ -1,7 +1,10 @@
 import chatmodes.ChatMode;
+import exceptions.FatalException;
+import exceptions.TweakingException;
 import requests.Request;
+import responses.ExceptionResponse;
+import responses.FatalResponse;
 import responses.Response;
-import responses.ExitResponse;
 
 import java.util.Scanner;
 
@@ -43,20 +46,37 @@ public class TheMyth {
     public boolean userCycle() {
         String message = scanner.nextLine();
         Request request = Request.from(message);
-        Response response = chatMode.respondTo(request);
+        Response response = null;
+        try {
+            response = chatMode.respondTo(request);
+        } catch (TweakingException e) {
+            response = new ExceptionResponse(e);
+        } catch (FatalException e) {
+            response = new FatalResponse(e);
+        }
         return execute(response);
     }
 
     private void say(String something) {
+        this.say(Defaults.BOTPROMPT, something);
+    }
+
+    private void say(String botPrompt, String something) {
         System.out.println(new StringBuilder().repeat('—', Defaults.LINEWIDTH).toString());
-        System.out.println(Defaults.BOTPROMPT + '\n' + something.indent(4));
+        System.out.println(botPrompt + '\n' + something.indent(4));
         System.out.println(new StringBuilder().repeat('—', Defaults.LINEWIDTH).toString());
         System.out.print(Defaults.USERPROMPT);
     }
 
     private boolean execute(Response response) {
-        this.say(response.getBody());
-        return !(response instanceof ExitResponse);
+        if (response instanceof ExceptionResponse) {
+            this.say(Defaults.TWEAKPROMPT, response.getBody());
+        } else if (response instanceof FatalResponse) {
+            this.say(Defaults.DEATHPROMPT, response.getBody());
+        } else {
+            this.say(response.getBody());
+        }
+        return !(response.doExit());
     }
 }
 

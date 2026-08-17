@@ -14,11 +14,6 @@ public class TodoMode extends ChatMode {
     List<Task> taskList = new ArrayList<>();
 
     @Override
-    protected Response respondToRemaining(Request request) {
-        return new Response(String.format("Erm, what is \"%s\"?", request.getArg(0)));
-    }
-
-    @Override
     protected Response respondToTodo(TodoRequest request) {
         return this.addTask(new TodoTask(request.getArg(1)));
     }
