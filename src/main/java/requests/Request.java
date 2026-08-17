@@ -1,9 +1,12 @@
 package requests;
 
+import exceptions.ArugmentMismatchException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Request {
 
@@ -35,7 +38,7 @@ public class Request {
     private final List<String> posargs;
     private final Map<String, String> kwargs;
 
-    protected Request(String[] args) {
+    private Request(String[] args) {
         this.posargs = new ArrayList<>();
         this.kwargs = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
@@ -43,10 +46,20 @@ public class Request {
             if (this.isKeyword(arg)) {
                 i++;
                 String val = args[i];
-                kwargs.put(arg.substring(1), val);
+                this.kwargs.put(arg.substring(1), val);
             } else {
                 posargs.add(arg);
             }
+        }
+    }
+    protected Request(String[] args, int numPosArgs, Set<String> kwargs) {
+        this(args);
+        int numPosArgsGiven = this.posargs.size();
+        if (numPosArgsGiven != numPosArgs) {
+            throw new ArugmentMismatchException(numPosArgs, numPosArgsGiven);
+        }
+        if (!kwargs.equals(this.kwargs.keySet())) {
+            throw new ArugmentMismatchException(kwargs, this.kwargs.keySet());
         }
     }
 

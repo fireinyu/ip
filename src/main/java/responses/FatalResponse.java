@@ -4,6 +4,6 @@ import exceptions.FatalException;
 
 public class FatalResponse extends Response{
     public FatalResponse(FatalException cause) {
-        super(cause.getMessage());
+        super(cause.getMessage(), true);
     }
 }

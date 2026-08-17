@@ -45,9 +45,9 @@ public class TheMyth {
 
     public boolean userCycle() {
         String message = scanner.nextLine();
-        Request request = Request.from(message);
         Response response = null;
         try {
+            Request request = Request.from(message);
             response = chatMode.respondTo(request);
         } catch (TweakingException e) {
             response = new ExceptionResponse(e);

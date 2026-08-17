@@ -1,7 +1,9 @@
 package requests;
 
+import java.util.Set;
+
 public class ListRequest extends Request{
     protected ListRequest(String[] args) {
-        super(args);
+        super(args, 1, Set.of());
     }
 }
