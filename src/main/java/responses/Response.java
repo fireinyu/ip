@@ -1,4 +1,4 @@
-package atomic;
+package responses;
 
 public class Response {
     private String body;

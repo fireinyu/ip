@@ -1,6 +1,6 @@
-import atomic.ChatMode;
+import chatmodes.ChatMode;
 import requests.Request;
-import atomic.Response;
+import responses.Response;
 import responses.ExitResponse;
 
 import java.util.Scanner;

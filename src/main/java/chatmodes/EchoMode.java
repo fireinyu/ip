@@ -1,8 +1,7 @@
-import atomic.ChatMode;
-import requests.ExitRequest;
+package chatmodes;
+
 import requests.Request;
-import atomic.Response;
-import responses.ExitResponse;
+import responses.Response;
 
 public class EchoMode extends ChatMode {
     @Override
