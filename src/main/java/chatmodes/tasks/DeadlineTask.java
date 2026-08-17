@@ -1,4 +1,4 @@
-package chatmodes.todo;
+package chatmodes.tasks;
 
 public class DeadlineTask extends Task {
     public DeadlineTask(String description, String date) {

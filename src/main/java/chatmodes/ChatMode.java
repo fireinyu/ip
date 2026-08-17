@@ -22,7 +22,8 @@ public abstract class ChatMode {
             return this.respondToDeadline((DeadlineRequest) request);
         } else if (request instanceof EventRequest) {
             return this.respondToEvent((EventRequest) request);
-
+        } else if (request instanceof DeleteRequest) {
+            return this.respondToDelete((DeleteRequest) request);
         } else {
             return this.respondToRemaining(request);
         }
@@ -46,6 +47,9 @@ public abstract class ChatMode {
         return this.respondToRemaining(request);
     }
     protected Response respondToList(ListRequest request) {
+        return this.respondToRemaining(request);
+    }
+    protected Response respondToDelete(DeleteRequest request) {
         return this.respondToRemaining(request);
     }
     protected Response respondToExit(ExitRequest request) {

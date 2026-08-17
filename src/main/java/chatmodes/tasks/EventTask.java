@@ -1,4 +1,4 @@
-package chatmodes.todo;
+package chatmodes.tasks;
 
 public class EventTask extends Task {
     public EventTask(String description, String from, String to) {

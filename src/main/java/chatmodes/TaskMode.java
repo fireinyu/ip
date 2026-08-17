@@ -1,16 +1,16 @@
 package chatmodes;
 
-import chatmodes.todo.DeadlineTask;
-import chatmodes.todo.EventTask;
-import chatmodes.todo.Task;
-import chatmodes.todo.TodoTask;
+import chatmodes.tasks.DeadlineTask;
+import chatmodes.tasks.EventTask;
+import chatmodes.tasks.Task;
+import chatmodes.tasks.TodoTask;
 import requests.*;
 import responses.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TodoMode extends ChatMode {
+public class TaskMode extends ChatMode {
     List<Task> taskList = new ArrayList<>();
 
     @Override
@@ -66,6 +66,17 @@ public class TodoMode extends ChatMode {
         this.taskList.add(task);
         return new Response(
                 "Got it. I've added this task:\n\t"
+                + task.toString()
+                + String.format("\nNow you have %d tasks in the list.", this.taskList.size())
+        );
+    }
+
+    @Override
+    protected Response respondToDelete(DeleteRequest request) {
+        int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
+        Task task = this.taskList.remove(itemIndex);
+        return new Response(
+                "Noted. I've removed this task:\n\t"
                 + task.toString()
                 + String.format("\nNow you have %d tasks in the list.", this.taskList.size())
         );

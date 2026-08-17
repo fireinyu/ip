@@ -26,6 +26,8 @@ public class Request {
             return new DeadlineRequest(args);
         } else if (args[0].equals("event")) {
             return new EventRequest(args);
+        } else if (args[0].equals("delete")) {
+            return new DeleteRequest(args);
         } else {
             return new Request(args);
         }

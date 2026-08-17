@@ -1,4 +1,4 @@
-package chatmodes.todo;
+package chatmodes.tasks;
 
 public abstract class Task {
     private final String description;

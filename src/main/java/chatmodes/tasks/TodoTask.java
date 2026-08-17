@@ -1,4 +1,4 @@
-package chatmodes.todo;
+package chatmodes.tasks;
 
 public class TodoTask extends Task {
     public TodoTask(String description) {
