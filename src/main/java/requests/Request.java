@@ -2,24 +2,33 @@ package requests;
 
 public class Request {
 
-    public static Request from (String message) {
-        if (message.equals("bye")) {
-            return new ExitRequest(message);
-        } else if (message.equals("list")) {
-            return new ListRequest(message);
+    public static Request from(String message) {
+        String[] args = Request.parse(message);
+        if (args[0].equals("bye")) {
+            return new ExitRequest(args);
+        } else if (args[0].equals("list")) {
+            return new ListRequest(args);
+        } else if (args[0].equals("mark")) {
+            return new MarkRequest(args);
+        } else if (args[0].equals("unmark")) {
+            return new UnmarkRequest(args);
         } else {
-            return new Request(message);
+            return new Request(args);
         }
     }
 
-    private String message;
-
-    protected Request(String message) {
-        this.message = message;
+    private static String[] parse(String message) {
+        return message.split("\s+");
     }
 
-    public String getMessage() {
-        return this.message;
+    private final String[] args;
+
+    protected Request(String[] args) {
+        this.args = args;
+    }
+
+    public String getArg(int at) {
+        return this.args[at];
     }
 }
 
