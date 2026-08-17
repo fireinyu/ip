@@ -1,11 +1,13 @@
 package chatmodes.todo;
 
-public class TodoItem {
+public abstract class Task {
     private final String description;
     private boolean completed = false;
+    private String typeCode;
 
-    public TodoItem(String description) {
+    public Task(String description, String typeCode) {
         this.description = description;
+        this.typeCode = typeCode;
     }
 
     public String getDescription() {
@@ -26,6 +28,6 @@ public class TodoItem {
 
     @Override
     public String toString() {
-        return String.format("[%s] %s", this.completed ? "X" : " ", this.description);
+        return String.format("[%s][%s] %s", this.typeCode, this.completed ? "X" : " ", this.description);
     }
 }

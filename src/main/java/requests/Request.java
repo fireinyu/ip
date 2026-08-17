@@ -17,6 +17,12 @@ public class Request {
             return new MarkRequest(args);
         } else if (args[0].equals("unmark")) {
             return new UnmarkRequest(args);
+        } else if (args[0].equals("todo")) {
+            return new TodoRequest(args);
+        } else if (args[0].equals("deadline")) {
+            return new DeadlineRequest(args);
+        } else if (args[0].equals("event")) {
+            return new EventRequest(args);
         } else {
             return new Request(args);
         }
@@ -37,7 +43,7 @@ public class Request {
             if (this.isKeyword(arg)) {
                 i++;
                 String val = args[i];
-                kwargs.put(arg, val);
+                kwargs.put(arg.substring(1), val);
             } else {
                 posargs.add(arg);
             }
@@ -53,8 +59,6 @@ public class Request {
     }
 
     private boolean isKeyword(String arg) {
-        return arg.startsWith("\\");
+        return arg.startsWith("/");
     }
 }
-
-
