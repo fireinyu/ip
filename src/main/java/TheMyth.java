@@ -1,6 +1,7 @@
 import atomic.ChatMode;
-import atomic.Request;
+import requests.Request;
 import atomic.Response;
+import responses.ExitResponse;
 
 import java.util.Scanner;
 
@@ -47,18 +48,15 @@ public class TheMyth {
     }
 
     private void say(String something) {
-        System.out.println(something);
         System.out.println(new StringBuilder().repeat('—', Defaults.LINEWIDTH).toString());
-    }
-
-    private boolean exit() {
-        this.say("Bye. Hope to see you again soon!");
-        return true;
+        System.out.println(Defaults.BOTPROMPT + '\n' + something.indent(4));
+        System.out.println(new StringBuilder().repeat('—', Defaults.LINEWIDTH).toString());
+        System.out.print(Defaults.USERPROMPT);
     }
 
     private boolean execute(Response response) {
         this.say(response.getBody());
-        return true;
+        return !(response instanceof ExitResponse);
     }
 }
 

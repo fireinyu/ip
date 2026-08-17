@@ -1,9 +1,13 @@
-package atomic;
+package requests;
 
 public class Request {
 
     public static Request from (String message) {
-        return new Request(message);
+        if (message.equals("bye")) {
+            return new ExitRequest(message);
+        } else {
+            return new Request(message);
+        }
     }
     private String message;
 
