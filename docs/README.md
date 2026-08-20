@@ -1,4 +1,4 @@
-# TheMyth User Guide
+# com.fireinyu.themyth.TheMyth User Guide
 
 // Update the title above to match the actual product name
 
