@@ -1,5 +1,7 @@
 package com.fireinyu.themyth.storage;
 
+import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList<T>{
-    private final Path file;
+    final Path file;
 
     public CsvBackedList(Path file) throws IOException {
         super();
@@ -32,7 +34,7 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
                     });
     }
 
-    public abstract T parse(List<String> item);
+    public abstract T parse(List<String> item) throws CorruptedTaskFileException;
 
     private void fetch() throws IOException {
         Files.createDirectories(this.file.getParent());

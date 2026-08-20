@@ -4,6 +4,7 @@ import com.fireinyu.themyth.chatmodes.tasks.DeadlineTask;
 import com.fireinyu.themyth.chatmodes.tasks.EventTask;
 import com.fireinyu.themyth.chatmodes.tasks.Task;
 import com.fireinyu.themyth.chatmodes.tasks.TodoTask;
+import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,29 +17,33 @@ public class TaskList extends CsvBackedList<Task>{
     }
     @Override
     public Task parse(List<String> item) {
-        Task task = null;
-        switch (item.get(0)) {
-            case "T": {
-                task = new TodoTask(item.get(2));
-                break;
+        try {
+            Task task = null;
+            switch (item.get(0)) {
+                case "T": {
+                    task = new TodoTask(item.get(2));
+                    break;
+                }
+                case "D": {
+                    task = new DeadlineTask(item.get(2), item.get(3));
+                    break;
+                }
+                case "E": {
+                    task = new EventTask(item.get(2), item.get(3), item.get(4));
+                    break;
+                }
+                default: {
+                    throw new CorruptedTaskFileException(super.file.toString());
+                }
             }
-            case "D": {
-                task = new DeadlineTask(item.get(2), item.get(3));
-                break;
+            if (Boolean.parseBoolean(item.get(1))) {
+                task.mark();
+            } else {
+                task.unmark();
             }
-            case "E": {
-                task = new EventTask(item.get(2), item.get(3), item.get(4));
-                break;
-            }
-            default: {
-                throw new RuntimeException();
-            }
+            return task;
+        } catch (IndexOutOfBoundsException e) {
+            throw new CorruptedTaskFileException(super.file.toString());
         }
-        if (Boolean.parseBoolean(item.get(1))) {
-            task.mark();
-        } else {
-            task.unmark();
-        }
-        return task;
     }
 }
