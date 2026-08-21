@@ -1,6 +1,6 @@
 package com.fireinyu.themyth.chatmodes.tasks;
 
-import util.MythDateTime;
+import com.fireinyu.themyth.util.MythDateTime;
 
 import java.util.List;
 

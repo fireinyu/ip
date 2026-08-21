@@ -1,7 +1,6 @@
-package util;
+package com.fireinyu.themyth.util;
 
 import com.fireinyu.themyth.Defaults;
-import com.fireinyu.themyth.exceptions.ArgumentFormatException;
 import com.fireinyu.themyth.exceptions.DateFormatException;
 
 import java.time.LocalDateTime;
