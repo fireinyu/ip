@@ -4,7 +4,9 @@ import com.fireinyu.themyth.chatmodes.tasks.DeadlineTask;
 import com.fireinyu.themyth.chatmodes.tasks.EventTask;
 import com.fireinyu.themyth.chatmodes.tasks.Task;
 import com.fireinyu.themyth.chatmodes.tasks.TodoTask;
+import com.fireinyu.themyth.exceptions.ArgumentFormatException;
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
+import util.MythDateTime;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,11 +27,11 @@ public class TaskList extends CsvBackedList<Task>{
                     break;
                 }
                 case "D": {
-                    task = new DeadlineTask(item.get(2), item.get(3));
+                    task = new DeadlineTask(item.get(2), MythDateTime.parse(item.get(3)));
                     break;
                 }
                 case "E": {
-                    task = new EventTask(item.get(2), item.get(3), item.get(4));
+                    task = new EventTask(item.get(2), MythDateTime.parse(item.get(3)), MythDateTime.parse(item.get(4)));
                     break;
                 }
                 default: {
@@ -42,7 +44,7 @@ public class TaskList extends CsvBackedList<Task>{
                 task.unmark();
             }
             return task;
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException | ArgumentFormatException e) {
             throw new CorruptedTaskFileException(super.file.toString());
         }
     }

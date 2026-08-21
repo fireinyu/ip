@@ -12,6 +12,7 @@ import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
 import com.fireinyu.themyth.storage.CsvBackedList;
 import com.fireinyu.themyth.storage.TaskList;
+import util.MythDateTime;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -64,7 +65,7 @@ public class TaskMode extends ChatMode {
     protected Response respondToDeadline(DeadlineRequest request) {
         return this.addTask(new DeadlineTask(
                 request.getArg(1),
-                request.getArg("by")
+                MythDateTime.parse(request.getArg("by"))
         ));
     }
 
@@ -72,8 +73,8 @@ public class TaskMode extends ChatMode {
     protected Response respondToEvent(EventRequest request) {
         return this.addTask(new EventTask(
                 request.getArg(1),
-                request.getArg("from"),
-                request.getArg("to")
+                MythDateTime.parse(request.getArg("from")),
+                MythDateTime.parse(request.getArg("to"))
         ));
     }
 

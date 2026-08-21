@@ -11,4 +11,5 @@ public class Defaults {
     public static final String BOTPROMPT = "The Myth says: ";
     public static final String TWEAKPROMPT = "The Myth tweaks: ";;
     public static final String DEATHPROMPT = "The Myth dies from a fatal exception! The tombstone says: ";
+    public static final String DATE_INPUTFORMAT = "yyyy-MM-dd-HH-mm-ss";
 }
