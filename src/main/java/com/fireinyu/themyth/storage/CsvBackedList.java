@@ -1,51 +1,59 @@
 package com.fireinyu.themyth.storage;
 
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
+import com.fireinyu.themyth.exceptions.FileAccessException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList<T>{
-    final Path file;
+public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList<T> {
+    private LinesDisk storage;
+    private boolean linked;
 
-    public CsvBackedList(Path file) throws IOException {
+    public CsvBackedList() {
         super();
-        this.file = file;
+        this.linked = false;
+    }
+
+    public void open(Path path) {
+        this.storage = new LinesDisk(path);
+        this.linked = true;
         this.fetch();
     }
 
-    public void close() throws IOException {
-            this.stream()
+    public void close() {
+        if (!this.linked) {
+            return;
+        }
+        this.storage.writeLines(
+                this.stream()
                     .map(CsvSerializable::extract)
                     .map(row -> String.join(",", row))
-                    .reduce((accum, nxt) -> String.join("\n",accum, nxt))
-                    .ifPresent(str -> {
-                        try {
-                            System.out.println(str);
-                            Files.writeString(this.file, str);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                );
+        this.linked = false;
+    }
+
+    public Path getPath() {
+        return this.storage.getPath();
     }
 
     public abstract T parse(List<String> item) throws CorruptedTaskFileException;
 
-    private void fetch() throws IOException {
-        Files.createDirectories(this.file.getParent());
-        if (!this.file.toFile().exists()) {
-            Files.createFile(this.file);
+    private void fetch() {
+        if (!this.linked) {
+            return;
         }
-        Files.readAllLines(this.file).stream()
+        this.clear();
+        this.linked = false;
+        super.addAll(this.storage.readLines()
                 .map(line -> line.split(","))
                 .map(List::of)
                 .map(this::parse)
-                .forEach(this::add);
+                .toList()
+        );
+        this.linked = true;
     }
 }

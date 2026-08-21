@@ -14,8 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class TaskList extends CsvBackedList<Task>{
-    public TaskList(Path file) throws IOException {
-        super(file);
+    public TaskList() {
     }
     @Override
     public Task parse(List<String> item) {
@@ -35,7 +34,7 @@ public class TaskList extends CsvBackedList<Task>{
                     break;
                 }
                 default: {
-                    throw new CorruptedTaskFileException(super.file.toString());
+                    throw new CorruptedTaskFileException(super.getPath().toString());
                 }
             }
             if (Boolean.parseBoolean(item.get(1))) {
@@ -45,7 +44,7 @@ public class TaskList extends CsvBackedList<Task>{
             }
             return task;
         } catch (IndexOutOfBoundsException | ArgumentFormatException e) {
-            throw new CorruptedTaskFileException(super.file.toString());
+            throw new CorruptedTaskFileException(super.getPath().toString());
         }
     }
 }
