@@ -5,7 +5,6 @@ import com.fireinyu.themyth.chatmodes.tasks.DeadlineTask;
 import com.fireinyu.themyth.chatmodes.tasks.EventTask;
 import com.fireinyu.themyth.chatmodes.tasks.Task;
 import com.fireinyu.themyth.chatmodes.tasks.TodoTask;
-import com.fireinyu.themyth.exceptions.TaskFileAccessException;
 import com.fireinyu.themyth.requests.*;
 import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InitRequest;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskMode extends ChatMode {
-    private List<Task> taskList;
+    private final TaskList taskList = new TaskList();
     private final Path taskFile;
 
     public TaskMode(Path taskFile) {
@@ -33,26 +32,14 @@ public class TaskMode extends ChatMode {
 
     @Override
     protected Response respondToInit(InitRequest request) {
-        try {
-            this.taskList = new TaskList(this.taskFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            this.taskList = new ArrayList<>();
-            throw new TaskFileAccessException(this.taskFile.toString());
-        }
+        this.taskList.open(this.taskFile);
         return new Response("task file loaded successfully");
     }
 
     @Override
     protected Response respondToClose(CloseRequest request) {
-        if (this.taskList instanceof CsvBackedList<Task>) {
-            try {
-                ((CsvBackedList<Task>) this.taskList).close();
-            } catch (IOException e) {
-                throw new TaskFileAccessException(this.taskFile.toString());
-            }
-        }
-        return new Response("task file written successfully");
+        this.taskList.close();
+        return new Response("exited successfully");
 
     }
 

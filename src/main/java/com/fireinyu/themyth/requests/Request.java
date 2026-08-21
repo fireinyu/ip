@@ -10,23 +10,6 @@ import java.util.Set;
 
 public class Request {
 
-    public static Request from(String message) {
-        String[] args = Request.parse(message);
-        return switch (args[0]) {
-            case "bye" -> new ExitRequest(args);
-            case "list" -> new ListRequest(args);
-            case "at" -> new AtRequest(args);
-            case "due" -> new DueRequest(args);
-            case "mark" -> new MarkRequest(args);
-            case "unmark" -> new UnmarkRequest(args);
-            case "todo" -> new TodoRequest(args);
-            case "deadline" -> new DeadlineRequest(args);
-            case "event" -> new EventRequest(args);
-            case "delete" -> new DeleteRequest(args);
-            default -> new Request(args);
-        };
-    }
-
     private static String[] parse(String message) {
         return message.split("\s+");
     }
@@ -34,29 +17,19 @@ public class Request {
     private final List<String> posargs;
     private final Map<String, String> kwargs;
 
-    private Request(String[] args) {
-        this.posargs = new ArrayList<>();
-        this.kwargs = new HashMap<>();
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            if (this.isKeyword(arg)) {
-                i++;
-                String val = args[i];
-                this.kwargs.put(arg.substring(1), val);
-            } else {
-                posargs.add(arg);
-            }
+    protected Request(List<String> posArgs, Map<String, String> kwargs, int numPosArgs, Set<String> kwargNames) {
+        if (posArgs.size() != numPosArgs) {
+            throw new ArugmentMismatchException(numPosArgs, posArgs.size());
         }
+        if (!kwargNames.equals(kwargs.keySet())) {
+            throw new ArugmentMismatchException(kwargNames, kwargs.keySet());
+        }
+        this(posArgs, kwargs);
     }
-    protected Request(String[] args, int numPosArgs, Set<String> kwargs) {
-        this(args);
-        int numPosArgsGiven = this.posargs.size();
-        if (numPosArgsGiven != numPosArgs) {
-            throw new ArugmentMismatchException(numPosArgs, numPosArgsGiven);
-        }
-        if (!kwargs.equals(this.kwargs.keySet())) {
-            throw new ArugmentMismatchException(kwargs, this.kwargs.keySet());
-        }
+
+    protected Request(List<String> posArgs, Map<String, String> kwargs) {
+        this.posargs = posArgs;
+        this.kwargs = kwargs;
     }
 
     public String getArg(int at) {
@@ -67,7 +40,4 @@ public class Request {
         return this.kwargs.get(key);
     }
 
-    private boolean isKeyword(String arg) {
-        return arg.startsWith("/");
-    }
 }
