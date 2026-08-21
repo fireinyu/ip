@@ -4,6 +4,7 @@ import com.fireinyu.themyth.chatmodes.ChatMode;
 import com.fireinyu.themyth.exceptions.FatalException;
 import com.fireinyu.themyth.exceptions.TweakingException;
 import com.fireinyu.themyth.requests.Request;
+import com.fireinyu.themyth.requests.RequestParser;
 import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InterruptEvent;
 import com.fireinyu.themyth.requests.events.InitRequest;
@@ -40,6 +41,7 @@ public class TheMyth {
     }
 
     private final Scanner scanner = new Scanner(System.in);
+    private final RequestParser parser = new RequestParser();
     private final ChatMode chatMode = Defaults.STARTMODE;
 
     public TheMyth() {
@@ -53,7 +55,7 @@ public class TheMyth {
         String message = scanner.nextLine();
         Response response = null;
         try {
-            Request request = Request.from(message);
+            Request request = parser.parse(message);
             response = chatMode.respondTo(request);
         } catch (TweakingException e) {
             response = new ExceptionResponse(e);
