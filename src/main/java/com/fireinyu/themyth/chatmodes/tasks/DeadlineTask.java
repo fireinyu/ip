@@ -23,4 +23,8 @@ public class DeadlineTask extends Task {
                 this.date.dump()
         );
     }
+
+    public boolean isDueBy(MythDateTime dateTime) {
+        return this.date.isBefore(dateTime);
+    }
 }

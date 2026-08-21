@@ -35,8 +35,16 @@ public class MythDateTime {
 
     public String dump() {
         return this.datetime.format(DateTimeFormatter.ofPattern(Defaults.DATE_INPUTFORMAT));
-
     }
+
+    public boolean isBetween(MythDateTime start, MythDateTime end) {
+        return this.isBefore(end) && start.isBefore(this);
+    }
+
+    public boolean isBefore(MythDateTime other) {
+        return this.datetime.isBefore(other.datetime);
+    }
+
     @Override
     public String toString() {
         return datetime.format(DateTimeFormatter.ofPattern("LLL dd yyyy hh:mm:ss a"));

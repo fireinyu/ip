@@ -12,25 +12,19 @@ public class Request {
 
     public static Request from(String message) {
         String[] args = Request.parse(message);
-        if (args[0].equals("bye")) {
-            return new ExitRequest(args);
-        } else if (args[0].equals("list")) {
-            return new ListRequest(args);
-        } else if (args[0].equals("mark")) {
-            return new MarkRequest(args);
-        } else if (args[0].equals("unmark")) {
-            return new UnmarkRequest(args);
-        } else if (args[0].equals("todo")) {
-            return new TodoRequest(args);
-        } else if (args[0].equals("deadline")) {
-            return new DeadlineRequest(args);
-        } else if (args[0].equals("event")) {
-            return new EventRequest(args);
-        } else if (args[0].equals("delete")) {
-            return new DeleteRequest(args);
-        } else {
-            return new Request(args);
-        }
+        return switch (args[0]) {
+            case "bye" -> new ExitRequest(args);
+            case "list" -> new ListRequest(args);
+            case "at" -> new AtRequest(args);
+            case "due" -> new DueRequest(args);
+            case "mark" -> new MarkRequest(args);
+            case "unmark" -> new UnmarkRequest(args);
+            case "todo" -> new TodoRequest(args);
+            case "deadline" -> new DeadlineRequest(args);
+            case "event" -> new EventRequest(args);
+            case "delete" -> new DeleteRequest(args);
+            default -> new Request(args);
+        };
     }
 
     private static String[] parse(String message) {

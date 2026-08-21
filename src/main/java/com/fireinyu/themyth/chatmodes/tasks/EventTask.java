@@ -23,4 +23,9 @@ public class EventTask extends Task {
                 this.to.dump()
         );
     }
+
+    public boolean contains(MythDateTime dateTime) {
+        return dateTime.isBetween(this.from, this.to);
+    }
+
 }
