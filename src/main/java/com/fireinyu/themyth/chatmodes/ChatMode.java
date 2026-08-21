@@ -17,6 +17,10 @@ public abstract class ChatMode {
             return this.respondToExit((ExitRequest) request);
         } else if (request instanceof ListRequest) {
             return this.respondToList((ListRequest) request);
+        } else if (request instanceof AtRequest) {
+            return this.respondToAt((AtRequest) request);
+        } else if (request instanceof DueRequest) {
+            return this.respondToDue((DueRequest) request);
         } else if (request instanceof MarkRequest) {
             return this.respondToMark((MarkRequest) request);
         } else if (request instanceof UnmarkRequest) {
@@ -37,10 +41,10 @@ public abstract class ChatMode {
         throw new InvalidCommandException(request);
     }
     protected Response respondToInit(InitRequest request) {
-        return new Response("no init job");
+        return new Response("no init handler");
     }
     protected Response respondToClose(CloseRequest request) {
-        return new Response("no close job");
+        return new Response("no close handler");
     }
     protected Response respondToTodo(TodoRequest request) {
         return this.respondToRemaining(request);
@@ -58,6 +62,12 @@ public abstract class ChatMode {
         return this.respondToRemaining(request);
     }
     protected Response respondToList(ListRequest request) {
+        return this.respondToRemaining(request);
+    }
+    protected Response respondToAt(AtRequest request) {
+        return this.respondToRemaining(request);
+    }
+    protected Response respondToDue(DueRequest request) {
         return this.respondToRemaining(request);
     }
     protected Response respondToDelete(DeleteRequest request) {

@@ -24,9 +24,10 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
             this.stream()
                     .map(CsvSerializable::extract)
                     .map(row -> String.join(",", row))
-                    .reduce((accum, res) -> String.join("\n",accum))
+                    .reduce((accum, nxt) -> String.join("\n",accum, nxt))
                     .ifPresent(str -> {
                         try {
+                            System.out.println(str);
                             Files.writeString(this.file, str);
                         } catch (IOException e) {
                             throw new RuntimeException(e);

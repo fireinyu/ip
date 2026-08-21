@@ -12,6 +12,7 @@ import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
 import com.fireinyu.themyth.storage.CsvBackedList;
 import com.fireinyu.themyth.storage.TaskList;
+import util.MythDateTime;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -64,7 +65,7 @@ public class TaskMode extends ChatMode {
     protected Response respondToDeadline(DeadlineRequest request) {
         return this.addTask(new DeadlineTask(
                 request.getArg(1),
-                request.getArg("by")
+                MythDateTime.parse(request.getArg("by"))
         ));
     }
 
@@ -72,22 +73,42 @@ public class TaskMode extends ChatMode {
     protected Response respondToEvent(EventRequest request) {
         return this.addTask(new EventTask(
                 request.getArg(1),
-                request.getArg("from"),
-                request.getArg("to")
+                MythDateTime.parse(request.getArg("from")),
+                MythDateTime.parse(request.getArg("to"))
         ));
     }
 
     @Override
     protected Response respondToList(ListRequest request) {
-        StringBuilder body = new StringBuilder("Here are the tasks in your list:");
-        int itemNumber = 1;
-        for (Task item : this.taskList) {
-            body.append('\n');
-            body.append(itemNumber++);
-            body.append(". ");
-            body.append(item.toString());
-        }
-        return new Response(body.toString());
+        return this.listTasks("Here are the tasks in your list:", this.taskList);
+    }
+
+    @Override
+    protected Response respondToAt(AtRequest request) {
+        MythDateTime at = MythDateTime.parse(request.getArg(1));
+        return this.listTasks(
+                String.format("Here are the events happening on %s", at),
+                this.taskList.stream()
+                        .filter(task -> task instanceof EventTask)
+                        .map(task -> (EventTask)task)
+                        .filter(task -> task.contains(at))
+                        .map(task -> (Task)task)
+                        .toList()
+        );
+    }
+
+    @Override
+    protected Response respondToDue(DueRequest request) {
+        MythDateTime due = MythDateTime.parse(request.getArg(1));
+        return this.listTasks(
+                String.format("Here are the deadlines due by %s", due),
+                this.taskList.stream()
+                        .filter(task -> task instanceof DeadlineTask)
+                        .map(task -> (DeadlineTask)task)
+                        .filter(task -> task.isDueBy(due))
+                        .map(task -> (Task)task)
+                        .toList()
+        );
     }
 
     @Override
@@ -122,5 +143,17 @@ public class TaskMode extends ChatMode {
                 + task.toString()
                 + String.format("\nNow you have %d tasks in the list.", this.taskList.size())
         );
+    }
+
+    private Response listTasks(String header, List<Task> tasks) {
+        StringBuilder body = new StringBuilder(header);
+        int itemNumber = 1;
+        for (Task item : tasks) {
+            body.append('\n');
+            body.append(itemNumber++);
+            body.append(". ");
+            body.append(item.toString());
+        }
+        return new Response(body.toString());
     }
 }
