@@ -1,4 +1,4 @@
-package com.fireinyu.themyth.chatmodes.tasks;
+package com.fireinyu.themyth.tasks;
 
 import java.util.List;
 
