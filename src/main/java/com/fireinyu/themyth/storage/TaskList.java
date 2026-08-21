@@ -1,9 +1,9 @@
 package com.fireinyu.themyth.storage;
 
-import com.fireinyu.themyth.chatmodes.tasks.DeadlineTask;
-import com.fireinyu.themyth.chatmodes.tasks.EventTask;
-import com.fireinyu.themyth.chatmodes.tasks.Task;
-import com.fireinyu.themyth.chatmodes.tasks.TodoTask;
+import com.fireinyu.themyth.tasks.DeadlineTask;
+import com.fireinyu.themyth.tasks.EventTask;
+import com.fireinyu.themyth.tasks.Task;
+import com.fireinyu.themyth.tasks.TodoTask;
 import com.fireinyu.themyth.exceptions.ArgumentFormatException;
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 import com.fireinyu.themyth.util.MythDateTime;
