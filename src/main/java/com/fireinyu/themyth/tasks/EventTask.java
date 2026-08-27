@@ -21,9 +21,9 @@ public class EventTask extends Task {
      * @see String
      */
     public EventTask(String description, MythDateTime from, MythDateTime to) {
+        super(String.format("%s (from: %s to: %s)",description, from, to), "E");
         this.from = from;
         this.to = to;
-        super(String.format("%s (from: %s to: %s)",description, from, to), "E");
     }
 
     /**
@@ -37,14 +37,20 @@ public class EventTask extends Task {
         return List.of(
                 super.getTypeCode(),
                 String.valueOf(super.isCompleted()),
-                super.getDescription(),
-                this.from.dump(),
-                this.to.dump()
+                getDescription(),
+                from.dump(),
+                to.dump()
         );
     }
 
+    /**
+     * Checks if this event is ongoing at the given date/time.
+     *
+     * @param dateTime The date/time to check.
+     * @return true if the event contains the given date/time, false otherwise.
+     */
     public boolean contains(MythDateTime dateTime) {
-        return dateTime.isBetween(this.from, this.to);
+        return dateTime.isBetween(from, to);
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public abstract class Task implements CsvSerializable {
     private final String description;
     private boolean completed = false;
-    private String typeCode;
+    private final String typeCode;
 
     /**
      * Initialises a Task
@@ -45,16 +45,21 @@ public abstract class Task implements CsvSerializable {
      * Marks this Task as completed
      */
     public void mark() {
-        this.completed = true;
+        completed = true;
     }
 
     /**
      * Marks this Task as incomplete
      */
     public void unmark() {
-        this.completed = false;
+        completed = false;
     }
 
+    /**
+     * Gets the type code of the task.
+     *
+     * @return The type code string.
+     */
     protected String getTypeCode() {
         return typeCode;
     }
@@ -66,6 +71,6 @@ public abstract class Task implements CsvSerializable {
      */
     @Override
     public String toString() {
-        return String.format("[%s][%s] %s", this.typeCode, this.completed ? "X" : " ", this.description);
+        return String.format("[%s][%s] %s", typeCode, completed ? "X" : " ", description);
     }
 }

@@ -1,7 +1,17 @@
 package com.fireinyu.themyth.chatmodes;
 
 import com.fireinyu.themyth.exceptions.InvalidCommandException;
-import com.fireinyu.themyth.requests.*;
+import com.fireinyu.themyth.requests.AtRequest;
+import com.fireinyu.themyth.requests.DeadlineRequest;
+import com.fireinyu.themyth.requests.DeleteRequest;
+import com.fireinyu.themyth.requests.DueRequest;
+import com.fireinyu.themyth.requests.EventRequest;
+import com.fireinyu.themyth.requests.ExitRequest;
+import com.fireinyu.themyth.requests.ListRequest;
+import com.fireinyu.themyth.requests.MarkRequest;
+import com.fireinyu.themyth.requests.Request;
+import com.fireinyu.themyth.requests.TodoRequest;
+import com.fireinyu.themyth.requests.UnmarkRequest;
 import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
@@ -20,72 +30,153 @@ public abstract class ChatMode {
      * @return the Response
      * @see Request
      * @see Response
+
      */
     public Response respondTo(Request request) {
-        if (request instanceof InitRequest) {
-            return this.respondToInit((InitRequest) request);
-        }else if (request instanceof CloseRequest) {
-            return this.respondToClose((CloseRequest) request);
-        }else if (request instanceof ExitRequest) {
-            return this.respondToExit((ExitRequest) request);
-        } else if (request instanceof ListRequest) {
-            return this.respondToList((ListRequest) request);
-        } else if (request instanceof AtRequest) {
-            return this.respondToAt((AtRequest) request);
-        } else if (request instanceof DueRequest) {
-            return this.respondToDue((DueRequest) request);
-        } else if (request instanceof MarkRequest) {
-            return this.respondToMark((MarkRequest) request);
-        } else if (request instanceof UnmarkRequest) {
-            return this.respondToUnmark((UnmarkRequest) request);
-        } else if (request instanceof TodoRequest) {
-            return this.respondToTodo((TodoRequest) request);
-        } else if (request instanceof DeadlineRequest) {
-            return this.respondToDeadline((DeadlineRequest) request);
-        } else if (request instanceof EventRequest) {
-            return this.respondToEvent((EventRequest) request);
-        } else if (request instanceof DeleteRequest) {
-            return this.respondToDelete((DeleteRequest) request);
-        } else {
-            return this.respondToRemaining(request);
-        }
+        return switch (request) {
+            case InitRequest r -> respondToInit(r);
+            case CloseRequest r -> respondToClose(r);
+            case ExitRequest r -> respondToExit(r);
+            case ListRequest r -> respondToList(r);
+            case AtRequest r -> respondToAt(r);
+            case DueRequest r -> respondToDue(r);
+            case MarkRequest r -> respondToMark(r);
+            case UnmarkRequest r -> respondToUnmark(r);
+            case TodoRequest r -> respondToTodo(r);
+            case DeadlineRequest r -> respondToDeadline(r);
+            case EventRequest r -> respondToEvent(r);
+            case DeleteRequest r -> respondToDelete(r);
+            default -> respondToRemaining(request);
+        };
     }
+
+    /**
+     * Handles any request that is not explicitly handled by other methods in this chat mode.
+     * Throws an {@link InvalidCommandException} by default.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToRemaining(Request request) {
         throw new InvalidCommandException(request);
     }
+
+    /**
+     * Handles the initialization request.
+     *
+     * @param request The initialization request.
+     * @return A generic response indicating no handler is present.
+     */
     protected Response respondToInit(InitRequest request) {
         return new Response("no init handler");
     }
+
+    /**
+     * Handles the close request.
+     *
+     * @param request The close request.
+     * @return A generic response indicating no handler is present.
+     */
     protected Response respondToClose(CloseRequest request) {
         return new Response("no close handler");
     }
+
+    /**
+     * Handles a {@link TodoRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToTodo(TodoRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles a {@link DeadlineRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToDeadline(DeadlineRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles an {@link EventRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToEvent(EventRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles an {@link UnmarkRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToUnmark(UnmarkRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles a {@link MarkRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToMark(MarkRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles a {@link ListRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToList(ListRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles an {@link AtRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToAt(AtRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles a {@link DueRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToDue(DueRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles a {@link DeleteRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
     protected Response respondToDelete(DeleteRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
+
+    /**
+     * Handles an {@link ExitRequest}.
+     *
+     * @param request The request to handle.
+     * @return An {@link ExitResponse} with a goodbye message.
+     */
     protected Response respondToExit(ExitRequest request) {
         return new ExitResponse("Bye. Hope to see you again soon!");
     }

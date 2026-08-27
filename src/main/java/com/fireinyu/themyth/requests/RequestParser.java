@@ -21,12 +21,12 @@ import java.util.Map;
      * @see Request
      */
     public Request parse(String message) {
-        String[] args = this.split(message);
+        String[] args = split(message.trim());
         List<String> posArgs = new ArrayList<>();
         Map<String,String> kwargs = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
-            if (this.isKeyword(arg)) {
+            if (isKeyword(arg)) {
                 i++;
                 String val = args[i];
                 kwargs.put(arg.substring(1), val);
@@ -34,7 +34,8 @@ import java.util.Map;
                 posArgs.add(arg);
             }
         }
-        return switch (args[0]) {
+        String command = posArgs.isEmpty() ? "" : posArgs.get(0);
+        return switch (command) {
             case "bye" -> new ExitRequest(posArgs, kwargs);
             case "list" -> new ListRequest(posArgs, kwargs);
             case "at" -> new AtRequest(posArgs, kwargs);
@@ -49,10 +50,22 @@ import java.util.Map;
         };
     }
 
+    /**
+     * Splits the message into parts based on whitespace.
+     *
+     * @param message The message to split.
+     * @return An array of strings.
+     */
     private String[] split(String message) {
-        return message.split("\s+");
+        return message.split("\\s+");
     }
 
+    /**
+     * Checks if a string argument is a keyword argument (i.e., starts with '/').
+     *
+     * @param arg The argument string to check.
+     * @return true if it is a keyword argument, false otherwise.
+     */
     private boolean isKeyword(String arg) {
         return arg.startsWith("/");
     }
