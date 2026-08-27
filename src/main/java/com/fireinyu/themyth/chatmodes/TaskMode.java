@@ -15,14 +15,33 @@ import com.fireinyu.themyth.util.MythDateTime;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Request-Response model that acts a task list/ manager<br><br>
+ * The user can create, view and delete different types of tasks.<br>
+ * Tasks can be marked or unmarked as completed.<br>
+ * Created are saved on disk and synced automatically.
+ * @see Task
+ * @see Request
+ * @see Response
+ */
 public class TaskMode extends ChatMode {
     private final TaskList taskList = new TaskList();
     private final Path taskFile;
 
+    /**
+     * Initialises a TaskMode which syncs created Tasks with a given task file
+     * @param taskFile Path to task file that syncs with this TaskMode
+     * @see Path
+     */
     public TaskMode(Path taskFile) {
         this.taskFile = taskFile;
     }
 
+    /**
+     * Initialises a TaskMode which syncs created Tasks with a task file at the default path
+     * @see Defaults
+     * @see Path
+     */
     public TaskMode() {
         this(Path.of(Defaults.TASKFILE));
     }

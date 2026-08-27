@@ -2,7 +2,16 @@ package com.fireinyu.themyth;
 
 import com.fireinyu.themyth.chatmodes.ChatMode;
 import com.fireinyu.themyth.chatmodes.TaskMode;
+import com.fireinyu.themyth.util.MythDateTime;
 
+import java.time.LocalDateTime;
+
+/**
+ * Default values for the app.
+ * Uses LocalDateTime internally.
+ * @see MythDateTime
+ * @see LocalDateTime
+ */
 public class Defaults {
     public static final String TASKFILE = "resources/tasks.csv";
     public static final int LINEWIDTH = 100;

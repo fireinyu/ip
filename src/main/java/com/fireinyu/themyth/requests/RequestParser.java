@@ -1,11 +1,25 @@
 package com.fireinyu.themyth.requests;
 
+import com.fireinyu.themyth.responses.Response;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RequestParser {
+/**
+ * Parser which converts each raw line of user input to a Request<br><br>
+ * Different user inputs are parsed into different Request types based on the provided command<br>
+ * The command is the first word of the user input line.
+ */
+ public class RequestParser {
+    /**
+     * Parse an input line into a Request
+     * @param message input line
+     * @return Request corresponding to input line
+     * @see String
+     * @see Request
+     */
     public Request parse(String message) {
         String[] args = this.split(message);
         List<String> posArgs = new ArrayList<>();
