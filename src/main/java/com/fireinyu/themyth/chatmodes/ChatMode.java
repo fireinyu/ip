@@ -7,7 +7,20 @@ import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
 import com.fireinyu.themyth.responses.ExitResponse;
 
+/**
+ * Request-Response model of the app. Responds to different types of Requests by returning Responses.
+ * @see Request
+ * @see Response
+ */
 public abstract class ChatMode {
+
+    /**
+     * Provide a Response to a Request
+     * @param request the Request to respond to
+     * @return the Response
+     * @see Request
+     * @see Response
+     */
     public Response respondTo(Request request) {
         if (request instanceof InitRequest) {
             return this.respondToInit((InitRequest) request);

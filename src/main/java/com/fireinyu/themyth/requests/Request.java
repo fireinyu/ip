@@ -1,6 +1,7 @@
 package com.fireinyu.themyth.requests;
 
 import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
+import com.fireinyu.themyth.responses.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * User request which triggers a user cycle.<br><br>
+ * Each Request is handled by the active ChatMode, which produces a Response.<br>
+ * The app then handles the Response and then waits for the next Request.<br>
+ * @see com.fireinyu.themyth.chatmodes.ChatMode
+ * @see Response
+ */
 public class Request {
 
     private static String[] parse(String message) {
@@ -32,10 +40,22 @@ public class Request {
         this.kwargs = kwargs;
     }
 
+    /**
+     * Get the value of a positional argument
+     * @param at the argument's position (0 is the command)
+     * @return the value of the positional argument
+     * @see String
+     */
     public String getArg(int at) {
         return this.posargs.get(at);
     }
 
+    /**
+     * Get the value of a keyword argument
+     * @param key the argument's keyword
+     * @return the value of the keyword argument
+     * @see String
+     */
     public String getArg(String key) {
         return this.kwargs.get(key);
     }
