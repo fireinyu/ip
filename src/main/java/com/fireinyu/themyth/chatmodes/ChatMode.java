@@ -1,17 +1,7 @@
 package com.fireinyu.themyth.chatmodes;
 
 import com.fireinyu.themyth.exceptions.InvalidCommandException;
-import com.fireinyu.themyth.requests.AtRequest;
-import com.fireinyu.themyth.requests.DeadlineRequest;
-import com.fireinyu.themyth.requests.DeleteRequest;
-import com.fireinyu.themyth.requests.DueRequest;
-import com.fireinyu.themyth.requests.EventRequest;
-import com.fireinyu.themyth.requests.ExitRequest;
-import com.fireinyu.themyth.requests.ListRequest;
-import com.fireinyu.themyth.requests.MarkRequest;
-import com.fireinyu.themyth.requests.Request;
-import com.fireinyu.themyth.requests.TodoRequest;
-import com.fireinyu.themyth.requests.UnmarkRequest;
+import com.fireinyu.themyth.requests.*;
 import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
@@ -46,8 +36,19 @@ public abstract class ChatMode {
             case DeadlineRequest r -> respondToDeadline(r);
             case EventRequest r -> respondToEvent(r);
             case DeleteRequest r -> respondToDelete(r);
+            case FindRequest r -> respondToFind(r);
             default -> respondToRemaining(request);
         };
+    }
+
+    /**
+     * Handles a {@link FindRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
+    protected Response respondToFind(FindRequest request) {
+        return this.respondToRemaining(request);
     }
 
     /**

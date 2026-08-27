@@ -1,15 +1,7 @@
 package com.fireinyu.themyth.chatmodes;
 
 import com.fireinyu.themyth.Defaults;
-import com.fireinyu.themyth.requests.AtRequest;
-import com.fireinyu.themyth.requests.DeadlineRequest;
-import com.fireinyu.themyth.requests.DeleteRequest;
-import com.fireinyu.themyth.requests.DueRequest;
-import com.fireinyu.themyth.requests.EventRequest;
-import com.fireinyu.themyth.requests.ListRequest;
-import com.fireinyu.themyth.requests.MarkRequest;
-import com.fireinyu.themyth.requests.TodoRequest;
-import com.fireinyu.themyth.requests.UnmarkRequest;
+import com.fireinyu.themyth.requests.*;
 import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
@@ -64,6 +56,16 @@ public class TaskMode extends ChatMode {
     protected Response respondToClose(CloseRequest request) {
         taskList.close();
         return new Response("exited successfully");
+    }
+
+    @Override
+    protected Response respondToFind(FindRequest request) {
+        return listTasks(
+                "Here are the matching tasks in your list:",
+                taskList.stream()
+                        .filter(task -> task.toString().contains(request.getArg(1)))
+                        .toList()
+        );
     }
 
     @Override
