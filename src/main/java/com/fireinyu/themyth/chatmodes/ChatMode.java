@@ -33,9 +33,14 @@ public abstract class ChatMode {
             return this.respondToEvent((EventRequest) request);
         } else if (request instanceof DeleteRequest) {
             return this.respondToDelete((DeleteRequest) request);
+        } else if (request instanceof FindRequest) {
+            return this.respondToFind((FindRequest) request);
         } else {
             return this.respondToRemaining(request);
         }
+    }
+    protected Response respondToFind(FindRequest request) {
+        return this.respondToRemaining(request);
     }
     protected Response respondToRemaining(Request request) {
         throw new InvalidCommandException(request);

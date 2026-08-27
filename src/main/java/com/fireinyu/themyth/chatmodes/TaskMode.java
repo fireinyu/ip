@@ -41,6 +41,16 @@ public class TaskMode extends ChatMode {
     }
 
     @Override
+    protected Response respondToFind(FindRequest request) {
+        return listTasks(
+                "Here are the matching tasks in your list:",
+                taskList.stream()
+                        .filter(task -> task.toString().contains(request.getArg(1)))
+                        .toList()
+        );
+    }
+
+    @Override
     protected Response respondToTodo(TodoRequest request) {
         return this.addTask(new TodoTask(request.getArg(1)));
     }

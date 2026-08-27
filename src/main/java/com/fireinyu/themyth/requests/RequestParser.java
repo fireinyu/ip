@@ -31,6 +31,7 @@ public class RequestParser {
             case "deadline" -> new DeadlineRequest(posArgs, kwargs);
             case "event" -> new EventRequest(posArgs, kwargs);
             case "delete" -> new DeleteRequest(posArgs, kwargs);
+            case "find" -> new FindRequest(posArgs, kwargs);
             default -> new Request(posArgs, kwargs);
         };
     }
