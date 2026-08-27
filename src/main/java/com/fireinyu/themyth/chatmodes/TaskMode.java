@@ -1,53 +1,69 @@
 package com.fireinyu.themyth.chatmodes;
 
 import com.fireinyu.themyth.Defaults;
+import com.fireinyu.themyth.requests.AtRequest;
+import com.fireinyu.themyth.requests.DeadlineRequest;
+import com.fireinyu.themyth.requests.DeleteRequest;
+import com.fireinyu.themyth.requests.DueRequest;
+import com.fireinyu.themyth.requests.EventRequest;
+import com.fireinyu.themyth.requests.ListRequest;
+import com.fireinyu.themyth.requests.MarkRequest;
+import com.fireinyu.themyth.requests.TodoRequest;
+import com.fireinyu.themyth.requests.UnmarkRequest;
+import com.fireinyu.themyth.requests.events.CloseRequest;
+import com.fireinyu.themyth.requests.events.InitRequest;
+import com.fireinyu.themyth.responses.Response;
 import com.fireinyu.themyth.tasks.DeadlineTask;
 import com.fireinyu.themyth.tasks.EventTask;
 import com.fireinyu.themyth.tasks.Task;
 import com.fireinyu.themyth.tasks.TodoTask;
-import com.fireinyu.themyth.requests.*;
-import com.fireinyu.themyth.requests.events.CloseRequest;
-import com.fireinyu.themyth.requests.events.InitRequest;
-import com.fireinyu.themyth.responses.Response;
 import com.fireinyu.themyth.storage.TaskList;
 import com.fireinyu.themyth.util.MythDateTime;
 
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * A chat mode for managing a list of tasks.
+ * It handles creating, listing, marking, and deleting tasks.
+ */
 public class TaskMode extends ChatMode {
     private final TaskList taskList = new TaskList();
     private final Path taskFile;
 
+    /**
+     * Constructs a TaskMode with a specific file for storing tasks.
+     * @param taskFile The path to the task storage file.
+     */
     public TaskMode(Path taskFile) {
         this.taskFile = taskFile;
     }
 
+    /** Constructs a TaskMode with the default task storage file. */
     public TaskMode() {
         this(Path.of(Defaults.TASKFILE));
     }
 
     @Override
     protected Response respondToInit(InitRequest request) {
-        this.taskList.open(this.taskFile);
+        taskList.open(taskFile);
         return new Response("task file loaded successfully");
     }
 
     @Override
     protected Response respondToClose(CloseRequest request) {
-        this.taskList.close();
+        taskList.close();
         return new Response("exited successfully");
-
     }
 
     @Override
     protected Response respondToTodo(TodoRequest request) {
-        return this.addTask(new TodoTask(request.getArg(1)));
+        return addTask(new TodoTask(request.getArg(1)));
     }
 
     @Override
     protected Response respondToDeadline(DeadlineRequest request) {
-        return this.addTask(new DeadlineTask(
+        return addTask(new DeadlineTask(
                 request.getArg(1),
                 MythDateTime.parse(request.getArg("by"))
         ));
@@ -55,7 +71,7 @@ public class TaskMode extends ChatMode {
 
     @Override
     protected Response respondToEvent(EventRequest request) {
-        return this.addTask(new EventTask(
+        return addTask(new EventTask(
                 request.getArg(1),
                 MythDateTime.parse(request.getArg("from")),
                 MythDateTime.parse(request.getArg("to"))
@@ -64,19 +80,15 @@ public class TaskMode extends ChatMode {
 
     @Override
     protected Response respondToList(ListRequest request) {
-        return this.listTasks("Here are the tasks in your list:", this.taskList);
+        return listTasks("Here are the tasks in your list:", taskList);
     }
 
     @Override
     protected Response respondToAt(AtRequest request) {
         MythDateTime at = MythDateTime.parse(request.getArg(1));
-        return this.listTasks(
+        return listTasks(
                 String.format("Here are the events happening on %s", at),
-                this.taskList.stream()
-                        .filter(task -> task instanceof EventTask)
-                        .map(task -> (EventTask)task)
-                        .filter(task -> task.contains(at))
-                        .map(task -> (Task)task)
+                taskList.stream().filter(task -> task instanceof EventTask eventTask && eventTask.contains(at))
                         .toList()
         );
     }
@@ -84,13 +96,9 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToDue(DueRequest request) {
         MythDateTime due = MythDateTime.parse(request.getArg(1));
-        return this.listTasks(
+        return listTasks(
                 String.format("Here are the deadlines due by %s", due),
-                this.taskList.stream()
-                        .filter(task -> task instanceof DeadlineTask)
-                        .map(task -> (DeadlineTask)task)
-                        .filter(task -> task.isDueBy(due))
-                        .map(task -> (Task)task)
+                taskList.stream().filter(task -> task instanceof DeadlineTask deadlineTask && deadlineTask.isDueBy(due))
                         .toList()
         );
     }
@@ -98,35 +106,41 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToMark(MarkRequest request) {
         int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
-        taskList.get(itemIndex).mark();
-        return new Response("Nice! I've marked this task as done:\n\t" + taskList.get(itemIndex));
+        Task task = taskList.get(itemIndex);
+        task.mark();
+        String message = "Nice! I've marked this task as done:\n\t" + task;
+        return new Response(message);
     }
 
     @Override
     protected Response respondToUnmark(UnmarkRequest request) {
         int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
-        taskList.get(itemIndex).unmark();
-        return new Response("OK, I've marked this task as not done yet:\n\t" + taskList.get(itemIndex));
+        Task task = taskList.get(itemIndex);
+        task.unmark();
+        String message = "OK, I've marked this task as not done yet:\n\t" + task;
+        return new Response(message);
     }
 
     private Response addTask(Task task) {
-        this.taskList.add(task);
-        return new Response(
-                "Got it. I've added this task:\n\t"
-                + task.toString()
-                + String.format("\nNow you have %d tasks in the list.", this.taskList.size())
+        taskList.add(task);
+        String message = String.format(
+                "Got it. I've added this task:\n\t%s\nNow you have %d tasks in the list.",
+                task,
+                taskList.size()
         );
+        return new Response(message);
     }
 
     @Override
     protected Response respondToDelete(DeleteRequest request) {
         int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
-        Task task = this.taskList.remove(itemIndex);
-        return new Response(
-                "Noted. I've removed this task:\n\t"
-                + task.toString()
-                + String.format("\nNow you have %d tasks in the list.", this.taskList.size())
+        Task task = taskList.remove(itemIndex);
+        String message = String.format(
+                "Noted. I've removed this task:\n\t%s\nNow you have %d tasks in the list.",
+                task,
+                taskList.size()
         );
+        return new Response(message);
     }
 
     private Response listTasks(String header, List<Task> tasks) {
