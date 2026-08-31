@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Parser which converts each raw line of user input to a Request<br><br>
- * Different user inputs are parsed into different Request types based on the provided command<br>
- * The command is the first word of the user input line.
- */
- public class RequestParser {
+* Parser which converts each raw line of user input to a Request<br><br>
+* Different user inputs are parsed into different Request types based on the provided command<br>
+* The command is the first word of the user input line.
+*/
+public class RequestParser {
     /**
      * Parse an input line into a Request
      * @param message input line
@@ -21,7 +21,7 @@ import java.util.Map;
     public Request parse(String message) {
         String[] args = split(message.trim());
         List<String> posArgs = new ArrayList<>();
-        Map<String,String> kwargs = new HashMap<>();
+        Map<String, String> kwargs = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (isKeyword(arg)) {

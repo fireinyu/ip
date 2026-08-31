@@ -1,15 +1,11 @@
 package com.fireinyu.themyth.storage;
 
-import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
-import com.fireinyu.themyth.exceptions.FatalException;
-import com.fireinyu.themyth.exceptions.FileAccessException;
-import com.fireinyu.themyth.responses.Response;
-
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
+import com.fireinyu.themyth.exceptions.FileAccessException;
 
 /**
  * ArrayList that can be synced with a csv file on disk.<br><br>
@@ -37,11 +33,11 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
      * File content is deserialized into T instances<br>
      * Warning: Previous data in this CsvBackedList will be replaced. <br>
      * @param path path to the CSV file for the LinesDisk instance
+     * @throws FileAccessException if the file cannot be created or opened for reading
+     * @throws CorruptedTaskFileException if the file content is corrupted and cannot be deserialized
      * @see Path
      * @see LinesDisk
      * @see CsvSerializable
-     * @throws FileAccessException if the file cannot be created or opened for reading
-     * @throws CorruptedTaskFileException if the file content is corrupted and cannot be deserialized
      */
     public void open(Path path) {
         this.storage = new LinesDisk(path);
@@ -52,9 +48,9 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
     /**
      * Close the LinesDisk instance that backs this CsvBackedList, if any<br><br>
      * Automatically writes the content of this CsvBackedList into the LinesDisk before closing
+     * @throws FileAccessException if the file cannot be created or opened for writing
      * @see Path
      * @see LinesDisk
-     * @throws FileAccessException if the file cannot be created or opened for writing
      */
     public void close() {
         if (!this.linked) {
@@ -64,7 +60,7 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
                 this.stream()
                     .map(CsvSerializable::extract)
                     .map(row -> String.join(",", row))
-                );
+        );
         this.linked = false;
     }
 

@@ -1,23 +1,21 @@
 package com.fireinyu.themyth.storage;
 
+import java.util.List;
+
+import com.fireinyu.themyth.exceptions.ArgumentFormatException;
+import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 import com.fireinyu.themyth.tasks.DeadlineTask;
 import com.fireinyu.themyth.tasks.EventTask;
 import com.fireinyu.themyth.tasks.Task;
 import com.fireinyu.themyth.tasks.TodoTask;
-import com.fireinyu.themyth.exceptions.ArgumentFormatException;
-import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 import com.fireinyu.themyth.util.MythDateTime;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 /**
  * List of Tasks that can be synced with a CSV file on disk.
  * @see Task
  * @see LinesDisk
  */
-public class TaskList extends CsvBackedList<Task>{
+public class TaskList extends CsvBackedList<Task> {
 
     /**
      * Initialises a TaskList.<br><br>

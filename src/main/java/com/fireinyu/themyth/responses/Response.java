@@ -1,15 +1,10 @@
 package com.fireinyu.themyth.responses;
 
-import com.fireinyu.themyth.exceptions.FatalException;
-import com.fireinyu.themyth.requests.Request;
-
-
 /**
  * Response to a Request from the user or an event. Produced by the active ChatMode.<br><br>
  * Also includes instructions for whether to continue executing the app.
  * @see com.fireinyu.themyth.chatmodes.ChatMode
  * @see com.fireinyu.themyth.TheMyth
- * @see Response
  */
 public class Response {
     private String body;
@@ -26,7 +21,8 @@ public class Response {
     }
     /**
      * Initialises a Response with a message body<br><br>
-     * Depending on <i>exit</i>, the app will either terminate with a CloseRequest or continue to execute user cycle after the Response is executed
+     * Depending on <i>exit</i>, the app will either terminate with a CloseRequest or
+     * continue to execute user cycle after the Response is executed
      * @param body message body
      * @see String
      * @see com.fireinyu.themyth.requests.events.CloseRequest

@@ -1,10 +1,12 @@
 package com.fireinyu.themyth.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import com.fireinyu.themyth.Defaults;
 import com.fireinyu.themyth.exceptions.DateFormatException;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 
 /**
  * Native datetime representation for The Myth/<br><br>
@@ -13,6 +15,18 @@ import java.time.format.DateTimeFormatter;
  * @see LocalDateTime
  */
 public class MythDateTime {
+
+    private final LocalDateTime datetime;
+
+    /**
+     * Initialises a MythDateTime at a local datetime instant
+     * @param datetime datetime instant of this MythDateTime
+     * @see String
+     * @see LocalDateTime
+     */
+    public MythDateTime(LocalDateTime datetime) {
+        this.datetime = datetime;
+    }
 
     /**
      * Parse an input String into a MythDateTime<br><br>
@@ -38,18 +52,6 @@ public class MythDateTime {
         } catch (NumberFormatException e) {
             throw new DateFormatException(datetime);
         }
-    }
-
-    private final LocalDateTime datetime;
-
-    /**
-     * Initialises a MythDateTime at a local datetime instant
-     * @param datetime datetime instant of this MythDateTime
-     * @see String
-     * @see LocalDateTime
-     */
-    public MythDateTime(LocalDateTime datetime) {
-        this.datetime = datetime;
     }
 
     /**

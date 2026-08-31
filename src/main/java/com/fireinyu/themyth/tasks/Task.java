@@ -1,9 +1,6 @@
 package com.fireinyu.themyth.tasks;
 
 import com.fireinyu.themyth.storage.CsvSerializable;
-import com.fireinyu.themyth.util.MythDateTime;
-
-import java.util.stream.Stream;
 
 /**
  * Task created by the user. Tasks can be marked or unmarked as completed.

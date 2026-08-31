@@ -11,7 +11,8 @@ import com.fireinyu.themyth.responses.Response;
  * @see com.fireinyu.themyth.tasks.TodoTask
  * @see Response
  */
-public class TodoRequest extends Request{
+public class TodoRequest extends Request {
     protected TodoRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, 2, Set.of());
-    }}
+    }
+}

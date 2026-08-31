@@ -1,8 +1,9 @@
 package com.fireinyu.themyth.tasks;
 
+import java.util.List;
+
 import com.fireinyu.themyth.util.MythDateTime;
 
-import java.util.List;
 
 /**
  * Task occurring between start and end datetimes
@@ -21,7 +22,7 @@ public class EventTask extends Task {
      * @see String
      */
     public EventTask(String description, MythDateTime from, MythDateTime to) {
-        super(String.format("%s (from: %s to: %s)",description, from, to), "E");
+        super(String.format("%s (from: %s to: %s)", description, from, to), "E");
         this.from = from;
         this.to = to;
     }

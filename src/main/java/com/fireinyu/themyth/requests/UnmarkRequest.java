@@ -11,7 +11,7 @@ import com.fireinyu.themyth.responses.Response;
  * @see com.fireinyu.themyth.tasks.Task
  * @see Response
  */
-public class UnmarkRequest extends Request{
+public class UnmarkRequest extends Request {
     protected UnmarkRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, 2, Set.of());
     }

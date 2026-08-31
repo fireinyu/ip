@@ -16,9 +16,6 @@ import com.fireinyu.themyth.responses.Response;
  */
 public class Request {
 
-    private static String[] parse(String message) {
-        return message.split("\s+");
-    }
 
     private final List<String> posargs;
     private final Map<String, String> kwargs;
@@ -36,6 +33,10 @@ public class Request {
     protected Request(List<String> posArgs, Map<String, String> kwargs) {
         this.posargs = posArgs;
         this.kwargs = kwargs;
+    }
+
+    private static String[] parse(String message) {
+        return message.split("\s+");
     }
 
     /**

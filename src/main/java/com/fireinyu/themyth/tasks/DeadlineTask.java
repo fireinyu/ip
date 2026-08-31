@@ -1,9 +1,8 @@
 package com.fireinyu.themyth.tasks;
 
-import com.fireinyu.themyth.storage.LinesDisk;
-import com.fireinyu.themyth.util.MythDateTime;
-
 import java.util.List;
+
+import com.fireinyu.themyth.util.MythDateTime;
 
 /**
  * Task due by a certain datetime
@@ -20,7 +19,7 @@ public class DeadlineTask extends Task {
      * @see String
      */
     public DeadlineTask(String description, MythDateTime date) {
-        super(String.format("%s (by: %s)",description, date), "D");
+        super(String.format("%s (by: %s)", description, date), "D");
         this.date = date;
     }
 

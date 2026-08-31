@@ -14,14 +14,16 @@ import com.fireinyu.themyth.responses.Response;
  * @see Response
  */
 public abstract class InterruptEvent extends Request {
+
+    protected InterruptEvent(String[] params) {
+        super(InterruptEvent.getArgs(params), Map.of(), params.length + 1, Set.of());
+    }
+
     private static List<String> getArgs(String[] params) {
         String[] res = new String[params.length + 1];
         res[0] = "interrupt";
         System.arraycopy(params, 0, res, 1, params.length);
         return List.of(res);
-    }
-    protected InterruptEvent(String[] params) {
-        super(InterruptEvent.getArgs(params), Map.of(), params.length + 1, Set.of());
     }
 
 }

@@ -1,11 +1,11 @@
 package com.fireinyu.themyth.storage;
 
-import com.fireinyu.themyth.exceptions.FileAccessException;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+
+import com.fireinyu.themyth.exceptions.FileAccessException;
 
 /**
  * Driver class for reading and writing to a file on Disk.<br><br>
@@ -17,16 +17,6 @@ public class LinesDisk {
     private Path path;
 
     /**
-     * Get the file path associated with this LinesDisk<br><br>
-     * @return the file path associated with this LinesDisk
-     * @see Path
-     */
-    public Path getPath() {
-        return path;
-    }
-
-
-    /**
      * Initialises a LinesDisk for line-wise access to a file at a given path.<br><br>
      * @param path path to the file
      * @see Path
@@ -34,6 +24,15 @@ public class LinesDisk {
      */
     public LinesDisk(Path path) {
         this.path = path;
+    }
+
+    /**
+     * Get the file path associated with this LinesDisk<br><br>
+     * @return the file path associated with this LinesDisk
+     * @see Path
+     */
+    public Path getPath() {
+        return path;
     }
 
     /**
