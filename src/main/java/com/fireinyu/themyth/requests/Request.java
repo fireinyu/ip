@@ -1,13 +1,11 @@
 package com.fireinyu.themyth.requests;
 
-import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
-import com.fireinyu.themyth.responses.Response;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
+import com.fireinyu.themyth.responses.Response;
 
 /**
  * User request which triggers a user cycle.<br><br>

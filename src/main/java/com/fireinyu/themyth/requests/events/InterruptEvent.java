@@ -1,12 +1,11 @@
 package com.fireinyu.themyth.requests.events;
 
-import com.fireinyu.themyth.requests.Request;
-import com.fireinyu.themyth.responses.Response;
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.fireinyu.themyth.requests.Request;
+import com.fireinyu.themyth.responses.Response;
 
 /**
  * Request posted from the app instead of the user.<br><br>

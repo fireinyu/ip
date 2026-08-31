@@ -1,19 +1,28 @@
 package com.fireinyu.themyth.chatmodes;
 
+import java.nio.file.Path;
+import java.util.List;
+
 import com.fireinyu.themyth.Defaults;
-import com.fireinyu.themyth.requests.*;
+import com.fireinyu.themyth.requests.AtRequest;
+import com.fireinyu.themyth.requests.DeadlineRequest;
+import com.fireinyu.themyth.requests.DeleteRequest;
+import com.fireinyu.themyth.requests.DueRequest;
+import com.fireinyu.themyth.requests.EventRequest;
+import com.fireinyu.themyth.requests.FindRequest;
+import com.fireinyu.themyth.requests.ListRequest;
+import com.fireinyu.themyth.requests.MarkRequest;
+import com.fireinyu.themyth.requests.TodoRequest;
+import com.fireinyu.themyth.requests.UnmarkRequest;
 import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
+import com.fireinyu.themyth.storage.TaskList;
 import com.fireinyu.themyth.tasks.DeadlineTask;
 import com.fireinyu.themyth.tasks.EventTask;
 import com.fireinyu.themyth.tasks.Task;
 import com.fireinyu.themyth.tasks.TodoTask;
-import com.fireinyu.themyth.storage.TaskList;
 import com.fireinyu.themyth.util.MythDateTime;
-
-import java.nio.file.Path;
-import java.util.List;
 
 /**
  * Request-Response model that acts a task list/ manager<br><br>

@@ -8,7 +8,7 @@ import com.fireinyu.themyth.responses.Response;
  * @see Request
  * @see Response
  */
-public class CloseRequest extends InterruptEvent{
+public class CloseRequest extends InterruptEvent {
     /**
      * Initialises a CloseRequest event triggered by app termination
      * @see Request

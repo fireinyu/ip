@@ -1,10 +1,11 @@
 package com.fireinyu.themyth;
 
+import java.time.LocalDateTime;
+
 import com.fireinyu.themyth.chatmodes.ChatMode;
 import com.fireinyu.themyth.chatmodes.TaskMode;
 import com.fireinyu.themyth.util.MythDateTime;
 
-import java.time.LocalDateTime;
 
 /**
  * Default values for the app.
@@ -18,7 +19,7 @@ public class Defaults {
     public static final ChatMode STARTMODE = new TaskMode();
     public static final String USERPROMPT = ">>> ";
     public static final String BOTPROMPT = "The Myth says: ";
-    public static final String TWEAKPROMPT = "The Myth tweaks: ";;
+    public static final String TWEAKPROMPT = "The Myth tweaks: ";
     public static final String DEATHPROMPT = "The Myth dies from a fatal exception! The tombstone says: ";
     public static final String DATE_INPUTFORMAT = "yyyy-MM-dd-HH-mm-ss";
 }

@@ -1,7 +1,5 @@
 package com.fireinyu.themyth.exceptions;
 
-import java.nio.file.Path;
-
 /**
  * An exception that should be broadcasted, but should not block or kill the app.
  * @see FatalException

@@ -4,7 +4,7 @@ package com.fireinyu.themyth.exceptions;
  * Thrown when the app is unable to read or write to a disk file
  * @see TweakingException
  */
-public class FileAccessException extends TweakingException{
+public class FileAccessException extends TweakingException {
 
     /**
      * Initialises a FileAccessException

@@ -3,7 +3,7 @@ package com.fireinyu.themyth.exceptions;
 /**
  * Thrown when attempting to read a disk file with corrupted data.
  */
-public class CorruptedTaskFileException extends TweakingException{
+public class CorruptedTaskFileException extends TweakingException {
 
     /**
      * Initialises a CorruptedTaskFileException

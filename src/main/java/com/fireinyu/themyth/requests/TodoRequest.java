@@ -1,11 +1,10 @@
 package com.fireinyu.themyth.requests;
 
-import com.fireinyu.themyth.responses.Response;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fireinyu.themyth.responses.Response;
 
 /**
  * User request to create a new TodoTask.

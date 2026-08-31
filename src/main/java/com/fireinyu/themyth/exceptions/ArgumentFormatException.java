@@ -1,10 +1,5 @@
 package com.fireinyu.themyth.exceptions;
 
-import com.fireinyu.themyth.Defaults;
-import com.fireinyu.themyth.requests.Request;
-import com.fireinyu.themyth.responses.Response;
-import com.fireinyu.themyth.tasks.Task;
-
 /**
  * Thrown when the user provides badly-formatted input arguments.
  */

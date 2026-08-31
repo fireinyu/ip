@@ -1,7 +1,5 @@
 package com.fireinyu.themyth.requests;
 
-import com.fireinyu.themyth.responses.Response;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

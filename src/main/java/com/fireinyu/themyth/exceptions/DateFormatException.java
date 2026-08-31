@@ -5,7 +5,7 @@ import com.fireinyu.themyth.Defaults;
 /**
  * Thrown when the user provides badly-formatted date input arguments.
  */
-public class DateFormatException extends ArgumentFormatException{
+public class DateFormatException extends ArgumentFormatException {
 
     /**
      * Initialises a DateFormatException caused by a malformed datetime argument to a Request
