@@ -37,7 +37,7 @@ test {
 }
 
 application {
-    mainClass = 'com.fireinyu.themyth.TheMyth'
+    mainClass = 'com.fireinyu.themyth.ui.Cli'
 }
 
 jar {
