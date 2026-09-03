@@ -74,7 +74,7 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
         return this.storage.getPath();
     }
 
-    protected abstract T parse(List<String> item) throws CorruptedTaskFileException;
+    protected abstract T parse(String... item) throws CorruptedTaskFileException;
 
     private void fetch() {
         if (!this.linked) {
@@ -84,7 +84,6 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
         this.linked = false;
         super.addAll(this.storage.readLines()
                 .map(line -> line.split(","))
-                .map(List::of)
                 .map(this::parse)
                 .toList()
         );
