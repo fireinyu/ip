@@ -22,7 +22,7 @@ public class EventTask extends Task {
      * @see String
      */
     public EventTask(String description, MythDateTime from, MythDateTime to) {
-        super(String.format("%s (from: %s to: %s)", description, from, to), "E");
+        super(description, "E");
         this.from = from;
         this.to = to;
     }
@@ -54,4 +54,13 @@ public class EventTask extends Task {
         return dateTime.isBetween(from, to);
     }
 
+    /**
+     * Obtain a detailed String representation of this Task.<br><br>
+     * Includes its type, whether it is completed, its description, start and end dates
+     * @return detailed String representation of this Task
+     */
+    @Override
+    public String toString() {
+        return String.format("%s (from: %s to: %s)", super.toString(), from, to);
+    }
 }

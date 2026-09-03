@@ -19,7 +19,7 @@ public class DeadlineTask extends Task {
      * @see String
      */
     public DeadlineTask(String description, MythDateTime date) {
-        super(String.format("%s (by: %s)", description, date), "D");
+        super(description, "D");
         this.date = date;
     }
 
@@ -47,5 +47,15 @@ public class DeadlineTask extends Task {
      */
     public boolean isDueBy(MythDateTime dateTime) {
         return this.date.isBefore(dateTime);
+    }
+
+    /**
+     * Obtain a detailed String representation of this Task.<br><br>
+     * Includes its type, whether it is completed, its description and due date
+     * @return detailed String representation of this Task
+     */
+    @Override
+    public String toString() {
+        return String.format("%s (by: %s)", super.toString(), date);
     }
 }
