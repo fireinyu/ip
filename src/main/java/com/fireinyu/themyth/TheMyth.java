@@ -1,7 +1,5 @@
 package com.fireinyu.themyth;
 
-import java.util.Scanner;
-
 import com.fireinyu.themyth.chatmodes.ChatMode;
 import com.fireinyu.themyth.exceptions.FatalException;
 import com.fireinyu.themyth.exceptions.TweakingException;
@@ -29,14 +27,25 @@ public class TheMyth {
     public TheMyth() {
     }
 
+    /**
+     * Start the app
+     */
     public void start() {
         this.interruptCycle(new InitRequest());
     }
 
+    /**
+     * Stop the app
+     */
     public void stop() {
         this.interruptCycle(new CloseRequest());
     }
 
+    /**
+     * Handles input
+     * @param input input
+     * @return response to input
+     */
     public Response handleInput(String input) {
         Response response = null;
         try {

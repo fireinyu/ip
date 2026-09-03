@@ -1,7 +1,5 @@
 package com.fireinyu.themyth.storage;
 
-import java.util.List;
-
 import com.fireinyu.themyth.exceptions.ArgumentFormatException;
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 import com.fireinyu.themyth.tasks.DeadlineTask;

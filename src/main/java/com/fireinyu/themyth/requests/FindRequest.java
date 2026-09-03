@@ -12,6 +12,10 @@ import com.fireinyu.themyth.responses.Response;
  * @see Response
  */
 public class FindRequest extends Request {
+    /**
+     * @param posArgs Positional arguments.
+     * @param kwargs Keyword arguments.
+     */
     protected FindRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, 2, Set.of());
     }

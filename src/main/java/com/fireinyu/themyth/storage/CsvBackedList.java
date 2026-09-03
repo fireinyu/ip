@@ -2,7 +2,6 @@ package com.fireinyu.themyth.storage;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 import com.fireinyu.themyth.exceptions.FileAccessException;
@@ -10,6 +9,7 @@ import com.fireinyu.themyth.exceptions.FileAccessException;
 /**
  * ArrayList that can be synced with a csv file on disk.<br><br>
  * File access is managed through a LinesDisk.
+ * @param <T> The type of elements in this list, which must be CsvSerializable.
  * @see LinesDisk
  */
 public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList<T> {
@@ -74,8 +74,20 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
         return this.storage.getPath();
     }
 
+    /**
+     * Parses a string array from a line in the CSV file into an object of type T.
+     *
+     * @param item The string array representing a row in the CSV.
+     * @return The parsed object.
+     * @throws CorruptedTaskFileException if the data is corrupted.
+     */
     protected abstract T parse(String... item) throws CorruptedTaskFileException;
 
+    /**
+     * Fetches data from the backing file.
+     * It clears the current list and repopulates it with data from the file.
+     * The data is deserialized from CSV format to objects of type T.
+     */
     private void fetch() {
         if (!this.linked) {
             return;

@@ -20,6 +20,13 @@ public class Request {
     private final List<String> posargs;
     private final Map<String, String> kwargs;
 
+    /**
+     * @param posArgs Positional arguments.
+     * @param kwargs Keyword arguments.
+     * @param numPosArgs Expected number of positional arguments.
+     * @param kwargNames Expected names of keyword arguments.
+     * @throws ArugmentMismatchException If the arguments do not match what is expected.
+     */
     protected Request(List<String> posArgs, Map<String, String> kwargs, int numPosArgs, Set<String> kwargNames) {
         if (posArgs.size() != numPosArgs) {
             throw new ArugmentMismatchException(numPosArgs, posArgs.size());
@@ -30,11 +37,21 @@ public class Request {
         this(posArgs, kwargs);
     }
 
+    /**
+     * @param posArgs Positional arguments.
+     * @param kwargs Keyword arguments.
+     */
     protected Request(List<String> posArgs, Map<String, String> kwargs) {
         this.posargs = posArgs;
         this.kwargs = kwargs;
     }
 
+    /**
+     * Parses a message into an array of arguments by splitting on whitespace.
+     *
+     * @param message The message to parse.
+     * @return An array of arguments.
+     */
     private static String[] parse(String message) {
         return message.split("\s+");
     }

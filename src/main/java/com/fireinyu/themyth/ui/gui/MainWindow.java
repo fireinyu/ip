@@ -2,6 +2,7 @@ package com.fireinyu.themyth.ui.gui;
 
 import com.fireinyu.themyth.TheMyth;
 import com.fireinyu.themyth.responses.Response;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,32 +25,36 @@ public class MainWindow extends AnchorPane {
     @FXML
     private Button sendButton;
 
-    private TheMyth TheMyth;
+    private TheMyth theMyth;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image TheMythImage = new Image(this.getClass().getResourceAsStream("/images/DaMyth.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
+    private final Image theMythImage = new Image(this.getClass().getResourceAsStream("/images/DaMyth.png"));
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the TheMyth instance */
+    /**
+     * Sets the TheMyth instance for the main window.
+     *
+     * @param d The TheMyth instance.
+     */
     public void setTheMyth(TheMyth d) {
-        TheMyth = d;
+        theMyth = d;
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing TheMyth's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Creates two dialog boxes, one echoing user input and the other containing TheMyth's reply
+     * and then appends them to the dialog container. Clears the user input after processing.
      */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        Response response = TheMyth.handleInput(input);
+        Response response = theMyth.handleInput(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getTheMythDialog(response.getBody(), TheMythImage)
+                DialogBox.getTheMythDialog(response.getBody(), theMythImage)
         );
         userInput.clear();
         if (response.doExit()) {

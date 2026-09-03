@@ -12,6 +12,10 @@ import com.fireinyu.themyth.responses.Response;
  * @see Response
  */
 public class ExitRequest extends Request {
+    /**
+     * @param posArgs Positional arguments.
+     * @param kwargs Keyword arguments.
+     */
     protected ExitRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, 1, Set.of());
     }

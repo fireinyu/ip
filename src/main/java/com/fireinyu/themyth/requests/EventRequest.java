@@ -12,6 +12,10 @@ import com.fireinyu.themyth.responses.Response;
  * @see Response
  */
 public class EventRequest extends Request {
+    /**
+     * @param posArgs Positional arguments.
+     * @param kwargs Keyword arguments.
+     */
     protected EventRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, 2, Set.of("from", "to"));
     }

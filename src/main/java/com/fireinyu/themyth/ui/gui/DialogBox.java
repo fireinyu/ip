@@ -1,5 +1,8 @@
 package com.fireinyu.themyth.ui.gui;
 
+import java.io.IOException;
+import java.util.Collections;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,9 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
-import java.util.Collections;
-
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
  * and a label containing text from the speaker.
@@ -24,6 +24,12 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
+    /**
+     * Private constructor for a DialogBox.
+     *
+     * @param text The text to display in the dialog box.
+     * @param img The image to display.
+     */
     private DialogBox(String text, Image img) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
@@ -49,10 +55,25 @@ public class DialogBox extends HBox {
         dialog.getStyleClass().add("reply-label");
     }
 
+    /**
+     * Creates a dialog box for the user.
+     *
+     * @param text The text from the user.
+     * @param img The user's image.
+     * @return A new DialogBox for the user.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Creates a dialog box for TheMyth.
+     * This dialog box is flipped.
+     *
+     * @param text The text from TheMyth.
+     * @param img TheMyth's image.
+     * @return A new DialogBox for TheMyth.
+     */
     public static DialogBox getTheMythDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();

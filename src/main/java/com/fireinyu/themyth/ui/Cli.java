@@ -1,23 +1,31 @@
 package com.fireinyu.themyth.ui;
 
+import java.util.Scanner;
+
 import com.fireinyu.themyth.Defaults;
 import com.fireinyu.themyth.TheMyth;
 import com.fireinyu.themyth.responses.ExceptionResponse;
 import com.fireinyu.themyth.responses.FatalResponse;
 import com.fireinyu.themyth.responses.Response;
 
-import java.util.Scanner;
-
+/**
+ * CLI
+ */
 public class Cli {
 
     private final TheMyth model;
     private final Scanner scanner = new Scanner(System.in);
 
-
+    /**
+     * Initialises the CLI
+     */
     public Cli(TheMyth model) {
         this.model = model;
     }
 
+    /**
+     * Run the CLI
+     */
     public void run() {
         String banner = """
                         ▄▄▄█████▓ ██░ ██ ▓█████     ███▄ ▄███▓▓██   ██▓▄▄▄█████▓ ██░ ██\s
@@ -37,7 +45,7 @@ public class Cli {
                 Hello! I'm The Myth.
                 What can I do for you?
                 """);
-        while(true) {
+        while (true) {
             String input = this.scanner.nextLine();
             Response response = this.model.handleInput(input);
             if (response instanceof ExceptionResponse) {
@@ -64,7 +72,9 @@ public class Cli {
         this.say(Defaults.BOTPROMPT, something);
     }
 
-
+    /**
+     * Entry-point to run CLI
+     */
     public static void main(String... args) {
         new Cli(new TheMyth()).run();
     }

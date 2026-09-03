@@ -52,12 +52,102 @@ public abstract class ChatMode {
     }
 
     /**
+     * Handles an {@link AtRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
+    protected Response respondToAt(AtRequest request) {
+        return respondToRemaining(request);
+    }
+
+    /**
+     * Handles the close request.
+     *
+     * @param request The close request.
+     * @return A generic response indicating no handler is present.
+     */
+    protected Response respondToClose(CloseRequest request) {
+        return new Response("no close handler");
+    }
+
+    /**
+     * Handles a {@link DeadlineRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
+    protected Response respondToDeadline(DeadlineRequest request) {
+        return respondToRemaining(request);
+    }
+
+    /**
+     * Handles a {@link DeleteRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
+    protected Response respondToDelete(DeleteRequest request) {
+        return respondToRemaining(request);
+    }
+
+    /**
+     * Handles a {@link DueRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
+    protected Response respondToDue(DueRequest request) {
+        return respondToRemaining(request);
+    }
+
+    /**
+     * Handles an {@link EventRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
+    protected Response respondToEvent(EventRequest request) {
+        return respondToRemaining(request);
+    }
+
+    /**
+     * Handles an {@link ExitRequest}.
+     *
+     * @param request The request to handle.
+     * @return An {@link ExitResponse} with a goodbye message.
+     */
+    protected Response respondToExit(ExitRequest request) {
+        return new ExitResponse("Bye. Hope to see you again soon!");
+    }
+
+    /**
      * Handles a {@link FindRequest}.
      *
      * @param request The request to handle.
      * @return A {@link Response} object.
      */
     protected Response respondToFind(FindRequest request) {
+        return this.respondToRemaining(request);
+    }
+
+    /**
+     * Handles the initialization request.
+     *
+     * @param request The initialization request.
+     * @return A generic response indicating no handler is present.
+     */
+    protected Response respondToInit(InitRequest request) {
+        return new Response("no init handler");
+    }
+
+    /**
+     * Handles a {@link ListRequest}.
+     *
+     * @param request The request to handle.
+     * @return A {@link Response} object.
+     */
+    protected Response respondToList(ListRequest request) {
         return this.respondToRemaining(request);
     }
 
@@ -73,23 +163,13 @@ public abstract class ChatMode {
     }
 
     /**
-     * Handles the initialization request.
+     * Handles a {@link MarkRequest}.
      *
-     * @param request The initialization request.
-     * @return A generic response indicating no handler is present.
+     * @param request The request to handle.
+     * @return A {@link Response} object.
      */
-    protected Response respondToInit(InitRequest request) {
-        return new Response("no init handler");
-    }
-
-    /**
-     * Handles the close request.
-     *
-     * @param request The close request.
-     * @return A generic response indicating no handler is present.
-     */
-    protected Response respondToClose(CloseRequest request) {
-        return new Response("no close handler");
+    protected Response respondToMark(MarkRequest request) {
+        return respondToRemaining(request);
     }
 
     /**
@@ -103,26 +183,6 @@ public abstract class ChatMode {
     }
 
     /**
-     * Handles a {@link DeadlineRequest}.
-     *
-     * @param request The request to handle.
-     * @return A {@link Response} object.
-     */
-    protected Response respondToDeadline(DeadlineRequest request) {
-        return respondToRemaining(request);
-    }
-
-    /**
-     * Handles an {@link EventRequest}.
-     *
-     * @param request The request to handle.
-     * @return A {@link Response} object.
-     */
-    protected Response respondToEvent(EventRequest request) {
-        return respondToRemaining(request);
-    }
-
-    /**
      * Handles an {@link UnmarkRequest}.
      *
      * @param request The request to handle.
@@ -130,65 +190,5 @@ public abstract class ChatMode {
      */
     protected Response respondToUnmark(UnmarkRequest request) {
         return respondToRemaining(request);
-    }
-
-    /**
-     * Handles a {@link MarkRequest}.
-     *
-     * @param request The request to handle.
-     * @return A {@link Response} object.
-     */
-    protected Response respondToMark(MarkRequest request) {
-        return respondToRemaining(request);
-    }
-
-    /**
-     * Handles a {@link ListRequest}.
-     *
-     * @param request The request to handle.
-     * @return A {@link Response} object.
-     */
-    protected Response respondToList(ListRequest request) {
-        return respondToRemaining(request);
-    }
-
-    /**
-     * Handles an {@link AtRequest}.
-     *
-     * @param request The request to handle.
-     * @return A {@link Response} object.
-     */
-    protected Response respondToAt(AtRequest request) {
-        return respondToRemaining(request);
-    }
-
-    /**
-     * Handles a {@link DueRequest}.
-     *
-     * @param request The request to handle.
-     * @return A {@link Response} object.
-     */
-    protected Response respondToDue(DueRequest request) {
-        return respondToRemaining(request);
-    }
-
-    /**
-     * Handles a {@link DeleteRequest}.
-     *
-     * @param request The request to handle.
-     * @return A {@link Response} object.
-     */
-    protected Response respondToDelete(DeleteRequest request) {
-        return respondToRemaining(request);
-    }
-
-    /**
-     * Handles an {@link ExitRequest}.
-     *
-     * @param request The request to handle.
-     * @return An {@link ExitResponse} with a goodbye message.
-     */
-    protected Response respondToExit(ExitRequest request) {
-        return new ExitResponse("Bye. Hope to see you again soon!");
     }
 }

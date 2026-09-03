@@ -55,18 +55,27 @@ public class TaskMode extends ChatMode {
         this(Path.of(Defaults.TASKFILE));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToInit(InitRequest request) {
         taskList.open(taskFile);
         return new Response("task file loaded successfully");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToClose(CloseRequest request) {
         taskList.close();
         return new Response("exited successfully");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToFind(FindRequest request) {
         return listTasks(
@@ -77,11 +86,17 @@ public class TaskMode extends ChatMode {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToTodo(TodoRequest request) {
         return addTask(new TodoTask(request.getArg(1)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToDeadline(DeadlineRequest request) {
         return addTask(new DeadlineTask(
@@ -90,6 +105,9 @@ public class TaskMode extends ChatMode {
         ));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToEvent(EventRequest request) {
         return addTask(new EventTask(
@@ -99,11 +117,17 @@ public class TaskMode extends ChatMode {
         ));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToList(ListRequest request) {
         return listTasks("Here are the tasks in your list:", taskList);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToAt(AtRequest request) {
         MythDateTime at = MythDateTime.parse(request.getArg(1));
@@ -114,6 +138,9 @@ public class TaskMode extends ChatMode {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToDue(DueRequest request) {
         MythDateTime due = MythDateTime.parse(request.getArg(1));
@@ -124,6 +151,9 @@ public class TaskMode extends ChatMode {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToMark(MarkRequest request) {
         int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
@@ -133,6 +163,9 @@ public class TaskMode extends ChatMode {
         return new Response(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToUnmark(UnmarkRequest request) {
         int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
@@ -142,16 +175,9 @@ public class TaskMode extends ChatMode {
         return new Response(message);
     }
 
-    private Response addTask(Task task) {
-        taskList.add(task);
-        String message = String.format(
-                "Got it. I've added this task:\n\t%s\nNow you have %d tasks in the list.",
-                task,
-                taskList.size()
-        );
-        return new Response(message);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToDelete(DeleteRequest request) {
         int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
@@ -164,6 +190,29 @@ public class TaskMode extends ChatMode {
         return new Response(message);
     }
 
+    /**
+     * Adds a task to the task list and returns a response.
+     *
+     * @param task The task to add.
+     * @return The response to the user.
+     */
+    private Response addTask(Task task) {
+        taskList.add(task);
+        String message = String.format(
+                "Got it. I've added this task:\n\t%s\nNow you have %d tasks in the list.",
+                task,
+                taskList.size()
+        );
+        return new Response(message);
+    }
+
+    /**
+     * Formats a list of tasks into a response for the user.
+     *
+     * @param header The header message for the list.
+     * @param tasks The list of tasks to format.
+     * @return The response containing the formatted list.
+     */
     private Response listTasks(String header, List<Task> tasks) {
         StringBuilder body = new StringBuilder(header);
         int itemNumber = 1;
