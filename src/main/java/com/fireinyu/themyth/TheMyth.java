@@ -19,7 +19,6 @@ import com.fireinyu.themyth.responses.Response;
  */
 public class TheMyth {
 
-    private final Scanner scanner = new Scanner(System.in);
     private final RequestParser parser = new RequestParser();
     private final ChatMode chatMode = Defaults.STARTMODE;
 
@@ -28,56 +27,30 @@ public class TheMyth {
      * The app will display a banner, then enter idle mode
      */
     public TheMyth() {
-        this.say("""
-                Hello! I'm The Myth.
-                What can I do for you?
-                """);
     }
 
-    /**
-     * Entry-point of app<br><br>
-     * The app runs on a user-loop architecture with interrupt cycles for events
-     */
-    public static void main(String[] args) {
-        String banner = """
-                        ▄▄▄█████▓ ██░ ██ ▓█████     ███▄ ▄███▓▓██   ██▓▄▄▄█████▓ ██░ ██\s
-                        ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▓██▒▀█▀ ██▒ ▒██  ██▒▓  ██▒ ▓▒▓██░ ██▒
-                        ▒ ▓██░ ▒░▒██▀▀██░▒███      ▓██    ▓██░  ▒██ ██░▒ ▓██░ ▒░▒██▀▀██░
-                        ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ▒██    ▒██   ░ ▐██▓░░ ▓██▓ ░ ░▓█ ░██\s
-                          ▒██▒ ░ ░▓█▒░██▓░▒████▒   ▒██▒   ░██▒  ░ ██▒▓░  ▒██▒ ░ ░▓█▒░██▓
-                          ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░   ░ ▒░   ░  ░   ██▒▒▒   ▒ ░░    ▒ ░░▒░▒
-                            ░     ▒ ░▒░ ░ ░ ░  ░   ░  ░      ░ ▓██ ░▒░     ░     ▒ ░▒░ ░
-                          ░       ░  ░░ ░   ░      ░      ░    ▒ ▒ ░░    ░       ░  ░░ ░
-                                  ░  ░  ░   ░  ░          ░    ░ ░               ░  ░  ░
-                                                               ░ ░                     \s
-                """;
-        System.out.println(banner);
-        TheMyth cs2103t = new TheMyth();
-        if (cs2103t.interruptCycle(new InitRequest())) {
-            while (cs2103t.userCycle());
-        }
+    public void start() {
+        this.interruptCycle(new InitRequest());
     }
 
-    /**
-     * Runs a single user cycle of The Myth<br><br>
-     * Summary of actions: read Request -> ChatMode handles Request -> obtain Response -> execute Response
-     * @return whether to continue running The Myth
-     * @see Request
-     * @see ChatMode
-     * @see Response
-     */
-    public boolean userCycle() {
-        String message = scanner.nextLine();
+    public void stop() {
+        this.interruptCycle(new CloseRequest());
+    }
+
+    public Response handleInput(String input) {
         Response response = null;
         try {
-            Request request = parser.parse(message);
+            Request request = parser.parse(input);
             response = chatMode.respondTo(request);
         } catch (TweakingException e) {
             response = new ExceptionResponse(e);
         } catch (FatalException e) {
             response = new FatalResponse(e);
         }
-        return execute(response);
+        if (response.doExit()) {
+            this.stop();
+        }
+        return response;
     }
 
     /**
@@ -87,12 +60,11 @@ public class TheMyth {
      * Summary of actions: receive InterruptEvent -> ChatMode handles InterruptEvent
      * -> obtain Response -> execute Response
      * @param event: the interrupt event that caused this interrupt cycle
-     * @return whether to continue running The Myth
      * @see  InterruptEvent
      * @see  ChatMode
      * @see  Response
      */
-    private boolean interruptCycle(InterruptEvent event) {
+    private void interruptCycle(InterruptEvent event) {
         Response response = null;
         try {
             response = chatMode.respondTo(event);
@@ -100,33 +72,9 @@ public class TheMyth {
             response = new ExceptionResponse(e);
         } catch (FatalException e) {
             response = new FatalResponse(e);
+            this.stop();
         }
-        return execute(response);
-    }
-
-    private void say(String something) {
-        this.say(Defaults.BOTPROMPT, something);
-    }
-
-    private void say(String botPrompt, String something) {
-        System.out.println(new StringBuilder().repeat('—', Defaults.LINEWIDTH).toString());
-        System.out.println(botPrompt + '\n' + something.indent(4));
-        System.out.println(new StringBuilder().repeat('—', Defaults.LINEWIDTH).toString());
-        System.out.print(Defaults.USERPROMPT);
-    }
-
-    private boolean execute(Response response) {
-        if (response instanceof ExceptionResponse) {
-            this.say(Defaults.TWEAKPROMPT, response.getBody());
-        } else if (response instanceof FatalResponse) {
-            this.say(Defaults.DEATHPROMPT, response.getBody());
-        } else {
-            this.say(response.getBody());
-        }
-        if (response.doExit()) {
-            this.interruptCycle(new CloseRequest());
-        }
-        return !(response.doExit());
+        System.out.println(response.getBody());
     }
 }
 
