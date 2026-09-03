@@ -27,27 +27,27 @@ public class TaskList extends CsvBackedList<Task> {
     public TaskList() {
     }
     @Override
-    protected Task parse(List<String> item) {
+    protected Task parse(String... item) {
         try {
             Task task = null;
-            switch (item.get(0)) {
+            switch (item[0]) {
                 case "T": {
-                    task = new TodoTask(item.get(2));
+                    task = new TodoTask(item[2]);
                     break;
                 }
                 case "D": {
-                    task = new DeadlineTask(item.get(2), MythDateTime.parse(item.get(3)));
+                    task = new DeadlineTask(item[2], MythDateTime.parse(item[3]));
                     break;
                 }
                 case "E": {
-                    task = new EventTask(item.get(2), MythDateTime.parse(item.get(3)), MythDateTime.parse(item.get(4)));
+                    task = new EventTask(item[2], MythDateTime.parse(item[3]), MythDateTime.parse(item[4]));
                     break;
                 }
                 default: {
                     throw new CorruptedTaskFileException(super.getPath().toString());
                 }
             }
-            if (Boolean.parseBoolean(item.get(1))) {
+            if (Boolean.parseBoolean(item[1])) {
                 task.mark();
             } else {
                 task.unmark();
