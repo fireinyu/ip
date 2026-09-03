@@ -1,20 +1,22 @@
 package com.fireinyu.themyth.requests;
 
-import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+
+import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
+
 
 public class RequestTest {
 
     @Test
     public void constructor_wrongPosArgs() {
+        //CHECKSTYLE.OFF: EmptyCatchBlock
         try {
             Request req = new Request(
                     List.of("a"),
@@ -26,6 +28,9 @@ public class RequestTest {
         } catch (Exception e) {
             fail();
         }
+        //CHECKSTYLE.ON: EmptyCatchBlock
+
+        //CHECKSTYLE.OFF: EmptyCatchBlock
         try {
             Request req = new Request(
                     List.of("a", "b", "c"),
@@ -37,10 +42,12 @@ public class RequestTest {
         } catch (Exception e) {
             fail();
         }
+        //CHECKSTYLE.ON: EmptyCatchBlock
     }
 
     @Test
     public void constructor_wrongKwArgs() {
+        //CHECKSTYLE.OFF: EmptyCatchBlock
         try {
             Request req = new Request(
                     List.of("a"),
@@ -52,6 +59,9 @@ public class RequestTest {
         } catch (Exception e) {
             fail();
         }
+        //CHECKSTYLE.ON: EmptyCatchBlock
+
+        //CHECKSTYLE.OFF: EmptyCatchBlock
         try {
             Request req = new Request(
                     List.of("a"),
@@ -63,7 +73,7 @@ public class RequestTest {
         } catch (Exception e) {
             fail();
         }
-
+        //CHECKSTYLE.ON: EmptyCatchBlock
     }
 
     @Test
