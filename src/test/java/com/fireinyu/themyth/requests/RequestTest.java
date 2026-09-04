@@ -1,7 +1,7 @@
 package com.fireinyu.themyth.requests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Map;
@@ -16,64 +16,36 @@ public class RequestTest {
 
     @Test
     public void constructor_wrongPosArgs() {
-        //CHECKSTYLE.OFF: EmptyCatchBlock
-        try {
-            Request req = new Request(
-                    List.of("a"),
-                    Map.of(),
-                    5,
-                    Set.of()
-            );
-        } catch (ArugmentMismatchException _) {
-        } catch (Exception e) {
-            fail();
-        }
-        //CHECKSTYLE.ON: EmptyCatchBlock
+        assertThrows(ArugmentMismatchException.class, () -> new Request(
+                List.of("a"),
+                Map.of(),
+                5,
+                Set.of()
+        ));
 
-        //CHECKSTYLE.OFF: EmptyCatchBlock
-        try {
-            Request req = new Request(
+        assertThrows(ArugmentMismatchException.class, () -> new Request(
                     List.of("a", "b", "c"),
                     Map.of(),
                     2,
                     Set.of()
-            );
-        } catch (ArugmentMismatchException _) {
-        } catch (Exception e) {
-            fail();
-        }
-        //CHECKSTYLE.ON: EmptyCatchBlock
+        ));
     }
 
     @Test
     public void constructor_wrongKwArgs() {
-        //CHECKSTYLE.OFF: EmptyCatchBlock
-        try {
-            Request req = new Request(
+        assertThrows(ArugmentMismatchException.class, () -> new Request(
                     List.of("a"),
                     Map.of(),
                     1,
                     Set.of("kw2")
-            );
-        } catch (ArugmentMismatchException _) {
-        } catch (Exception e) {
-            fail();
-        }
-        //CHECKSTYLE.ON: EmptyCatchBlock
+        ));
 
-        //CHECKSTYLE.OFF: EmptyCatchBlock
-        try {
-            Request req = new Request(
+        assertThrows(ArugmentMismatchException.class, () -> new Request(
                     List.of("a"),
                     Map.of("kw1", "val1"),
                     1,
                     Set.of("kw2")
-            );
-        } catch (ArugmentMismatchException _) {
-        } catch (Exception e) {
-            fail();
-        }
-        //CHECKSTYLE.ON: EmptyCatchBlock
+        ));
     }
 
     @Test
