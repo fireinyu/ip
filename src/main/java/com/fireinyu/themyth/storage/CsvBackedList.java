@@ -92,8 +92,11 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
         if (!this.linked) {
             return;
         }
-        this.clear();
+        // Temporarily unlink the list to prevent any overridden add/clear methods
+        // from causing recursive file writes while we are repopulating the list
+        // from the file.
         this.linked = false;
+        this.clear();
         super.addAll(this.storage.readLines()
                 .map(line -> line.split(","))
                 .map(this::parse)

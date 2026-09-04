@@ -38,10 +38,10 @@ public class MainWindow extends AnchorPane {
     /**
      * Sets the TheMyth instance for the main window.
      *
-     * @param d The TheMyth instance.
+     * @param theMyth The TheMyth instance.
      */
-    public void setTheMyth(TheMyth d) {
-        theMyth = d;
+    public void setTheMyth(TheMyth theMyth) {
+        this.theMyth = theMyth;
     }
 
     /**
