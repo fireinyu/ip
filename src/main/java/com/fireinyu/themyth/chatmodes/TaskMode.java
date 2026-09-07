@@ -1,6 +1,7 @@
 package com.fireinyu.themyth.chatmodes;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fireinyu.themyth.Defaults;

@@ -15,7 +15,7 @@ import com.fireinyu.themyth.exceptions.DateFormatException;
  * @see MythDateTime
  * @see LocalDateTime
  */
-public class MythDateTime {
+public class MythDateTime implements Comparable<MythDateTime>{
 
     private final LocalDateTime datetime;
 
@@ -94,5 +94,10 @@ public class MythDateTime {
     @Override
     public String toString() {
         return datetime.format(DateTimeFormatter.ofPattern("LLL dd yyyy hh:mm:ss a"));
+    }
+
+    @Override
+    public int compareTo(MythDateTime o) {
+        return this.datetime.compareTo(o.datetime);
     }
 }
