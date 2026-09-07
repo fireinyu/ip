@@ -16,18 +16,4 @@ public class TodoTask extends Task {
         super(description, "T");
     }
 
-    /**
-     * Serializes this TodoTask into a List of String attributes<br><br>
-     * @return List of String attributes representing the serialized TodoTask object
-     * @see List
-     * @see String
-     */
-    @Override
-    public List<String> extract() {
-        return List.of(
-                super.getTypeCode(),
-                String.valueOf(super.isCompleted()),
-                super.getDescription()
-        );
-    }
 }

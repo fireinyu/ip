@@ -1,6 +1,10 @@
 package com.fireinyu.themyth.tasks;
 
 import com.fireinyu.themyth.storage.CsvSerializable;
+import com.fireinyu.themyth.util.MythDateTime;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Task created by the user. Tasks can be marked or unmarked as completed.
@@ -9,6 +13,8 @@ public abstract class Task implements CsvSerializable {
     private final String description;
     private boolean completed = false;
     private final String typeCode;
+    private MythDateTime lastModified;
+    private MythDateTime created;
 
     /**
      * Initialises a Task
@@ -17,8 +23,32 @@ public abstract class Task implements CsvSerializable {
      * @see String
      */
     public Task(String description, String typeCode) {
+        this.created = MythDateTime.now();
+        this.lastModified = this.created;
         this.description = description;
         this.typeCode = typeCode;
+    }
+
+    public void setAccessTimes(MythDateTime created, MythDateTime lastModified) {
+        this.created = created;
+        this.lastModified = lastModified;
+    }
+
+    /**
+     * Serializes this Task into a List of String attributes<br><br>
+     * @return List of String attributes representing the serialized Task object
+     * @see List
+     * @see String
+     */
+    @Override
+    public List<String> extract() {
+        return new ArrayList<>(List.of(
+                this.typeCode,
+                String.valueOf(this.completed),
+                this.created.dump(),
+                this.lastModified.dump(),
+                this.description
+        ));
     }
 
     /**
@@ -42,6 +72,7 @@ public abstract class Task implements CsvSerializable {
      * Marks this Task as completed
      */
     public void mark() {
+        this.lastModified = MythDateTime.now();
         completed = true;
     }
 
@@ -49,8 +80,18 @@ public abstract class Task implements CsvSerializable {
      * Marks this Task as incomplete
      */
     public void unmark() {
+        this.lastModified = MythDateTime.now();
         completed = false;
     }
+
+    public MythDateTime getLastModified() {
+        return lastModified;
+    }
+
+    public MythDateTime getCreated() {
+        return created;
+    }
+
 
     /**
      * Gets the type code of the task.
@@ -68,6 +109,6 @@ public abstract class Task implements CsvSerializable {
      */
     @Override
     public String toString() {
-        return String.format("[%s][%s] %s", typeCode, completed ? "X" : " ", description);
+        return String.format("[%s][%s] %s", typeCode, completed ? "X" : " ", description) + this.lastModified.toString();
     }
 }

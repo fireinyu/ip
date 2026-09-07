@@ -1,5 +1,6 @@
 package com.fireinyu.themyth.tasks;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.fireinyu.themyth.util.MythDateTime;
@@ -35,13 +36,12 @@ public class EventTask extends Task {
      */
     @Override
     public List<String> extract() {
-        return List.of(
-                super.getTypeCode(),
-                String.valueOf(super.isCompleted()),
-                getDescription(),
+        List<String> extracted = super.extract();
+        extracted.addAll(List.of(
                 from.dump(),
                 to.dump()
-        );
+        ));
+        return extracted;
     }
 
     /**

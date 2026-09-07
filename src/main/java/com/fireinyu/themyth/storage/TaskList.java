@@ -8,8 +8,6 @@ import com.fireinyu.themyth.tasks.Task;
 import com.fireinyu.themyth.tasks.TodoTask;
 import com.fireinyu.themyth.util.MythDateTime;
 
-import java.util.Arrays;
-
 /**
  * List of Tasks that can be synced with a CSV file on disk.
  * @see Task
@@ -32,15 +30,15 @@ public class TaskList extends CsvBackedList<Task> {
             Task task = null;
             switch (item[0]) {
                 case "T": {
-                    task = new TodoTask(item[2]);
+                    task = new TodoTask(item[4]);
                     break;
                 }
                 case "D": {
-                    task = new DeadlineTask(item[2], MythDateTime.parse(item[3]));
+                    task = new DeadlineTask(item[4], MythDateTime.parse(item[5]));
                     break;
                 }
                 case "E": {
-                    task = new EventTask(item[2], MythDateTime.parse(item[3]), MythDateTime.parse(item[4]));
+                    task = new EventTask(item[4], MythDateTime.parse(item[5]), MythDateTime.parse(item[6]));
                     break;
                 }
                 default: {
@@ -52,6 +50,7 @@ public class TaskList extends CsvBackedList<Task> {
             } else {
                 task.unmark();
             }
+            task.setAccessTimes(MythDateTime.parse(item[2]), MythDateTime.parse(item[3]));
             return task;
         } catch (IndexOutOfBoundsException | ArgumentFormatException e) {
             throw new CorruptedTaskFileException(super.getPath().toString());

@@ -2,6 +2,7 @@ package com.fireinyu.themyth.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import com.fireinyu.themyth.Defaults;
 import com.fireinyu.themyth.exceptions.DateFormatException;
@@ -28,6 +29,9 @@ public class MythDateTime {
         this.datetime = datetime;
     }
 
+    public static MythDateTime now() {
+        return new MythDateTime(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+    }
     /**
      * Parse an input String into a MythDateTime<br><br>
      * the String format is length-variable from yyyy to yyyy-MM-dd-HH-mm-ss

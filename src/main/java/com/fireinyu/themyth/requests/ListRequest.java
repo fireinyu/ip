@@ -17,6 +17,6 @@ public class ListRequest extends Request {
      * @param kwargs Keyword arguments.
      */
     protected ListRequest(List<String> posArgs, Map<String, String> kwargs) {
-        super(posArgs, kwargs, 1, Set.of());
+        super(posArgs, kwargs, 1, Set.of(), Map.of("sort", "modified"));
     }
 }

@@ -31,12 +31,11 @@ public class DeadlineTask extends Task {
      */
     @Override
     public List<String> extract() {
-        return List.of(
-                super.getTypeCode(),
-                String.valueOf(super.isCompleted()),
-                super.getDescription(),
+        List<String> extracted = super.extract();
+        extracted.addAll(List.of(
                 this.date.dump()
-        );
+        ));
+        return extracted;
     }
 
     /**
