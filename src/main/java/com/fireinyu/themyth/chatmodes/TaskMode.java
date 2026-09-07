@@ -1,7 +1,6 @@
 package com.fireinyu.themyth.chatmodes;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fireinyu.themyth.Defaults;
@@ -22,6 +21,7 @@ import com.fireinyu.themyth.storage.TaskList;
 import com.fireinyu.themyth.tasks.DeadlineTask;
 import com.fireinyu.themyth.tasks.EventTask;
 import com.fireinyu.themyth.tasks.Task;
+import com.fireinyu.themyth.tasks.TaskOrder;
 import com.fireinyu.themyth.tasks.TodoTask;
 import com.fireinyu.themyth.util.MythDateTime;
 
@@ -82,8 +82,9 @@ public class TaskMode extends ChatMode {
         return listTasks(
                 "Here are the matching tasks in your list:",
                 taskList.stream()
-                        .filter(task -> task.toString().contains(request.getArg(1)))
-                        .toList()
+                        .filter(task -> task.toString().contains(request.getArg(1, String.class)))
+                        .toList(),
+                request.getArg("sort", TaskOrder.class)
         );
     }
 
@@ -92,7 +93,7 @@ public class TaskMode extends ChatMode {
      */
     @Override
     protected Response respondToTodo(TodoRequest request) {
-        return addTask(new TodoTask(request.getArg(1)));
+        return addTask(new TodoTask(request.getArg(1, String.class)));
     }
 
     /**
@@ -101,8 +102,8 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToDeadline(DeadlineRequest request) {
         return addTask(new DeadlineTask(
-                request.getArg(1),
-                MythDateTime.parse(request.getArg("by"))
+                request.getArg(1, String.class),
+                request.getArg("by", MythDateTime.class)
         ));
     }
 
@@ -112,9 +113,9 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToEvent(EventRequest request) {
         return addTask(new EventTask(
-                request.getArg(1),
-                MythDateTime.parse(request.getArg("from")),
-                MythDateTime.parse(request.getArg("to"))
+                request.getArg(1, String.class),
+                request.getArg("from", MythDateTime.class),
+                request.getArg("to", MythDateTime.class)
         ));
     }
 
@@ -123,7 +124,11 @@ public class TaskMode extends ChatMode {
      */
     @Override
     protected Response respondToList(ListRequest request) {
-        return listTasks("Here are the tasks in your list:", taskList);
+        return listTasks(
+                "Here are the tasks in your list:",
+                taskList,
+                request.getArg("sort", TaskOrder.class)
+        );
     }
 
     /**
@@ -131,11 +136,13 @@ public class TaskMode extends ChatMode {
      */
     @Override
     protected Response respondToAt(AtRequest request) {
-        MythDateTime at = MythDateTime.parse(request.getArg(1));
+        MythDateTime at = request.getArg(1, MythDateTime.class);
         return listTasks(
                 String.format("Here are the events happening on %s", at),
                 taskList.stream().filter(task -> task instanceof EventTask eventTask && eventTask.contains(at))
-                        .toList()
+                        .toList(),
+                request.getArg("sort", TaskOrder.class)
+
         );
     }
 
@@ -144,11 +151,12 @@ public class TaskMode extends ChatMode {
      */
     @Override
     protected Response respondToDue(DueRequest request) {
-        MythDateTime due = MythDateTime.parse(request.getArg(1));
+        MythDateTime due = request.getArg(1, MythDateTime.class);
         return listTasks(
                 String.format("Here are the deadlines due by %s", due),
                 taskList.stream().filter(task -> task instanceof DeadlineTask deadlineTask && deadlineTask.isDueBy(due))
-                        .toList()
+                        .toList(),
+                request.getArg("sort", TaskOrder.class)
         );
     }
 
@@ -157,7 +165,7 @@ public class TaskMode extends ChatMode {
      */
     @Override
     protected Response respondToMark(MarkRequest request) {
-        int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
+        int itemIndex = request.getArg(1, Integer.class) - 1;
         Task task = taskList.get(itemIndex);
         task.mark();
         String message = "Nice! I've marked this task as done:\n\t" + task;
@@ -169,7 +177,7 @@ public class TaskMode extends ChatMode {
      */
     @Override
     protected Response respondToUnmark(UnmarkRequest request) {
-        int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
+        int itemIndex = request.getArg(1, Integer.class) - 1;
         Task task = taskList.get(itemIndex);
         task.unmark();
         String message = "OK, I've marked this task as not done yet:\n\t" + task;
@@ -181,7 +189,7 @@ public class TaskMode extends ChatMode {
      */
     @Override
     protected Response respondToDelete(DeleteRequest request) {
-        int itemIndex = Integer.parseInt(request.getArg(1)) - 1;
+        int itemIndex = request.getArg(1, Integer.class) - 1;
         Task task = taskList.remove(itemIndex);
         String message = String.format(
                 "Noted. I've removed this task:\n\t%s\nNow you have %d tasks in the list.",
@@ -214,7 +222,8 @@ public class TaskMode extends ChatMode {
      * @param tasks The list of tasks to format.
      * @return The response containing the formatted list.
      */
-    private Response listTasks(String header, List<Task> tasks) {
+    private Response listTasks(String header, List<Task> tasks, TaskOrder order) {
+        order.apply(tasks);
         StringBuilder body = new StringBuilder(header);
         int itemNumber = 1;
         for (Task item : tasks) {

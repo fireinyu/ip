@@ -16,6 +16,7 @@ import com.fireinyu.themyth.exceptions.FileAccessException;
  * @see LinesDisk
  */
 public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList<T> {
+
     private LinesDisk storage;
     private boolean linked;
 
@@ -91,7 +92,7 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
      */
     protected abstract T parse(String... item) throws CorruptedTaskFileException;
 
-    private T parse(List<String> item) throws CorruptedTaskFileException{
+    private T parse(List<String> item) throws CorruptedTaskFileException {
         return this.parse(item.toArray(new String[0]));
     }
     /**

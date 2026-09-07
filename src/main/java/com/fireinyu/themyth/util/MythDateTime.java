@@ -15,7 +15,7 @@ import com.fireinyu.themyth.exceptions.DateFormatException;
  * @see MythDateTime
  * @see LocalDateTime
  */
-public class MythDateTime implements Comparable<MythDateTime>{
+public class MythDateTime implements Comparable<MythDateTime> {
 
     private final LocalDateTime datetime;
 
@@ -29,6 +29,11 @@ public class MythDateTime implements Comparable<MythDateTime>{
         this.datetime = datetime;
     }
 
+    /**
+     * Returns the current local date and time.
+     *
+     * @return the current date and time
+     */
     public static MythDateTime now() {
         return new MythDateTime(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
     }
@@ -96,6 +101,13 @@ public class MythDateTime implements Comparable<MythDateTime>{
         return datetime.format(DateTimeFormatter.ofPattern("LLL dd yyyy hh:mm:ss a"));
     }
 
+    /**
+     * Compares this date-time with another date-time.
+     *
+     * @param o date-time to compare with
+     * @return a negative value, zero, or a positive value if this date-time is earlier than,
+     *         equal to, or later than the other date-time
+     */
     @Override
     public int compareTo(MythDateTime o) {
         return this.datetime.compareTo(o.datetime);

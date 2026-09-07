@@ -1,6 +1,5 @@
 package com.fireinyu.themyth.tasks;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.fireinyu.themyth.util.MythDateTime;

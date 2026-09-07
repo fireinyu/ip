@@ -14,6 +14,6 @@ public class InvalidCommandException extends TweakingException {
      * @see Request
      */
     public InvalidCommandException(Request request) {
-        super(String.format("I don't know how to \"%s\"", request.getArg(0)));
+        super(String.format("I don't know how to \"%s\"", request.getArg(0, String.class)));
     }
 }

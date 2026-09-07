@@ -1,6 +1,5 @@
 package com.fireinyu.themyth.responses;
 
-
 /**
  * Response to a Request to exit the app.<br><br>
  * Exits the app after execution.

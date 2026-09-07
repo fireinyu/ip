@@ -1,8 +1,14 @@
 package com.fireinyu.themyth.requests;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
+import com.fireinyu.themyth.exceptions.WrongTypeException;
 import com.fireinyu.themyth.responses.Response;
 
 /**
@@ -12,65 +18,72 @@ import com.fireinyu.themyth.responses.Response;
  * @see com.fireinyu.themyth.chatmodes.ChatMode
  * @see Response
  */
-public class Request {
+public abstract class Request {
 
-
-    private final List<String> posargs;
-    private final Map<String, String> kwargs;
-
-    /**
-     * @param posArgs Positional arguments.
-     * @param kwargs Keyword arguments.
-     * @param numPosArgs Expected number of positional arguments.
-     * @param kwargNames Expected names of keyword arguments.
-     * @throws ArugmentMismatchException If the arguments do not match what is expected.
-     */
-    protected Request(List<String> posArgs, Map<String, String> kwargs, int numPosArgs, Set<String> kwargNames) {
-        if (posArgs.size() != numPosArgs) {
-            throw new ArugmentMismatchException(numPosArgs, posArgs.size());
-        }
-        if (!kwargNames.equals(kwargs.keySet())) {
-            throw new ArugmentMismatchException(kwargNames, kwargs.keySet());
-        }
-        this(posArgs, kwargs);
-    }
+    private final List<Object> posargs;
+    private final Map<String, Object> kwargs;
 
     /**
      * Initialise a Request with optional keyword arguments.
      * @param posArgs Positional arguments.
      * @param kwargs Provided keyword arguments (both compulsory and optional)
-     * @param numPosArgs Expected number of positional arguments.
-     * @param kwargNames Expected names of compulsory keyword arguments.
      * @param optionalKwargs default values of optional keyword arguments.
      * @throws ArugmentMismatchException If the arguments do not match what is expected.
      */
     protected Request(
             List<String> posArgs,
             Map<String, String> kwargs,
-            int numPosArgs,
-            Set<String> kwargNames,
-            Map<String, String> optionalKwargs) {
-        if (posArgs.size() != numPosArgs) {
-            throw new ArugmentMismatchException(numPosArgs, posArgs.size());
+            Map<String, Object> optionalKwargs) {
+        this.posargs = new ArrayList<>();
+        this.kwargs = new HashMap<>(optionalKwargs);
+        List<InputFieldParser<?>> posArgTypes = this.getPosArgTypes();
+        Map<String, InputFieldParser<?>> kwargTypes = this.getKwargTypes();
+        if (posArgTypes.size() != posArgs.size()) {
+            throw new ArugmentMismatchException(posArgTypes.size(), posArgs.size());
         }
-        Set<String> allKwargNames = new HashSet<>(kwargNames);
-        allKwargNames.addAll(optionalKwargs.keySet());
-        Map<String, String> allKwargVals = new HashMap<>(optionalKwargs);
-        allKwargVals.putAll(kwargs);
-
-        if (!allKwargNames.equals(allKwargVals.keySet())) {
-            throw new ArugmentMismatchException(kwargNames, kwargs.keySet());
+        Set<String> allKeywords = new HashSet<>(kwargs.keySet());
+        allKeywords.addAll(optionalKwargs.keySet());
+        if (!kwargTypes.keySet().equals(allKeywords)) {
+            throw new ArugmentMismatchException(kwargTypes.keySet(), kwargs.keySet());
         }
-        this(posArgs, allKwargVals);
+        for (int i = 0; i < posArgs.size(); i++) {
+            this.posargs.add(posArgTypes.get(i).parse(posArgs.get(i)));
+        }
+        for (String kw : kwargs.keySet()) {
+            this.kwargs.put(kw, kwargTypes.get(kw).parse(kwargs.get(kw)));
+        }
     }
 
     /**
+     * Initialises a Request with no optional keyword arguments.
+     *
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
     protected Request(List<String> posArgs, Map<String, String> kwargs) {
-        this.posargs = posArgs;
-        this.kwargs = kwargs;
+        this(posArgs, kwargs, Map.of());
+    }
+
+    /**
+     * Creates a simple request with only a command.
+     *
+     * @param command The command string.
+     * @return A new Request object.
+     */
+    public static Request of(String command) {
+        return new Request(List.of(command), Map.of()) {
+            /** {@inheritDoc} */
+            @Override
+            public List<InputFieldParser<?>> getPosArgTypes() {
+                return List.of(InputFieldParser.STRING);
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public Map<String, InputFieldParser<?>> getKwargTypes() {
+                return Map.of();
+            }
+        };
     }
 
     /**
@@ -86,11 +99,16 @@ public class Request {
     /**
      * Get the value of a positional argument
      * @param at the argument's position (0 is the command)
+     * @param type argument type
      * @return the value of the positional argument
      * @see String
      */
-    public String getArg(int at) {
-        return this.posargs.get(at);
+    public <T> T getArg(int at, Class<T> type) {
+        Object res = this.posargs.get(at);
+        if (type.isInstance(res)) {
+            return type.cast(res);
+        }
+        throw new WrongTypeException(type);
     }
 
     /**
@@ -99,8 +117,25 @@ public class Request {
      * @return the value of the keyword argument
      * @see String
      */
-    public String getArg(String key) {
-        return this.kwargs.get(key);
+    public <T> T getArg(String key, Class<T> type) {
+        Object res = this.kwargs.get(key);
+        if (type.isInstance(res)) {
+            return type.cast(res);
+        }
+        throw new WrongTypeException(type);
     }
 
+    /**
+     * Gets the expected types for positional arguments.
+     *
+     * @return A list of parsers for positional arguments.
+     */
+    public abstract List<InputFieldParser<?>> getPosArgTypes();
+
+    /**
+     * Gets the expected types for keyword arguments.
+     *
+     * @return A map of keyword to parser for keyword arguments.
+     */
+    public abstract Map<String, InputFieldParser<?>> getKwargTypes();
 }

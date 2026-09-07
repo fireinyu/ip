@@ -2,7 +2,6 @@ package com.fireinyu.themyth.requests.events;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.fireinyu.themyth.requests.Request;
 import com.fireinyu.themyth.responses.Response;
@@ -16,7 +15,7 @@ import com.fireinyu.themyth.responses.Response;
 public abstract class InterruptEvent extends Request {
 
     protected InterruptEvent(String[] params) {
-        super(InterruptEvent.getArgs(params), Map.of(), params.length + 1, Set.of());
+        super(InterruptEvent.getArgs(params), Map.of());
     }
 
     private static List<String> getArgs(String[] params) {

@@ -31,6 +31,12 @@ public class MainWindow extends AnchorPane {
     private Image theMythImage = new Image(this.getClass().getResourceAsStream("/images/DaMyth.png"));
 
     /**
+     * Constructs a new {@code MainWindow}.
+     * This constructor is called by the FXML loader to instantiate the controller.
+     */
+    public MainWindow() {
+    }
+    /**
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
      */
