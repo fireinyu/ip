@@ -1,8 +1,6 @@
 package com.fireinyu.themyth.requests;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
 import com.fireinyu.themyth.responses.Response;
@@ -35,6 +33,35 @@ public class Request {
             throw new ArugmentMismatchException(kwargNames, kwargs.keySet());
         }
         this(posArgs, kwargs);
+    }
+
+    /**
+     * Initialise a Request with optional keyword arguments.
+     * @param posArgs Positional arguments.
+     * @param kwargs Provided keyword arguments (both compulsory and optional)
+     * @param numPosArgs Expected number of positional arguments.
+     * @param kwargNames Expected names of compulsory keyword arguments.
+     * @param optionalKwargs default values of optional keyword arguments.
+     * @throws ArugmentMismatchException If the arguments do not match what is expected.
+     */
+    protected Request(
+            List<String> posArgs,
+            Map<String, String> kwargs,
+            int numPosArgs,
+            Set<String> kwargNames,
+            Map<String, String> optionalKwargs) {
+        if (posArgs.size() != numPosArgs) {
+            throw new ArugmentMismatchException(numPosArgs, posArgs.size());
+        }
+        Set<String> allKwargNames = new HashSet<>(kwargNames);
+        allKwargNames.addAll(optionalKwargs.keySet());
+        Map<String, String> allKwargVals = new HashMap<>(optionalKwargs);
+        allKwargVals.putAll(kwargs);
+
+        if (!allKwargNames.equals(allKwargVals.keySet())) {
+            throw new ArugmentMismatchException(kwargNames, kwargs.keySet());
+        }
+        this(posArgs, allKwargVals);
     }
 
     /**

@@ -17,6 +17,6 @@ public class TodoRequest extends Request {
      * @param kwargs Keyword arguments.
      */
     protected TodoRequest(List<String> posArgs, Map<String, String> kwargs) {
-        super(posArgs, kwargs, 2, Set.of());
+        super(posArgs, kwargs, 2, Set.of(), Map.of("priority", "1"));
     }
 }
