@@ -8,6 +8,8 @@ import com.fireinyu.themyth.tasks.Task;
 import com.fireinyu.themyth.tasks.TodoTask;
 import com.fireinyu.themyth.util.MythDateTime;
 
+import java.util.Arrays;
+
 /**
  * List of Tasks that can be synced with a CSV file on disk.
  * @see Task

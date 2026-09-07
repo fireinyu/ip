@@ -2,6 +2,9 @@ package com.fireinyu.themyth.storage;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 import com.fireinyu.themyth.exceptions.FileAccessException;
@@ -59,7 +62,12 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
         this.storage.writeLines(
                 this.stream()
                     .map(CsvSerializable::extract)
-                    .map(row -> String.join(",", row))
+                    .map(List::stream)
+                    .map(stream -> stream.map(field -> field.replace("\"", "\"\"")))
+                    .map(stream -> stream.map(field -> field.replace("\n", "\"\n\"")))
+                    .map(stream -> stream.map(field -> field.replace(",", "\",\"")))
+                    .map(Stream::toList)
+                    .map(row -> String.join(", ", row))
         );
         this.linked = false;
     }
@@ -83,6 +91,9 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
      */
     protected abstract T parse(String... item) throws CorruptedTaskFileException;
 
+    private T parse(List<String> item) throws CorruptedTaskFileException{
+        return this.parse(item.toArray(new String[0]));
+    }
     /**
      * Fetches data from the backing file.
      * It clears the current list and repopulates it with data from the file.
@@ -95,7 +106,12 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
         this.clear();
         this.linked = false;
         super.addAll(this.storage.readLines()
-                .map(line -> line.split(","))
+                .map(line -> line.split(", "))
+                .map(Arrays::stream)
+                .map(stream -> stream.map(field -> field.replace("\",\"", ",")))
+                .map(stream -> stream.map(field -> field.replace("\"\n\"", "\n")))
+                .map(stream -> stream.map(field -> field.replace("\"\"", "\"")))
+                .map(Stream::toList)
                 .map(this::parse)
                 .toList()
         );
