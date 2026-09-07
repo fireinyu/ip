@@ -1,8 +1,11 @@
 package com.fireinyu.themyth.requests.events;
 
+import java.util.List;
+import java.util.Map;
+
+import com.fireinyu.themyth.requests.InputFieldParser;
 import com.fireinyu.themyth.requests.Request;
 import com.fireinyu.themyth.responses.Response;
-
 /**
  * InterruptEvent posted immediately before the app terminates.<br><br>
  * @see Request
@@ -15,5 +18,16 @@ public class CloseRequest extends InterruptEvent {
      */
     public CloseRequest() {
         super(new String[]{});
+    }
+    /** {@inheritDoc} */
+    @Override
+    public List<InputFieldParser<?>> getPosArgTypes() {
+        return List.of(InputFieldParser.STRING);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, InputFieldParser<?>> getKwargTypes() {
+        return Map.of();
     }
 }

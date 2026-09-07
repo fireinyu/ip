@@ -1,10 +1,10 @@
 package com.fireinyu.themyth.tasks;
 
-import com.fireinyu.themyth.storage.CsvSerializable;
-import com.fireinyu.themyth.util.MythDateTime;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fireinyu.themyth.storage.CsvSerializable;
+import com.fireinyu.themyth.util.MythDateTime;
 
 /**
  * Task created by the user. Tasks can be marked or unmarked as completed.
@@ -29,6 +29,12 @@ public abstract class Task implements CsvSerializable {
         this.typeCode = typeCode;
     }
 
+    /**
+     * Sets the creation and last-modified timestamps.
+     *
+     * @param created creation timestamp
+     * @param lastModified last-modified timestamp
+     */
     public void setAccessTimes(MythDateTime created, MythDateTime lastModified) {
         this.created = created;
         this.lastModified = lastModified;
@@ -84,10 +90,20 @@ public abstract class Task implements CsvSerializable {
         completed = false;
     }
 
+    /**
+     * Returns the last-modified timestamp.
+     *
+     * @return last-modified timestamp
+     */
     public MythDateTime getLastModified() {
         return lastModified;
     }
 
+    /**
+     * Returns the creation timestamp.
+     *
+     * @return creation timestamp
+     */
     public MythDateTime getCreated() {
         return created;
     }
@@ -109,6 +125,6 @@ public abstract class Task implements CsvSerializable {
      */
     @Override
     public String toString() {
-        return String.format("[%s][%s] %s", typeCode, completed ? "X" : " ", description) + this.lastModified.toString();
+        return String.format("[%s][%s] %s", typeCode, completed ? "X" : " ", description);
     }
 }

@@ -45,7 +45,7 @@ public class RequestParser {
             case "event" -> new EventRequest(posArgs, kwargs);
             case "delete" -> new DeleteRequest(posArgs, kwargs);
             case "find" -> new FindRequest(posArgs, kwargs);
-            default -> new Request(posArgs, kwargs);
+            default -> Request.of(command);
         };
     }
 
@@ -68,5 +68,4 @@ public class RequestParser {
     private boolean isKeyword(String arg) {
         return arg.startsWith("/");
     }
-
 }

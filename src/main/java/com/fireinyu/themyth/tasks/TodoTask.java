@@ -1,7 +1,5 @@
 package com.fireinyu.themyth.tasks;
 
-import java.util.List;
-
 /**
  * Todo Task created by the user. Tasks can be marked or unmarked as completed.
  */
