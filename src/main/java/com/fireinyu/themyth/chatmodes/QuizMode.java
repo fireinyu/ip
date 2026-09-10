@@ -14,11 +14,21 @@ import com.fireinyu.themyth.tasks.Task;
 
 import java.util.Random;
 
-public class QuizMode extends TaskMode{
+/**
+ * Request-Response model that provides interactive trivia quiz capabilities in addition to task management.
+ * Loads a collection of quiz questions, maintains an active quiz question, and allows the user to answer questions.
+ * @see TaskMode
+ * @see Quiz
+ * @see QuizTask
+ */
+public class QuizMode extends TaskMode {
     private final QuizTask quizTask = new QuizTask();
     private final QuizList quizzes = new QuizList();
     private Quiz activeQuiz;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Response respondToInit(InitRequest request) {
         Response response = super.respondToInit(request);

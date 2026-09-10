@@ -17,6 +17,7 @@ import com.fireinyu.themyth.util.MythDateTime;
 public class Defaults {
     /** Default path to the task file. */
     public static final String TASKFILE = "resources/tasks.csv";
+    /** Default path to the quiz questions file. */
     public static final String QUIZFILE = "data/questions.csv";
     /** Maximum line width used by the command-line interface. */
     public static final int LINEWIDTH = 100;

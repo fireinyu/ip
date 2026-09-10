@@ -12,8 +12,14 @@ import org.junit.jupiter.api.Test;
 import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
 
 
+/**
+ * Unit tests for {@link Request} argument validation and retrieval mechanisms.
+ */
 public class RequestTest {
 
+    /**
+     * Tests that supplying an invalid number of positional arguments throws an {@link ArugmentMismatchException}.
+     */
     @Test
     public void constructor_wrongPosArgs() {
         assertThrows(ArugmentMismatchException.class, () -> new Request(
@@ -31,6 +37,9 @@ public class RequestTest {
         ));
     }
 
+    /**
+     * Tests that supplying invalid keyword arguments throws an {@link ArugmentMismatchException}.
+     */
     @Test
     public void constructor_wrongKwArgs() {
         assertThrows(ArugmentMismatchException.class, () -> new Request(
@@ -48,6 +57,9 @@ public class RequestTest {
         ));
     }
 
+    /**
+     * Tests that constructing a Request with valid arguments completes without errors.
+     */
     @Test
     public void constructor_correctArgs() {
         Request req = new Request(
@@ -58,6 +70,9 @@ public class RequestTest {
         );
     }
 
+    /**
+     * Tests that positional arguments can be retrieved correctly by index.
+     */
     @Test
     public void getArg_posArg() {
         Request req = new Request(
@@ -70,6 +85,9 @@ public class RequestTest {
         assertEquals("c", req.getArg(2));
     }
 
+    /**
+     * Tests that keyword arguments can be retrieved correctly by keyword name.
+     */
     @Test
     public void getArg_kwArg() {
         Request req = new Request(
