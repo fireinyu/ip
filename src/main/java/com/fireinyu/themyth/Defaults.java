@@ -3,7 +3,7 @@ package com.fireinyu.themyth;
 import java.time.LocalDateTime;
 
 import com.fireinyu.themyth.chatmodes.ChatMode;
-import com.fireinyu.themyth.chatmodes.TaskMode;
+import com.fireinyu.themyth.chatmodes.QuizMode;
 import com.fireinyu.themyth.tasks.TaskOrder;
 import com.fireinyu.themyth.util.MythDateTime;
 
@@ -17,10 +17,11 @@ import com.fireinyu.themyth.util.MythDateTime;
 public class Defaults {
     /** Default path to the task file. */
     public static final String TASKFILE = "resources/tasks.csv";
+    public static final String QUIZFILE = "data/questions.csv";
     /** Maximum line width used by the command-line interface. */
     public static final int LINEWIDTH = 100;
     /** Chat mode used when the application starts. */
-    public static final ChatMode STARTMODE = new TaskMode();
+    public static final ChatMode STARTMODE = new QuizMode();
     /** Prompt displayed for user input. */
     public static final String USERPROMPT = ">>> ";
     /** Prompt used for normal responses. */

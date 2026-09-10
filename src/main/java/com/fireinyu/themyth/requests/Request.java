@@ -20,8 +20,19 @@ import com.fireinyu.themyth.responses.Response;
  */
 public abstract class Request {
 
-    private final List<Object> posargs;
-    private final Map<String, Object> kwargs;
+    private final List<String> posArgs;
+    private final Map<String, String> kwargs;
+    private final List<Object> posArgObjects;
+    private final Map<String, Object> kwargObjects;
+
+    /**
+     * Initialise a Request from the arguments of another Request.
+     * @param request request to copy arguments from.
+     * @throws ArugmentMismatchException If the arguments do not match what is expected.
+     */
+    public Request(Request request) {
+        this(request.posArgs, request.kwargs);
+    }
 
     /**
      * Initialise a Request with optional keyword arguments.
@@ -34,8 +45,10 @@ public abstract class Request {
             List<String> posArgs,
             Map<String, String> kwargs,
             Map<String, Object> optionalKwargs) {
-        this.posargs = new ArrayList<>();
-        this.kwargs = new HashMap<>(optionalKwargs);
+        this.posArgs = posArgs;
+        this.kwargs = kwargs;
+        this.posArgObjects = new ArrayList<>();
+        this.kwargObjects = new HashMap<>(optionalKwargs);
         List<InputFieldParser<?>> posArgTypes = this.getPosArgTypes();
         Map<String, InputFieldParser<?>> kwargTypes = this.getKwargTypes();
         if (posArgTypes.size() != posArgs.size()) {
@@ -47,10 +60,10 @@ public abstract class Request {
             throw new ArugmentMismatchException(kwargTypes.keySet(), kwargs.keySet());
         }
         for (int i = 0; i < posArgs.size(); i++) {
-            this.posargs.add(posArgTypes.get(i).parse(posArgs.get(i)));
+            this.posArgObjects.add(posArgTypes.get(i).parse(posArgs.get(i)));
         }
         for (String kw : kwargs.keySet()) {
-            this.kwargs.put(kw, kwargTypes.get(kw).parse(kwargs.get(kw)));
+            this.kwargObjects.put(kw, kwargTypes.get(kw).parse(kwargs.get(kw)));
         }
     }
 
@@ -104,7 +117,7 @@ public abstract class Request {
      * @see String
      */
     public <T> T getArg(int at, Class<T> type) {
-        Object res = this.posargs.get(at);
+        Object res = this.posArgObjects.get(at);
         if (type.isInstance(res)) {
             return type.cast(res);
         }
@@ -118,7 +131,7 @@ public abstract class Request {
      * @see String
      */
     public <T> T getArg(String key, Class<T> type) {
-        Object res = this.kwargs.get(key);
+        Object res = this.kwargObjects.get(key);
         if (type.isInstance(res)) {
             return type.cast(res);
         }

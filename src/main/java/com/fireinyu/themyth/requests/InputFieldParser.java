@@ -50,7 +50,6 @@ public abstract class InputFieldParser<T> {
         try {
             return tryParse(field);
         } catch (RuntimeException e) {
-            e.printStackTrace();
             throw new ArgumentFormatException("unknown type", field, "unknown format");
         }
     }

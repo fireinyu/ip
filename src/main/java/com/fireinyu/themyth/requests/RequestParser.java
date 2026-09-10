@@ -45,6 +45,8 @@ public class RequestParser {
             case "event" -> new EventRequest(posArgs, kwargs);
             case "delete" -> new DeleteRequest(posArgs, kwargs);
             case "find" -> new FindRequest(posArgs, kwargs);
+            case "quiz" -> new QuizRequest(posArgs, kwargs);
+            case "answer" -> new AnswerRequest(posArgs, kwargs);
             default -> Request.of(command);
         };
     }

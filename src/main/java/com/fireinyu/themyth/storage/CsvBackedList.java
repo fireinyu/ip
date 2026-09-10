@@ -1,6 +1,9 @@
 package com.fireinyu.themyth.storage;
 
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +50,26 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
         this.storage = new LinesDisk(path);
         this.linked = true;
         this.fetch();
+    }
+
+    /**
+     * Creates a LinesDisk instance to back this CsvBackedList<br><br>
+     * Automatically pulls the LineDisk content into this CsvBackedList if opened successfully<br>
+     * File content is deserialized into T instances<br>
+     * Warning: Previous data in this CsvBackedList will be replaced. <br>
+     * @param resourceName name of CSV resource file for the LinesDisk instance
+     * @throws FileAccessException if the file cannot be created or opened for reading
+     * @throws CorruptedTaskFileException if the file content is corrupted and cannot be deserialized
+     * @see Path
+     * @see LinesDisk
+     * @see CsvSerializable
+     */
+    public void open(String resourceName) {
+        try {
+            this.open(Paths.get(CsvBackedList.class.getClassLoader().getResource(resourceName).toURI()));
+        } catch (URISyntaxException e) {
+            throw new FileAccessException(resourceName);
+        }
     }
 
     /**

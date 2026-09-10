@@ -166,7 +166,11 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToMark(MarkRequest request) {
         int itemIndex = request.getArg(1, Integer.class) - 1;
-        Task task = taskList.get(itemIndex);
+        return this.mark(itemIndex);
+    }
+
+    Response mark(int index) {
+        Task task = taskList.get(index);
         task.mark();
         String message = "Nice! I've marked this task as done:\n\t" + task;
         return new Response(message);
@@ -178,6 +182,14 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToUnmark(UnmarkRequest request) {
         int itemIndex = request.getArg(1, Integer.class) - 1;
+        return respondToUnmark(itemIndex);
+    }
+
+    TaskList getTaskList() {
+        return taskList;
+    }
+
+    Response respondToUnmark(int itemIndex) {
         Task task = taskList.get(itemIndex);
         task.unmark();
         String message = "OK, I've marked this task as not done yet:\n\t" + task;
@@ -222,7 +234,7 @@ public class TaskMode extends ChatMode {
      * @param tasks The list of tasks to format.
      * @return The response containing the formatted list.
      */
-    private Response listTasks(String header, List<Task> tasks, TaskOrder order) {
+    Response listTasks(String header, List<Task> tasks, TaskOrder order) {
         order.apply(tasks);
         StringBuilder body = new StringBuilder(header);
         int itemNumber = 1;
