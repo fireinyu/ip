@@ -102,6 +102,9 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
      * @see LinesDisk
      */
     public Path getPath() {
+        if (this.storage == null) {
+            return null;
+        }
         return this.storage.getPath();
     }
 

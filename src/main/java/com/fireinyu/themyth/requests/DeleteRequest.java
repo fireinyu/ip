@@ -22,13 +22,13 @@ public class DeleteRequest extends Request {
     /** {@inheritDoc} */
     @Override
     public List<InputFieldParser<?>> getPosArgTypes() {
-        return List.of(InputFieldParser.STRING, InputFieldParser.STRING);
+        return List.of(InputFieldParser.STRING, InputFieldParser.INT);
     }
 
     /** {@inheritDoc} */
     @Override
     public Map<String, InputFieldParser<?>> getKwargTypes() {
-        return Map.of("by", InputFieldParser.DATETIME);
+        return Map.of();
     }
 
 }

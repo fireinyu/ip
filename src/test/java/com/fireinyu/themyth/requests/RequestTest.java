@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
+import com.fireinyu.themyth.exceptions.WrongTypeException;
 
 /**
  * Unit tests for {@link Request} argument validation and retrieval mechanisms.
@@ -97,5 +98,48 @@ public class RequestTest {
                 Map.of("kw1", "val1", "kw2", "val2")
         );
         assertEquals("val1", req.getArg("kw1", String.class));
+    }
+
+    private static class OptionalKwargRequest extends Request {
+        OptionalKwargRequest(List<String> posArgs, Map<String, String> kwargs) {
+            super(posArgs, kwargs, Map.of("opt", "defaultVal"));
+        }
+
+        @Override
+        public List<InputFieldParser<?>> getPosArgTypes() {
+            return List.of(InputFieldParser.STRING);
+        }
+
+        @Override
+        public Map<String, InputFieldParser<?>> getKwargTypes() {
+            return Map.of("opt", InputFieldParser.STRING);
+        }
+    }
+
+    /**
+     * Tests that requests with default keyword arguments apply default values when omitted.
+     */
+    @Test
+    public void constructor_defaultKwargs_appliesDefault() {
+        Request req = new OptionalKwargRequest(List.of("cmd"), Map.of());
+        assertEquals("defaultVal", req.getArg("opt", String.class));
+    }
+
+    /**
+     * Tests that Request.of constructs a simple single-token request.
+     */
+    @Test
+    public void requestOf_constructsSingleArgRequest() {
+        Request req = Request.of("hello");
+        assertEquals("hello", req.getArg(0, String.class));
+    }
+
+    /**
+     * Tests that retrieving an argument with the wrong requested type throws a {@link WrongTypeException}.
+     */
+    @Test
+    public void getArg_wrongType_throwsWrongTypeException() {
+        Request req = Request.of("hello");
+        assertThrows(WrongTypeException.class, () -> req.getArg(0, Integer.class));
     }
 }

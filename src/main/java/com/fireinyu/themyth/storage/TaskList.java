@@ -42,7 +42,8 @@ public class TaskList extends CsvBackedList<Task> {
                     break;
                 }
                 default: {
-                    throw new CorruptedTaskFileException(super.getPath().toString());
+                    String path = super.getPath() != null ? super.getPath().toString() : "in-memory";
+                    throw new CorruptedTaskFileException(path);
                 }
             }
             if (Boolean.parseBoolean(item[1])) {
@@ -53,7 +54,8 @@ public class TaskList extends CsvBackedList<Task> {
             task.setAccessTimes(MythDateTime.parse(item[2]), MythDateTime.parse(item[3]));
             return task;
         } catch (IndexOutOfBoundsException | ArgumentFormatException e) {
-            throw new CorruptedTaskFileException(super.getPath().toString());
+            String path = super.getPath() != null ? super.getPath().toString() : "in-memory";
+            throw new CorruptedTaskFileException(path);
         }
     }
 }
