@@ -1,11 +1,11 @@
 package com.fireinyu.themyth.storage;
 
-import com.fireinyu.themyth.Quiz;
-import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Random;
+
+import com.fireinyu.themyth.Quiz;
+import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 
 /**
  * List of {@link Quiz} questions that can be loaded from and synced with a CSV file on disk or in resources.

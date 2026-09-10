@@ -1,9 +1,9 @@
 package com.fireinyu.themyth;
 
-import com.fireinyu.themyth.storage.CsvSerializable;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fireinyu.themyth.storage.CsvSerializable;
 
 /**
  * Represents a multiple-choice quiz question with answer options and an answer index.
@@ -75,7 +75,7 @@ public class Quiz implements CsvSerializable {
         body.append(this.question);
         for (int i = 0; i < this.choices.size(); i++) {
             body.append(
-                    String.format("\n   %d: %s",i, this.choices.get(i))
+                    String.format("\n   %d: %s", i, this.choices.get(i))
             );
         }
         return body.toString();

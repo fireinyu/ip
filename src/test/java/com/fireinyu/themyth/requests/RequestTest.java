@@ -5,35 +5,45 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
 import com.fireinyu.themyth.exceptions.ArugmentMismatchException;
-
 
 /**
  * Unit tests for {@link Request} argument validation and retrieval mechanisms.
  */
 public class RequestTest {
 
+    private static class DummyRequest extends Request {
+        DummyRequest(List<String> posArgs, Map<String, String> kwargs) {
+            super(posArgs, kwargs);
+        }
+
+        @Override
+        public List<InputFieldParser<?>> getPosArgTypes() {
+            return List.of(InputFieldParser.STRING, InputFieldParser.STRING, InputFieldParser.STRING);
+        }
+
+        @Override
+        public Map<String, InputFieldParser<?>> getKwargTypes() {
+            return Map.of("kw1", InputFieldParser.STRING, "kw2", InputFieldParser.STRING);
+        }
+    }
+
     /**
      * Tests that supplying an invalid number of positional arguments throws an {@link ArugmentMismatchException}.
      */
     @Test
     public void constructor_wrongPosArgs() {
-        assertThrows(ArugmentMismatchException.class, () -> new Request(
+        assertThrows(ArugmentMismatchException.class, () -> new DummyRequest(
                 List.of("a"),
-                Map.of(),
-                5,
-                Set.of()
+                Map.of("kw1", "val1", "kw2", "val2")
         ));
 
-        assertThrows(ArugmentMismatchException.class, () -> new Request(
-                    List.of("a", "b", "c"),
-                    Map.of(),
-                    2,
-                    Set.of()
+        assertThrows(ArugmentMismatchException.class, () -> new DummyRequest(
+                List.of("a", "b", "c", "d"),
+                Map.of("kw1", "val1", "kw2", "val2")
         ));
     }
 
@@ -42,18 +52,14 @@ public class RequestTest {
      */
     @Test
     public void constructor_wrongKwArgs() {
-        assertThrows(ArugmentMismatchException.class, () -> new Request(
-                    List.of("a"),
-                    Map.of(),
-                    1,
-                    Set.of("kw2")
+        assertThrows(ArugmentMismatchException.class, () -> new DummyRequest(
+                List.of("a", "b", "c"),
+                Map.of("kw1", "val1")
         ));
 
-        assertThrows(ArugmentMismatchException.class, () -> new Request(
-                    List.of("a"),
-                    Map.of("kw1", "val1"),
-                    1,
-                    Set.of("kw2")
+        assertThrows(ArugmentMismatchException.class, () -> new DummyRequest(
+                List.of("a", "b", "c"),
+                Map.of("kw1", "val1", "wrongKw", "val2")
         ));
     }
 
@@ -62,11 +68,9 @@ public class RequestTest {
      */
     @Test
     public void constructor_correctArgs() {
-        Request req = new Request(
+        new DummyRequest(
                 List.of("a", "b", "c"),
-                Map.of("kw1", "val1", "kw2", "val2"),
-                3,
-                Set.of("kw1", "kw2")
+                Map.of("kw1", "val1", "kw2", "val2")
         );
     }
 
@@ -75,14 +79,12 @@ public class RequestTest {
      */
     @Test
     public void getArg_posArg() {
-        Request req = new Request(
+        Request req = new DummyRequest(
                 List.of("a", "b", "c"),
-                Map.of("kw1", "val1", "kw2", "val2"),
-                3,
-                Set.of("kw1", "kw2")
+                Map.of("kw1", "val1", "kw2", "val2")
         );
-        assertEquals("b", req.getArg(1));
-        assertEquals("c", req.getArg(2));
+        assertEquals("b", req.getArg(1, String.class));
+        assertEquals("c", req.getArg(2, String.class));
     }
 
     /**
@@ -90,12 +92,10 @@ public class RequestTest {
      */
     @Test
     public void getArg_kwArg() {
-        Request req = new Request(
+        Request req = new DummyRequest(
                 List.of("a", "b", "c"),
-                Map.of("kw1", "val1", "kw2", "val2"),
-                3,
-                Set.of("kw1", "kw2")
+                Map.of("kw1", "val1", "kw2", "val2")
         );
-        assertEquals("val1", req.getArg("kw1"));
+        assertEquals("val1", req.getArg("kw1", String.class));
     }
 }

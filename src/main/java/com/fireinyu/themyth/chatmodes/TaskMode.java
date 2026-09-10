@@ -185,15 +185,15 @@ public class TaskMode extends ChatMode {
         return respondToUnmark(itemIndex);
     }
 
-    TaskList getTaskList() {
-        return taskList;
-    }
-
     Response respondToUnmark(int itemIndex) {
         Task task = taskList.get(itemIndex);
         task.unmark();
         String message = "OK, I've marked this task as not done yet:\n\t" + task;
         return new Response(message);
+    }
+
+    TaskList getTaskList() {
+        return taskList;
     }
 
     /**

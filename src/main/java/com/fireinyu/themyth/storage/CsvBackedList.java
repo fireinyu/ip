@@ -1,6 +1,5 @@
 package com.fireinyu.themyth.storage;
 
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

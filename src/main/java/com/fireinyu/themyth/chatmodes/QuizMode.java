@@ -1,18 +1,18 @@
 package com.fireinyu.themyth.chatmodes;
 
+import java.util.Random;
+
 import com.fireinyu.themyth.Defaults;
 import com.fireinyu.themyth.Quiz;
 import com.fireinyu.themyth.requests.AnswerRequest;
-import com.fireinyu.themyth.requests.QuizRequest;
 import com.fireinyu.themyth.requests.MarkRequest;
+import com.fireinyu.themyth.requests.QuizRequest;
 import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.Response;
 import com.fireinyu.themyth.storage.QuizList;
 import com.fireinyu.themyth.tasks.QuizTask;
 import com.fireinyu.themyth.tasks.Task;
-
-import java.util.Random;
 
 /**
  * Request-Response model that provides interactive trivia quiz capabilities in addition to task management.
@@ -33,7 +33,7 @@ public class QuizMode extends TaskMode {
     protected Response respondToInit(InitRequest request) {
         Response response = super.respondToInit(request);
         this.quizzes.open(Defaults.QUIZFILE);
-        this.activeQuiz = this.quizzes.get(new Random().nextInt(0,this.quizzes.size()));
+        this.activeQuiz = this.quizzes.get(new Random().nextInt(0, this.quizzes.size()));
         this.getTaskList().add(this.quizTask);
         return response;
     }
@@ -43,7 +43,7 @@ public class QuizMode extends TaskMode {
      */
     @Override
     protected Response respondToMark(MarkRequest request) {
-        int itemIndex = request.getArg(1, Integer.class)-1;
+        int itemIndex = request.getArg(1, Integer.class) - 1;
         Task task = super.getTaskList().get(itemIndex);
         if (task instanceof QuizTask) {
             return this.takeQuiz();
