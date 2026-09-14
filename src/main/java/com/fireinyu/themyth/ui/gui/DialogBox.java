@@ -58,18 +58,38 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Creates a dialog box for the user.
+     * Returns the text flow node containing the dialog message.
+     *
+     * @return the text flow node
+     */
+    TextFlow getDialog() {
+        return dialog;
+    }
+
+    /**
+     * Returns the image view displaying the speaker's avatar.
+     *
+     * @return the avatar image view
+     */
+    ImageView getDisplayPicture() {
+        return displayPicture;
+    }
+
+    /**
+     * Creates a dialog box for the user with sparkle animation.
      *
      * @param text The text from the user.
      * @param img The user's image.
      * @return A new DialogBox for the user.
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(FlamboyantTextFormatter.formatPlain(text), img);
+        var db = new DialogBox(FlamboyantTextFormatter.formatPlain(text), img);
+        SparkleAnimator.play(db, false);
+        return db;
     }
 
     /**
-     * Creates a dialog box for TheMyth with flamboyant rich text styling.
+     * Creates a dialog box for TheMyth with flamboyant rich text styling and sparkle animation.
      * This dialog box is flipped.
      *
      * @param text The text from TheMyth.
@@ -79,6 +99,7 @@ public class DialogBox extends HBox {
     public static DialogBox getTheMythDialog(String text, Image img) {
         var db = new DialogBox(FlamboyantTextFormatter.format(text), img);
         db.flip();
+        SparkleAnimator.play(db, true);
         return db;
     }
 }
