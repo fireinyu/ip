@@ -48,7 +48,8 @@ public class ExceptionTest {
     public void fileAccessException_formatsMessage() {
         FileAccessException ex = new FileAccessException("data/test.csv");
         assertEquals("Honey, I am clutching my pearls because "
-                + "Ugh, I can't even get into \"data/test.csv\" right now! Going strictly into memory-only diva mode! 💅",
+                + "Ugh, I can't even get into \"data/test.csv\" right now! "
+                + "Going strictly into memory-only diva mode! 💅",
                 ex.getMessage());
     }
 
