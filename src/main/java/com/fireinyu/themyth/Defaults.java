@@ -26,11 +26,12 @@ public class Defaults {
     /** Prompt displayed for user input. */
     public static final String USERPROMPT = ">>> ";
     /** Prompt used for normal responses. */
-    public static final String BOTPROMPT = "The Myth says: ";
+    public static final String BOTPROMPT = "The Myth declares, honey 💅✨: ";
     /** Prompt used for recoverable errors. */
-    public static final String TWEAKPROMPT = "The Myth tweaks: ";
+    public static final String TWEAKPROMPT = "The Myth is clutching pearls 🙄💅: ";
     /** Prompt used for fatal errors. */
-    public static final String DEATHPROMPT = "The Myth dies from a fatal exception! The tombstone says: ";
+    public static final String DEATHPROMPT =
+            "The Myth dramatically faints into the abyss! The rhinestone tombstone reads 🪦✨: ";
     /** Format used to serialize date-time values. */
     public static final String DATE_INPUTFORMAT = "yyyy-MM-dd-HH-mm-ss";
     /** Default ordering applied to tasks. */

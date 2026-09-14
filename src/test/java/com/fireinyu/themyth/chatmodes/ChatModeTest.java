@@ -44,7 +44,7 @@ public class ChatModeTest {
     @Test
     public void respondTo_initRequest_returnsNoHandlerResponse() {
         Response response = mode.respondTo(new InitRequest());
-        assertEquals("no init handler", response.getBody());
+        assertEquals("Darling, I have arrived, but where is my dramatic entrance music?! ✨", response.getBody());
     }
 
     /**
@@ -53,7 +53,7 @@ public class ChatModeTest {
     @Test
     public void respondTo_closeRequest_returnsNoHandlerResponse() {
         Response response = mode.respondTo(new CloseRequest());
-        assertEquals("no close handler", response.getBody());
+        assertEquals("Curtain down, beauties! But someone forgot my grand finale encore! 💅", response.getBody());
     }
 
     /**
@@ -63,7 +63,7 @@ public class ChatModeTest {
     public void respondTo_exitRequest_returnsExitResponse() {
         Response response = mode.respondTo(new ExitRequest(List.of("bye"), Map.of()));
         assertTrue(response.doExit());
-        assertEquals("Bye. Hope to see you again soon!", response.getBody());
+        assertEquals("Ciao, gorgeous! Try not to weep without my sparkle in your life~ 💋✨", response.getBody());
     }
 
     /**

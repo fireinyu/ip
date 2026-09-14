@@ -42,8 +42,8 @@ public class Cli {
         System.out.println(banner);
         this.model.start();
         this.say("""
-                Hello! I'm The Myth.
-                What can I do for you?
+                Haaaay superstar! The Myth has entered the room! ✨
+                What fabulous wonders are we creating today, honey? 💅
                 """);
         while (true) {
             String input = this.scanner.nextLine();

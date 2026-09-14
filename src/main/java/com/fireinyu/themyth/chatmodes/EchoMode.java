@@ -11,7 +11,9 @@ import com.fireinyu.themyth.responses.Response;
 public class EchoMode extends ChatMode {
     @Override
     protected Response respondToRemaining(Request request) {
-        return new Response("Can you tell me more about " + request.getArg(0, String.class) + '?');
+        return new Response(String.format(
+                "Oh honey, did you really just say \"%s\"? Spill every last drop of tea right now! ☕✨",
+                request.getArg(0, String.class)));
     }
 }
 

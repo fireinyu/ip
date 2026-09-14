@@ -12,6 +12,6 @@ public abstract class TweakingException extends RuntimeException {
      * @see String
      */
     public TweakingException(String message) {
-        super("I'm tweaking because " + message);
+        super("Honey, I am clutching my pearls because " + message);
     }
 }

@@ -14,7 +14,9 @@ public class ArugmentMismatchException extends TweakingException {
      * @see com.fireinyu.themyth.requests.Request
      */
     public ArugmentMismatchException(int expectedPosCount, int givenPosCount) {
-        super(String.format("%d positional arguments expected but %d given", expectedPosCount, givenPosCount));
+        super(String.format(
+                "Excuse me? I asked for %d juicy arguments and you dared hand me %d? The audacity! 🙄",
+                expectedPosCount, givenPosCount));
     }
 
     /**
@@ -24,7 +26,8 @@ public class ArugmentMismatchException extends TweakingException {
      * @see com.fireinyu.themyth.requests.Request
      */
     public ArugmentMismatchException(Collection<String> expectedKwargs, Collection<String> givenKwargs) {
-        super(String.format("expected keyword arguments: {%s}, given keyword arguments: {%s}",
+        super(String.format(
+                "Sweetie, I ordered {%s}, but you handed me {%s}? That is NOT what was on the menu! 💅",
                 String.join(", ", expectedKwargs),
                 String.join(", ", givenKwargs)
         ));

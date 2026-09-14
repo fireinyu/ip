@@ -33,7 +33,9 @@ public class TheMythTest {
         myth.start();
 
         Response response = myth.handleInput("dragons");
-        assertEquals("Can you tell me more about dragons?", response.getBody());
+        assertEquals(
+                "Oh honey, did you really just say \"dragons\"? Spill every last drop of tea right now! ☕✨",
+                response.getBody());
 
         Response exitResponse = myth.handleInput("bye");
         assertTrue(exitResponse.doExit());
@@ -48,7 +50,9 @@ public class TheMythTest {
         Response response = myth.handleInput("unsupported_command");
 
         assertInstanceOf(ExceptionResponse.class, response);
-        assertTrue(response.getBody().contains("I'm tweaking because I don't know how to \"unsupported_command\""));
+        assertTrue(response.getBody().contains(
+                "Honey, I am clutching my pearls because Sweetheart, \"unsupported_command\"? "
+                + "That is NOT in my fabulous repertoire! Try harder, babe! 💅"));
     }
 
     /**
@@ -67,7 +71,8 @@ public class TheMythTest {
         Response response = myth.handleInput("boom");
 
         assertInstanceOf(FatalResponse.class, response);
-        assertTrue(response.getBody().contains("cause of death: disk exploded"));
+        assertTrue(response.getBody().contains(
+                "DRAMA! The Myth has perished in absolute agony! Cause of this catastrophic demise: disk exploded"));
     }
 
     /**

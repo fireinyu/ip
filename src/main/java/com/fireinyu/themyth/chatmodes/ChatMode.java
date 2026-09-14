@@ -82,7 +82,7 @@ public abstract class ChatMode {
      * @return A generic response indicating no handler is present.
      */
     protected Response respondToClose(CloseRequest request) {
-        return new Response("no close handler");
+        return new Response("Curtain down, beauties! But someone forgot my grand finale encore! 💅");
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class ChatMode {
      * @return An {@link ExitResponse} with a goodbye message.
      */
     protected Response respondToExit(ExitRequest request) {
-        return new ExitResponse("Bye. Hope to see you again soon!");
+        return new ExitResponse("Ciao, gorgeous! Try not to weep without my sparkle in your life~ 💋✨");
     }
 
     /**
@@ -152,7 +152,7 @@ public abstract class ChatMode {
      * @return A generic response indicating no handler is present.
      */
     protected Response respondToInit(InitRequest request) {
-        return new Response("no init handler");
+        return new Response("Darling, I have arrived, but where is my dramatic entrance music?! ✨");
     }
 
     /**

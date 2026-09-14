@@ -8,6 +8,6 @@ public class WrongTypeException extends TweakingException {
      * @param type the expected argument type
      */
     public WrongTypeException(Class<?> type) {
-        super(String.format("expected type: %s", type.toString()));
+        super(String.format("Oh darling, wrong vibe entirely! I specifically requested a %s! 💅", type.toString()));
     }
 }

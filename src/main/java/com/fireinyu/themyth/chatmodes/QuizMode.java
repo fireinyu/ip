@@ -83,10 +83,16 @@ public class QuizMode extends TaskMode {
         if (request.getArg(1, Integer.class) == this.activeQuiz.getAnswerIndex()) {
             this.quizTask.mark();
             this.activeQuiz = this.quizzes.getRandom();
-            return new Response("You are absolutely right!");
+            return new Response(
+                    "DING DING DING! You are beauty, you are grace, you nailed it right in the face! "
+                    + "Absolutely iconic, honey! 🌟💖"
+            );
         } else {
             this.activeQuiz = this.quizzes.getRandom();
-            return new Response("Oops! The correct answer is " + this.activeQuiz.getAnswerIndex());
+            return new Response(String.format(
+                    "Oh honey, bless your gorgeous little heart, but that was NOT it! 🤦‍♀️ "
+                    + "The tea is option %d! Better luck next time, babe! 💅",
+                    this.activeQuiz.getAnswerIndex()));
         }
     }
 

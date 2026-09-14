@@ -63,7 +63,7 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToInit(InitRequest request) {
         taskList.open(taskFile);
-        return new Response("task file loaded successfully");
+        return new Response("The archives are unlocked and looking drop-dead gorgeous! All tasks loaded, honey! 💅✨");
     }
 
     /**
@@ -72,7 +72,7 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToClose(CloseRequest request) {
         taskList.close();
-        return new Response("exited successfully");
+        return new Response("Exiting with absolute elegance and flawless poise! See ya, darling! 💋");
     }
 
     /**
@@ -81,7 +81,7 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToFind(FindRequest request) {
         return listTasks(
-                "Here are the matching tasks in your list:",
+                "Found them! These matching gems were practically begging for my spotlight:",
                 new ArrayList<>(
                     taskList.stream()
                             .filter(task -> task.toString().contains(request.getArg(1, String.class)))
@@ -128,7 +128,7 @@ public class TaskMode extends ChatMode {
     @Override
     protected Response respondToList(ListRequest request) {
         return listTasks(
-                "Here are the tasks in your list:",
+                "Feast your eyes, darling! Here is your glamorous itinerary:",
                 taskList,
                 request.getArg("sort", TaskOrder.class)
         );
@@ -141,7 +141,7 @@ public class TaskMode extends ChatMode {
     protected Response respondToAt(AtRequest request) {
         MythDateTime at = request.getArg(1, MythDateTime.class);
         return listTasks(
-                String.format("Here are the events happening on %s", at),
+                String.format("Clear the runway! Here is the fabulous drama scheduled on %s:", at),
                 new ArrayList<>(
                         taskList.stream().filter(task -> task instanceof EventTask eventTask && eventTask.contains(at))
                                 .toList()
@@ -158,7 +158,7 @@ public class TaskMode extends ChatMode {
     protected Response respondToDue(DueRequest request) {
         MythDateTime due = request.getArg(1, MythDateTime.class);
         return listTasks(
-                String.format("Here are the deadlines due by %s", due),
+                String.format("Tick-tock, gorgeous! Here are the deadlines looming over you by %s:", due),
                 new ArrayList<>(
                         taskList.stream()
                                 .filter(task -> task instanceof DeadlineTask deadlineTask && deadlineTask.isDueBy(due))
@@ -180,7 +180,7 @@ public class TaskMode extends ChatMode {
     Response mark(int index) {
         Task task = taskList.get(index);
         task.mark();
-        String message = "Nice! I've marked this task as done:\n\t" + task;
+        String message = "Slay, honey! Slay! That task is officially conquered and looking iconic:\n\t" + task;
         return new Response(message);
     }
 
@@ -196,7 +196,7 @@ public class TaskMode extends ChatMode {
     Response respondToUnmark(int itemIndex) {
         Task task = taskList.get(itemIndex);
         task.unmark();
-        String message = "OK, I've marked this task as not done yet:\n\t" + task;
+        String message = "Ugh, backpedaling? Fine, darling. Marked it as not done yet:\n\t" + task;
         return new Response(message);
     }
 
@@ -212,7 +212,8 @@ public class TaskMode extends ChatMode {
         int itemIndex = request.getArg(1, Integer.class) - 1;
         Task task = taskList.remove(itemIndex);
         String message = String.format(
-                "Noted. I've removed this task:\n\t%s\nNow you have %d tasks in the list.",
+                "Trash it, burn it, make room for fabulous! I kicked this task to the curb:\n\t%s\n"
+                + "You're down to %d tasks, babe. Keep it chic! 💅",
                 task,
                 taskList.size()
         );
@@ -228,7 +229,8 @@ public class TaskMode extends ChatMode {
     private Response addTask(Task task) {
         taskList.add(task);
         String message = String.format(
-                "Got it. I've added this task:\n\t%s\nNow you have %d tasks in the list.",
+                "Fabulous! I slipped this masterpiece into your list:\n\t%s\n"
+                + "Now you're juggling %d tasks, superstar! Don't trip! 💅✨",
                 task,
                 taskList.size()
         );

@@ -51,12 +51,13 @@ public class TaskModeTest {
         TaskMode mode = new TaskMode(taskFile);
 
         Response initResponse = mode.respondTo(new InitRequest());
-        assertEquals("task file loaded successfully", initResponse.getBody());
+        assertEquals("The archives are unlocked and looking drop-dead gorgeous! All tasks loaded, honey! 💅✨",
+                initResponse.getBody());
 
         // 1. Add Todo
         Response todoRes = mode.respondTo(new TodoRequest(List.of("todo", "read textbook"), Map.of()));
         assertTrue(todoRes.getBody().contains("read textbook"));
-        assertTrue(todoRes.getBody().contains("1 tasks in the list"));
+        assertTrue(todoRes.getBody().contains("1 tasks, superstar!"));
 
         // 2. Add Deadline
         Response deadlineRes = mode.respondTo(new DeadlineRequest(
@@ -64,7 +65,7 @@ public class TaskModeTest {
                 Map.of("by", "2025-10-15-18-00-00")
         ));
         assertTrue(deadlineRes.getBody().contains("submit homework"));
-        assertTrue(deadlineRes.getBody().contains("2 tasks in the list"));
+        assertTrue(deadlineRes.getBody().contains("2 tasks, superstar!"));
 
         // 3. Add Event
         Response eventRes = mode.respondTo(new EventRequest(
@@ -72,17 +73,19 @@ public class TaskModeTest {
                 Map.of("from", "2025-06-01-09-00-00", "to", "2025-06-01-17-00-00")
         ));
         assertTrue(eventRes.getBody().contains("orientation camp"));
-        assertTrue(eventRes.getBody().contains("3 tasks in the list"));
+        assertTrue(eventRes.getBody().contains("3 tasks, superstar!"));
 
         // 4. List tasks
         Response listRes = mode.respondTo(new ListRequest(List.of("list"), Map.of("sort", "modified")));
-        assertTrue(listRes.getBody().contains("Here are the tasks in your list:"));
+        assertTrue(listRes.getBody().contains("Feast your eyes, darling! Here is your glamorous itinerary:"));
         assertTrue(listRes.getBody().contains("1. [T][ ] read textbook"));
         assertTrue(listRes.getBody().contains("2. [D][ ] submit homework"));
         assertTrue(listRes.getBody().contains("3. [E][ ] orientation camp"));
 
         // 5. Find tasks
         Response findRes = mode.respondTo(new FindRequest(List.of("find", "textbook"), Map.of()));
+        assertTrue(findRes.getBody().contains(
+                "Found them! These matching gems were practically begging for my spotlight:"));
         assertTrue(findRes.getBody().contains("1. [T][ ] read textbook"));
 
         // 6. At filter (for event)
@@ -90,6 +93,7 @@ public class TaskModeTest {
                 List.of("at", "2025-06-01-12-00-00"),
                 Map.of()
         ));
+        assertTrue(atRes.getBody().contains("Clear the runway! Here is the fabulous drama scheduled on"));
         assertTrue(atRes.getBody().contains("orientation camp"));
 
         // 7. Due filter (for deadline)
@@ -97,25 +101,29 @@ public class TaskModeTest {
                 List.of("due", "2025-10-16-00-00-00"),
                 Map.of()
         ));
+        assertTrue(dueRes.getBody().contains("Tick-tock, gorgeous! Here are the deadlines looming over you by"));
         assertTrue(dueRes.getBody().contains("submit homework"));
 
         // 8. Mark task 1
         Response markRes = mode.respondTo(new MarkRequest(List.of("mark", "1"), Map.of()));
-        assertTrue(markRes.getBody().contains("Nice! I've marked this task as done:"));
+        assertTrue(markRes.getBody().contains(
+                "Slay, honey! Slay! That task is officially conquered and looking iconic:"));
         assertTrue(markRes.getBody().contains("[T][X] read textbook"));
 
         // 9. Unmark task 1
         Response unmarkRes = mode.respondTo(new UnmarkRequest(List.of("unmark", "1"), Map.of()));
-        assertTrue(unmarkRes.getBody().contains("OK, I've marked this task as not done yet:"));
+        assertTrue(unmarkRes.getBody().contains("Ugh, backpedaling? Fine, darling. Marked it as not done yet:"));
         assertTrue(unmarkRes.getBody().contains("[T][ ] read textbook"));
 
         // 10. Delete task 1
         Response deleteRes = mode.respondTo(new DeleteRequest(List.of("delete", "1"), Map.of()));
-        assertTrue(deleteRes.getBody().contains("Noted. I've removed this task:"));
-        assertTrue(deleteRes.getBody().contains("2 tasks in the list"));
+        assertTrue(deleteRes.getBody().contains(
+                "Trash it, burn it, make room for fabulous! I kicked this task to the curb:"));
+        assertTrue(deleteRes.getBody().contains("2 tasks, babe. Keep it chic! 💅"));
 
         // 11. Close mode
         Response closeResponse = mode.respondTo(new CloseRequest());
-        assertEquals("exited successfully", closeResponse.getBody());
+        assertEquals("Exiting with absolute elegance and flawless poise! See ya, darling! 💋",
+                closeResponse.getBody());
     }
 }

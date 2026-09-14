@@ -12,6 +12,8 @@ public class FileAccessException extends TweakingException {
      * @see String
      */
     public FileAccessException(String filename) {
-        super(String.format("unable to access file \"%s\", defaulting to memory-only mode", filename));
+        super(String.format(
+                "Ugh, I can't even get into \"%s\" right now! Going strictly into memory-only diva mode! 💅",
+                filename));
     }
 }
