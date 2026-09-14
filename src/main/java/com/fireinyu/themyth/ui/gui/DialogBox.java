@@ -2,6 +2,7 @@ package com.fireinyu.themyth.ui.gui;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,28 +10,29 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
- * and a label containing text from the speaker.
+ * and a text flow containing styled text from the speaker.
  */
 public class DialogBox extends HBox {
     @FXML
-    private Label dialog;
+    private TextFlow dialog;
     @FXML
     private ImageView displayPicture;
 
     /**
      * Private constructor for a DialogBox.
      *
-     * @param text The text to display in the dialog box.
+     * @param textNodes The styled text nodes to display in the dialog box.
      * @param img The image to display.
      */
-    private DialogBox(String text, Image img) {
+    private DialogBox(List<Text> textNodes, Image img) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -40,7 +42,7 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
 
-        dialog.setText(text);
+        dialog.getChildren().setAll(textNodes);
         displayPicture.setImage(img);
     }
 
@@ -56,18 +58,38 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Creates a dialog box for the user.
+     * Returns the text flow node containing the dialog message.
+     *
+     * @return the text flow node
+     */
+    TextFlow getDialog() {
+        return dialog;
+    }
+
+    /**
+     * Returns the image view displaying the speaker's avatar.
+     *
+     * @return the avatar image view
+     */
+    ImageView getDisplayPicture() {
+        return displayPicture;
+    }
+
+    /**
+     * Creates a dialog box for the user with sparkle animation.
      *
      * @param text The text from the user.
      * @param img The user's image.
      * @return A new DialogBox for the user.
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(FlamboyantTextFormatter.formatPlain(text), img);
+        SparkleAnimator.play(db, false);
+        return db;
     }
 
     /**
-     * Creates a dialog box for TheMyth.
+     * Creates a dialog box for TheMyth with flamboyant rich text styling and sparkle animation.
      * This dialog box is flipped.
      *
      * @param text The text from TheMyth.
@@ -75,8 +97,9 @@ public class DialogBox extends HBox {
      * @return A new DialogBox for TheMyth.
      */
     public static DialogBox getTheMythDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
+        var db = new DialogBox(FlamboyantTextFormatter.format(text), img);
         db.flip();
+        SparkleAnimator.play(db, true);
         return db;
     }
 }

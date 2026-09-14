@@ -1,4 +1,4 @@
-.label {
+.label, .dialog-bubble {
     background:white;
     -fx-background-color: background;
     -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;

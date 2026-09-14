@@ -181,7 +181,7 @@ public class TaskMode extends ChatMode {
         Task task = taskList.get(index);
         task.mark();
         String message = "Slay, honey! Slay! That task is officially conquered and looking iconic:\n\t" + task;
-        return new Response(message);
+        return new Response(message, Response.Mood.HAPPY);
     }
 
     /**

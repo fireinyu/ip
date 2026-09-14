@@ -12,11 +12,13 @@ import com.fireinyu.themyth.exceptions.TweakingException;
 public class ExceptionResponse extends Response {
 
     /**
-     * Initialises an ExceptionResponse in response to a thrown TweakingException
+     * Initialises an ExceptionResponse in response to a thrown TweakingException.
+     * Sets the mood to {@link Response.Mood#ANGRY}.
+     *
      * @param cause thrown TweakingException
      * @see TweakingException
      */
     public ExceptionResponse(TweakingException cause) {
-        super(cause.getMessage());
+        super(cause.getMessage(), false, Mood.ANGRY);
     }
 }

@@ -109,11 +109,13 @@ public class TaskModeTest {
         assertTrue(markRes.getBody().contains(
                 "Slay, honey! Slay! That task is officially conquered and looking iconic:"));
         assertTrue(markRes.getBody().contains("[T][X] read textbook"));
+        assertEquals(Response.Mood.HAPPY, markRes.getMood());
 
         // 9. Unmark task 1
         Response unmarkRes = mode.respondTo(new UnmarkRequest(List.of("unmark", "1"), Map.of()));
         assertTrue(unmarkRes.getBody().contains("Ugh, backpedaling? Fine, darling. Marked it as not done yet:"));
         assertTrue(unmarkRes.getBody().contains("[T][ ] read textbook"));
+        assertEquals(Response.Mood.NORMAL, unmarkRes.getMood());
 
         // 10. Delete task 1
         Response deleteRes = mode.respondTo(new DeleteRequest(List.of("delete", "1"), Map.of()));

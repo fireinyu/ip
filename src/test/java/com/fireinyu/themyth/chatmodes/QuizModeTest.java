@@ -57,17 +57,20 @@ public class QuizModeTest {
         // Marking the QuizTask triggers takeQuiz
         Response markQuizTask = mode.respondTo(new MarkRequest(List.of("mark", "1"), Map.of()));
         assertEquals(quizResponse.getBody(), markQuizTask.getBody());
+        assertEquals(Response.Mood.NORMAL, markQuizTask.getMood());
 
         // Add a regular task and mark it
         mode.respondTo(new TodoRequest(List.of("todo", "study"), Map.of()));
         Response markRegularTask = mode.respondTo(new MarkRequest(List.of("mark", "2"), Map.of()));
         assertTrue(markRegularTask.getBody().contains(
                 "Slay, honey! Slay! That task is officially conquered and looking iconic:"));
+        assertEquals(Response.Mood.HAPPY, markRegularTask.getMood());
 
         // Wrong answer branch
         Response wrongAnswer = mode.respondTo(new AnswerRequest(List.of("answer", "999"), Map.of()));
         assertTrue(wrongAnswer.getBody().startsWith(
                 "Oh honey, bless your gorgeous little heart, but that was NOT it!"));
+        assertEquals(Response.Mood.ANGRY, wrongAnswer.getMood());
 
         // Correct answer branch (attempting options 0 to 4 until correct branch is exercised)
         boolean gotRight = false;
@@ -76,6 +79,7 @@ public class QuizModeTest {
                     new AnswerRequest(List.of("answer", String.valueOf(ans % 4)), Map.of())
             );
             if (answerRes.getBody().startsWith("DING DING DING!")) {
+                assertEquals(Response.Mood.HAPPY, answerRes.getMood());
                 gotRight = true;
                 break;
             }
