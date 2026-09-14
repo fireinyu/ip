@@ -14,6 +14,8 @@ public class ArgumentFormatException extends TweakingException {
      * @see com.fireinyu.themyth.requests.Request
      */
     public ArgumentFormatException(String type, String badArg, String format) {
-        super(String.format("%s argument \"%s\" is ill-formatted, pls use %s format!", type, badArg, format));
+        super(String.format(
+                "Babe, your %s input \"%s\" is giving total chaos! Serve it to me in %s format or not at all! 💁‍♀️",
+                type, badArg, format));
     }
 }

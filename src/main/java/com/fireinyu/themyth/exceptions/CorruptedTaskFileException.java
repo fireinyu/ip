@@ -11,6 +11,8 @@ public class CorruptedTaskFileException extends TweakingException {
      * @see String
      */
     public CorruptedTaskFileException(String filename) {
-        super(String.format("file \"%s\" contains corrupted data, defaulting to memory-only mode", filename));
+        super(String.format(
+                "Ew! File \"%s\" is a total disaster zone of corrupted nonsense! Memory-only diva mode activated! 💋",
+                filename));
     }
 }

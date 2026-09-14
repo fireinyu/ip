@@ -24,9 +24,11 @@ public class DefaultsTest {
         assertEquals("data/questions.csv", Defaults.QUIZFILE);
         assertEquals(100, Defaults.LINEWIDTH);
         assertEquals(">>> ", Defaults.USERPROMPT);
-        assertEquals("The Myth says: ", Defaults.BOTPROMPT);
-        assertEquals("The Myth tweaks: ", Defaults.TWEAKPROMPT);
-        assertEquals("The Myth dies from a fatal exception! The tombstone says: ", Defaults.DEATHPROMPT);
+        assertEquals("The Myth declares, honey 💅✨: ", Defaults.BOTPROMPT);
+        assertEquals("The Myth is clutching pearls 🙄💅: ", Defaults.TWEAKPROMPT);
+        assertEquals(
+                "The Myth dramatically faints into the abyss! The rhinestone tombstone reads 🪦✨: ",
+                Defaults.DEATHPROMPT);
         assertEquals("yyyy-MM-dd-HH-mm-ss", Defaults.DATE_INPUTFORMAT);
         assertEquals(TaskOrder.MODIFIED, Defaults.TASK_ORDER);
         assertNotNull(Defaults.STARTMODE);

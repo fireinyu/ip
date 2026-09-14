@@ -19,6 +19,8 @@ public class EchoModeTest {
     public void respondToRemaining_echoesQuery() {
         EchoMode echoMode = new EchoMode();
         Response response = echoMode.respondTo(Request.of("dragons"));
-        assertEquals("Can you tell me more about dragons?", response.getBody());
+        assertEquals(
+                "Oh honey, did you really just say \"dragons\"? Spill every last drop of tea right now! ☕✨",
+                response.getBody());
     }
 }

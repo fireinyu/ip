@@ -28,7 +28,7 @@ public class ExceptionTest {
     @Test
     public void tweakingException_formatsMessage() {
         TweakingException ex = new ConcreteTweakingException("something broke");
-        assertEquals("I'm tweaking because something broke", ex.getMessage());
+        assertEquals("Honey, I am clutching my pearls because something broke", ex.getMessage());
     }
 
     /**
@@ -37,7 +37,8 @@ public class ExceptionTest {
     @Test
     public void fatalException_formatsMessage() {
         FatalException ex = new FatalException("out of memory");
-        assertEquals("R.I.P. com.fireinyu.themyth.TheMyth, cause of death: out of memory", ex.getMessage());
+        assertEquals("DRAMA! The Myth has perished in absolute agony! Cause of this catastrophic demise: out of memory",
+                ex.getMessage());
     }
 
     /**
@@ -46,7 +47,8 @@ public class ExceptionTest {
     @Test
     public void fileAccessException_formatsMessage() {
         FileAccessException ex = new FileAccessException("data/test.csv");
-        assertEquals("I'm tweaking because unable to access file \"data/test.csv\", defaulting to memory-only mode",
+        assertEquals("Honey, I am clutching my pearls because "
+                + "Ugh, I can't even get into \"data/test.csv\" right now! Going strictly into memory-only diva mode! 💅",
                 ex.getMessage());
     }
 
@@ -56,7 +58,9 @@ public class ExceptionTest {
     @Test
     public void corruptedTaskFileException_formatsMessage() {
         CorruptedTaskFileException ex = new CorruptedTaskFileException("tasks.csv");
-        assertEquals("I'm tweaking because file \"tasks.csv\" contains corrupted data, defaulting to memory-only mode",
+        assertEquals("Honey, I am clutching my pearls because "
+                + "Ew! File \"tasks.csv\" is a total disaster zone of corrupted nonsense! "
+                + "Memory-only diva mode activated! 💋",
                 ex.getMessage());
     }
 
@@ -66,7 +70,9 @@ public class ExceptionTest {
     @Test
     public void argumentFormatException_formatsMessage() {
         ArgumentFormatException ex = new ArgumentFormatException("number", "abc", "integer");
-        assertEquals("I'm tweaking because number argument \"abc\" is ill-formatted, pls use integer format!",
+        assertEquals("Honey, I am clutching my pearls because "
+                + "Babe, your number input \"abc\" is giving total chaos! "
+                + "Serve it to me in integer format or not at all! 💁‍♀️",
                 ex.getMessage());
     }
 
@@ -76,8 +82,10 @@ public class ExceptionTest {
     @Test
     public void dateFormatException_formatsMessage() {
         DateFormatException ex = new DateFormatException("2025-99-99");
-        assertEquals("I'm tweaking because date argument \"2025-99-99\" is ill-formatted, pls use "
-                + Defaults.DATE_INPUTFORMAT + " format!", ex.getMessage());
+        assertEquals("Honey, I am clutching my pearls because "
+                + "Babe, your date input \"2025-99-99\" is giving total chaos! "
+                + "Serve it to me in " + Defaults.DATE_INPUTFORMAT + " format or not at all! 💁‍♀️",
+                ex.getMessage());
     }
 
     /**
@@ -86,7 +94,9 @@ public class ExceptionTest {
     @Test
     public void arugmentMismatchException_positionalCounts_formatsMessage() {
         ArugmentMismatchException ex = new ArugmentMismatchException(2, 1);
-        assertEquals("I'm tweaking because 2 positional arguments expected but 1 given", ex.getMessage());
+        assertEquals("Honey, I am clutching my pearls because "
+                + "Excuse me? I asked for 2 juicy arguments and you dared hand me 1? The audacity! 🙄",
+                ex.getMessage());
     }
 
     /**
@@ -95,8 +105,8 @@ public class ExceptionTest {
     @Test
     public void arugmentMismatchException_keywordCollections_formatsMessage() {
         ArugmentMismatchException ex = new ArugmentMismatchException(Set.of("by"), Set.of("from", "to"));
-        assertTrue(ex.getMessage().contains("expected keyword arguments: {by}"));
-        assertTrue(ex.getMessage().contains("given keyword arguments: {"));
+        assertTrue(ex.getMessage().contains("Sweetie, I ordered {by}, but you handed me {"));
+        assertTrue(ex.getMessage().contains("That is NOT what was on the menu! 💅"));
     }
 
     /**
@@ -106,7 +116,9 @@ public class ExceptionTest {
     public void invalidCommandException_formatsMessage() {
         Request req = Request.of("dance");
         InvalidCommandException ex = new InvalidCommandException(req);
-        assertEquals("I'm tweaking because I don't know how to \"dance\"", ex.getMessage());
+        assertEquals("Honey, I am clutching my pearls because "
+                + "Sweetheart, \"dance\"? That is NOT in my fabulous repertoire! Try harder, babe! 💅",
+                ex.getMessage());
     }
 
     /**
@@ -115,6 +127,8 @@ public class ExceptionTest {
     @Test
     public void wrongTypeException_formatsMessage() {
         WrongTypeException ex = new WrongTypeException(List.class);
-        assertEquals("I'm tweaking because expected type: " + List.class.toString(), ex.getMessage());
+        assertEquals("Honey, I am clutching my pearls because "
+                + "Oh darling, wrong vibe entirely! I specifically requested a " + List.class.toString() + "! 💅",
+                ex.getMessage());
     }
 }

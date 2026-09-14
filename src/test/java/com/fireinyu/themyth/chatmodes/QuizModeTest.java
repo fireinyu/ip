@@ -46,7 +46,8 @@ public class QuizModeTest {
         QuizMode mode = new QuizMode(taskFile);
 
         Response initResponse = mode.respondTo(new InitRequest());
-        assertEquals("task file loaded successfully", initResponse.getBody());
+        assertEquals("The archives are unlocked and looking drop-dead gorgeous! All tasks loaded, honey! 💅✨",
+                initResponse.getBody());
         assertEquals(1, mode.getTaskList().size());
 
         // Quiz request displays active quiz
@@ -60,11 +61,13 @@ public class QuizModeTest {
         // Add a regular task and mark it
         mode.respondTo(new TodoRequest(List.of("todo", "study"), Map.of()));
         Response markRegularTask = mode.respondTo(new MarkRequest(List.of("mark", "2"), Map.of()));
-        assertTrue(markRegularTask.getBody().contains("Nice! I've marked this task as done:"));
+        assertTrue(markRegularTask.getBody().contains(
+                "Slay, honey! Slay! That task is officially conquered and looking iconic:"));
 
         // Wrong answer branch
         Response wrongAnswer = mode.respondTo(new AnswerRequest(List.of("answer", "999"), Map.of()));
-        assertTrue(wrongAnswer.getBody().startsWith("Oops! The correct answer is "));
+        assertTrue(wrongAnswer.getBody().startsWith(
+                "Oh honey, bless your gorgeous little heart, but that was NOT it!"));
 
         // Correct answer branch (attempting options 0 to 4 until correct branch is exercised)
         boolean gotRight = false;
@@ -72,7 +75,7 @@ public class QuizModeTest {
             Response answerRes = mode.respondTo(
                     new AnswerRequest(List.of("answer", String.valueOf(ans % 4)), Map.of())
             );
-            if ("You are absolutely right!".equals(answerRes.getBody())) {
+            if (answerRes.getBody().startsWith("DING DING DING!")) {
                 gotRight = true;
                 break;
             }
@@ -81,6 +84,7 @@ public class QuizModeTest {
 
         // Close request removes the quiz task and saves
         Response closeResponse = mode.respondTo(new CloseRequest());
-        assertEquals("exited successfully", closeResponse.getBody());
+        assertEquals("Exiting with absolute elegance and flawless poise! See ya, darling! 💋",
+                closeResponse.getBody());
     }
 }

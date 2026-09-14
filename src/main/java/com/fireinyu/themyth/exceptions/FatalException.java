@@ -11,6 +11,6 @@ public class FatalException extends RuntimeException {
      * @see String
      */
     public FatalException(String message) {
-        super("R.I.P. com.fireinyu.themyth.TheMyth, cause of death: " + message);
+        super("DRAMA! The Myth has perished in absolute agony! Cause of this catastrophic demise: " + message);
     }
 }

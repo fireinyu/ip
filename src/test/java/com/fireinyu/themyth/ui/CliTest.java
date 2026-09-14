@@ -62,10 +62,10 @@ public class CliTest {
             cli.run();
 
             String output = testOut.toString(StandardCharsets.UTF_8);
-            assertTrue(output.contains("Hello! I'm The Myth."));
+            assertTrue(output.contains("Haaaay superstar! The Myth has entered the room! ✨"));
             assertTrue(output.contains("Everything is fine"));
-            assertTrue(output.contains("The Myth tweaks:"));
-            assertTrue(output.contains("The Myth dies from a fatal exception!"));
+            assertTrue(output.contains("The Myth is clutching pearls"));
+            assertTrue(output.contains("The Myth dramatically faints into the abyss!"));
             assertFalse(output.contains("Bye!"));
         } finally {
             System.setIn(originalIn);
