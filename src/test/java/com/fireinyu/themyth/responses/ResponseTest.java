@@ -24,6 +24,20 @@ public class ResponseTest {
         Response response = new Response("Operation completed");
         assertEquals("Operation completed", response.getBody());
         assertFalse(response.doExit());
+        assertEquals(Response.Mood.NORMAL, response.getMood());
+    }
+
+    /**
+     * Tests {@link Response} with custom mood.
+     */
+    @Test
+    public void response_customMood() {
+        Response happyResponse = new Response("Great job!", Response.Mood.HAPPY);
+        assertEquals(Response.Mood.HAPPY, happyResponse.getMood());
+
+        Response angryResponse = new Response("Stop that!", true, Response.Mood.ANGRY);
+        assertEquals(Response.Mood.ANGRY, angryResponse.getMood());
+        assertTrue(angryResponse.doExit());
     }
 
     /**
@@ -34,6 +48,7 @@ public class ResponseTest {
         Response response = new Response("Goodbye", true);
         assertEquals("Goodbye", response.getBody());
         assertTrue(response.doExit());
+        assertEquals(Response.Mood.NORMAL, response.getMood());
     }
 
     /**
@@ -47,7 +62,7 @@ public class ResponseTest {
     }
 
     /**
-     * Tests {@link ExceptionResponse} wraps exception message and does not exit.
+     * Tests {@link ExceptionResponse} wraps exception message, does not exit, and has ANGRY mood.
      */
     @Test
     public void exceptionResponse_containsMessageAndDoesNotExit() {
@@ -55,6 +70,7 @@ public class ResponseTest {
         ExceptionResponse response = new ExceptionResponse(ex);
         assertEquals(ex.getMessage(), response.getBody());
         assertFalse(response.doExit());
+        assertEquals(Response.Mood.ANGRY, response.getMood());
     }
 
     /**

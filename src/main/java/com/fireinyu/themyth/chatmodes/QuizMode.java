@@ -85,14 +85,16 @@ public class QuizMode extends TaskMode {
             this.activeQuiz = this.quizzes.getRandom();
             return new Response(
                     "DING DING DING! You are beauty, you are grace, you nailed it right in the face! "
-                    + "Absolutely iconic, honey! 🌟💖"
+                    + "Absolutely iconic, honey! 🌟💖",
+                    Response.Mood.HAPPY
             );
         } else {
             this.activeQuiz = this.quizzes.getRandom();
             return new Response(String.format(
                     "Oh honey, bless your gorgeous little heart, but that was NOT it! 🤦‍♀️ "
                     + "The tea is option %d! Better luck next time, babe! 💅",
-                    this.activeQuiz.getAnswerIndex()));
+                    this.activeQuiz.getAnswerIndex()),
+                    Response.Mood.ANGRY);
         }
     }
 

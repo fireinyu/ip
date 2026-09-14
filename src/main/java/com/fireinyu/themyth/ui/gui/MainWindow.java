@@ -27,8 +27,11 @@ public class MainWindow extends AnchorPane {
 
     private TheMyth theMyth;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image theMythImage = new Image(this.getClass().getResourceAsStream("/images/DaMyth.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
+    private final Image theMythDefaultImage = new Image(this.getClass().getResourceAsStream("/images/DaMyth.png"));
+    private final Image theMythHappyImage = new Image(this.getClass().getResourceAsStream("/images/DaMythHappy.png"));
+    private final Image theMythAngryImage = new Image(this.getClass().getResourceAsStream("/images/DaMythAngry.png"));
+    private Image theMythImage = theMythDefaultImage;
 
     /**
      * Constructs a new {@code MainWindow}.
@@ -61,6 +64,15 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
+     * Returns the current profile image used for TheMyth.
+     *
+     * @return the current {@link Image}
+     */
+    Image getTheMythImage() {
+        return theMythImage;
+    }
+
+    /**
      * Creates two dialog boxes, one echoing user input and the other containing TheMyth's reply
      * and then appends them to
      * the dialog container. Clears the user input after processing.
@@ -79,6 +91,11 @@ public class MainWindow extends AnchorPane {
         // return a non-null Response object. A failure here would indicate a bug
         // within the TheMyth.handleInput() implementation.
         assert response != null;
+        theMythImage = switch (response.getMood()) {
+            case HAPPY -> theMythHappyImage;
+            case ANGRY -> theMythAngryImage;
+            default -> theMythDefaultImage;
+        };
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getTheMythDialog(response.getBody(), theMythImage)
