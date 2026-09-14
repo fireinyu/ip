@@ -1,5 +1,6 @@
 package com.fireinyu.themyth.chatmodes;
 
+import java.nio.file.Path;
 import java.util.Random;
 
 import com.fireinyu.themyth.Defaults;
@@ -25,6 +26,21 @@ public class QuizMode extends TaskMode {
     private final QuizTask quizTask = new QuizTask();
     private final QuizList quizzes = new QuizList();
     private Quiz activeQuiz;
+
+    /**
+     * Initialises a QuizMode with default configuration.
+     */
+    public QuizMode() {
+        super();
+    }
+
+    /**
+     * Initialises a QuizMode which syncs tasks with a given task file.
+     * @param taskFile Path to task file that syncs with this QuizMode
+     */
+    public QuizMode(Path taskFile) {
+        super(taskFile);
+    }
 
     /**
      * {@inheritDoc}

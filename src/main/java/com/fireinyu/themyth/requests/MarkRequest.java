@@ -15,7 +15,7 @@ public class MarkRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected MarkRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public MarkRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs);
     }
     /** {@inheritDoc} */

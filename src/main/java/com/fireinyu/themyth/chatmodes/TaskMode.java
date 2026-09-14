@@ -1,6 +1,7 @@
 package com.fireinyu.themyth.chatmodes;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fireinyu.themyth.Defaults;
@@ -81,9 +82,11 @@ public class TaskMode extends ChatMode {
     protected Response respondToFind(FindRequest request) {
         return listTasks(
                 "Here are the matching tasks in your list:",
-                taskList.stream()
-                        .filter(task -> task.toString().contains(request.getArg(1, String.class)))
-                        .toList(),
+                new ArrayList<>(
+                    taskList.stream()
+                            .filter(task -> task.toString().contains(request.getArg(1, String.class)))
+                            .toList()
+                ),
                 request.getArg("sort", TaskOrder.class)
         );
     }
@@ -139,8 +142,10 @@ public class TaskMode extends ChatMode {
         MythDateTime at = request.getArg(1, MythDateTime.class);
         return listTasks(
                 String.format("Here are the events happening on %s", at),
-                taskList.stream().filter(task -> task instanceof EventTask eventTask && eventTask.contains(at))
-                        .toList(),
+                new ArrayList<>(
+                        taskList.stream().filter(task -> task instanceof EventTask eventTask && eventTask.contains(at))
+                                .toList()
+                ),
                 request.getArg("sort", TaskOrder.class)
 
         );
@@ -154,8 +159,11 @@ public class TaskMode extends ChatMode {
         MythDateTime due = request.getArg(1, MythDateTime.class);
         return listTasks(
                 String.format("Here are the deadlines due by %s", due),
-                taskList.stream().filter(task -> task instanceof DeadlineTask deadlineTask && deadlineTask.isDueBy(due))
-                        .toList(),
+                new ArrayList<>(
+                        taskList.stream()
+                                .filter(task -> task instanceof DeadlineTask deadlineTask && deadlineTask.isDueBy(due))
+                                .toList()
+                ),
                 request.getArg("sort", TaskOrder.class)
         );
     }

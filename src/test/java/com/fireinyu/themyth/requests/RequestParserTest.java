@@ -34,6 +34,30 @@ public class RequestParserTest {
     }
 
     /**
+     * Tests parsing of at command.
+     */
+    @Test
+    public void parse_atCommand_returnsAtRequest() {
+        Request req1 = parser.parse("at 2025-06-01-09-00-00");
+        assertInstanceOf(AtRequest.class, req1);
+
+        Request req2 = parser.parse("at 2025-06-01-09-00-00 /sort created");
+        assertInstanceOf(AtRequest.class, req2);
+    }
+
+    /**
+     * Tests parsing of due command.
+     */
+    @Test
+    public void parse_dueCommand_returnsDueRequest() {
+        Request req1 = parser.parse("due 2025-10-15-18-00-00");
+        assertInstanceOf(DueRequest.class, req1);
+
+        Request req2 = parser.parse("due 2025-10-15-18-00-00 /sort created");
+        assertInstanceOf(DueRequest.class, req2);
+    }
+
+    /**
      * Tests parsing of todo command.
      */
     @Test

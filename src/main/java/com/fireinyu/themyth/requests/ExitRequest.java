@@ -15,7 +15,7 @@ public class ExitRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected ExitRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public ExitRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs);
     }
     /** {@inheritDoc} */

@@ -15,7 +15,7 @@ public class TodoRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected TodoRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public TodoRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs);
     }
     /** {@inheritDoc} */

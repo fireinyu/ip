@@ -17,7 +17,7 @@ public class AtRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected AtRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public AtRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, Map.of("sort", Defaults.TASK_ORDER));
     }
 

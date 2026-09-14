@@ -16,7 +16,7 @@ public class FindRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected FindRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public FindRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, Map.of("sort", Defaults.TASK_ORDER));
     }
     /** {@inheritDoc} */

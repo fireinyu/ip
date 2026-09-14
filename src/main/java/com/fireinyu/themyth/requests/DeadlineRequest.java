@@ -16,7 +16,7 @@ public class DeadlineRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected DeadlineRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public DeadlineRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, Map.of());
     }
 

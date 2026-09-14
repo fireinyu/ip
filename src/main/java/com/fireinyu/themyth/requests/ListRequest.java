@@ -16,7 +16,7 @@ public class ListRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected ListRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public ListRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, Map.of("sort", Defaults.TASK_ORDER));
     }
     /** {@inheritDoc} */

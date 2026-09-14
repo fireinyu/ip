@@ -15,7 +15,7 @@ public class EventRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected EventRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public EventRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs);
     }
 

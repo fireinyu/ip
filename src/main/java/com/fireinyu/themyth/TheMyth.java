@@ -18,13 +18,23 @@ import com.fireinyu.themyth.responses.Response;
 public class TheMyth {
 
     private final RequestParser parser = new RequestParser();
-    private final ChatMode chatMode = Defaults.STARTMODE;
+    private final ChatMode chatMode;
 
     /**
      * Initialises an instance of The Myth app<br><br>
      * The app will display a banner, then enter idle mode
      */
     public TheMyth() {
+        this(Defaults.STARTMODE);
+    }
+
+    /**
+     * Initialises an instance of The Myth app with a specified ChatMode.
+     *
+     * @param chatMode the chat mode to use
+     */
+    public TheMyth(ChatMode chatMode) {
+        this.chatMode = chatMode;
     }
 
     /**
@@ -81,7 +91,6 @@ public class TheMyth {
             response = new ExceptionResponse(e);
         } catch (FatalException e) {
             response = new FatalResponse(e);
-            this.stop();
         }
         System.out.println(response.getBody());
     }

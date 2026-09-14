@@ -15,7 +15,7 @@ public class UnmarkRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected UnmarkRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public UnmarkRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs);
     }
     /** {@inheritDoc} */

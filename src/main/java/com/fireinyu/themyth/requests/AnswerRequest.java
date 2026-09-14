@@ -18,7 +18,7 @@ public class AnswerRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected AnswerRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public AnswerRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs);
     }
 

@@ -21,6 +21,10 @@ public class RequestTest {
             super(posArgs, kwargs);
         }
 
+        DummyRequest(Request other) {
+            super(other);
+        }
+
         @Override
         public List<InputFieldParser<?>> getPosArgTypes() {
             return List.of(InputFieldParser.STRING, InputFieldParser.STRING, InputFieldParser.STRING);
@@ -141,5 +145,40 @@ public class RequestTest {
     public void getArg_wrongType_throwsWrongTypeException() {
         Request req = Request.of("hello");
         assertThrows(WrongTypeException.class, () -> req.getArg(0, Integer.class));
+    }
+
+    /**
+     * Tests the copy constructor of {@link Request}.
+     */
+    @Test
+    public void constructor_copyConstructor_copiesArguments() {
+        Request original = new DummyRequest(
+                List.of("a", "b", "c"),
+                Map.of("kw1", "val1", "kw2", "val2")
+        );
+        Request copy = new DummyRequest(original);
+        assertEquals("a", copy.getArg(0, String.class));
+        assertEquals("b", copy.getArg(1, String.class));
+        assertEquals("val1", copy.getArg("kw1", String.class));
+    }
+
+    /**
+     * Tests {@link AtRequest} argument specifications.
+     */
+    @Test
+    public void atRequest_argumentTypes() {
+        AtRequest req = new AtRequest(List.of("at", "2025-06-01-09-00-00"), Map.of());
+        assertEquals(List.of(InputFieldParser.STRING, InputFieldParser.DATETIME), req.getPosArgTypes());
+        assertEquals(Map.of("sort", InputFieldParser.ORDER), req.getKwargTypes());
+    }
+
+    /**
+     * Tests {@link DueRequest} argument specifications.
+     */
+    @Test
+    public void dueRequest_argumentTypes() {
+        DueRequest req = new DueRequest(List.of("due", "2025-10-15-18-00-00"), Map.of());
+        assertEquals(List.of(InputFieldParser.STRING, InputFieldParser.DATETIME), req.getPosArgTypes());
+        assertEquals(Map.of("sort", InputFieldParser.ORDER), req.getKwargTypes());
     }
 }

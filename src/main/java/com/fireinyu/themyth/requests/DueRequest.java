@@ -18,7 +18,7 @@ public class DueRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected DueRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public DueRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs, Map.of("sort", Defaults.TASK_ORDER));
     }
 

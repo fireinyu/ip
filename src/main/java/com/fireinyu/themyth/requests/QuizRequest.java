@@ -18,7 +18,7 @@ public class QuizRequest extends Request {
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
-    protected QuizRequest(List<String> posArgs, Map<String, String> kwargs) {
+    public QuizRequest(List<String> posArgs, Map<String, String> kwargs) {
         super(posArgs, kwargs);
     }
 
