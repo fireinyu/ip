@@ -65,7 +65,6 @@ public class CliTest {
             assertTrue(output.contains("Haaaay superstar! The Myth has entered the room! ✨"));
             assertTrue(output.contains("Everything is fine"));
             assertTrue(output.contains("The Myth is clutching pearls"));
-            assertTrue(output.contains("The Myth dramatically faints into the abyss!"));
             assertFalse(output.contains("Bye!"));
         } finally {
             System.setIn(originalIn);

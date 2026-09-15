@@ -88,7 +88,7 @@ public class QuizModeTest {
 
         // Close request removes the quiz task and saves
         Response closeResponse = mode.respondTo(new CloseRequest());
-        assertEquals("Exiting with absolute elegance and flawless poise! See ya, darling! 💋",
+        assertEquals("Curtain down, beauties! But someone forgot my grand finale encore! 💅",
                 closeResponse.getBody());
     }
 }

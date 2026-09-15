@@ -70,9 +70,9 @@ public class TaskMode extends ChatMode {
      * {@inheritDoc}
      */
     @Override
-    protected Response respondToClose(CloseRequest request) {
+    protected Response respondToCloseEvent(CloseRequest request) {
         taskList.close();
-        return new Response("Exiting with absolute elegance and flawless poise! See ya, darling! 💋");
+        return super.respondToCloseEvent(request);
     }
 
     /**

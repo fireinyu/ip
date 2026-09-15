@@ -68,9 +68,9 @@ public class QuizMode extends TaskMode {
     }
 
     @Override
-    protected Response respondToClose(CloseRequest request) {
+    protected Response respondToCloseEvent(CloseRequest request) {
         this.getTaskList().remove(this.quizTask);
-        return super.respondToClose(request);
+        return super.respondToCloseEvent(request);
     }
 
     @Override

@@ -37,7 +37,7 @@ public abstract class ChatMode {
     public Response respondTo(Request request) {
         return switch (request) {
             case InitRequest r -> respondToInit(r);
-            case CloseRequest r -> respondToClose(r);
+            case CloseRequest r -> respondToCloseEvent(r);
             case ExitRequest r -> respondToExit(r);
             case ListRequest r -> respondToList(r);
             case AtRequest r -> respondToAt(r);
@@ -81,8 +81,8 @@ public abstract class ChatMode {
      * @param request The close request.
      * @return A generic response indicating no handler is present.
      */
-    protected Response respondToClose(CloseRequest request) {
-        return new Response("Curtain down, beauties! But someone forgot my grand finale encore! 💅");
+    protected Response respondToCloseEvent(CloseRequest request) {
+        return new Response("Curtain down, beauties! But someone forgot my grand finale encore! 💅", true);
     }
 
     /**

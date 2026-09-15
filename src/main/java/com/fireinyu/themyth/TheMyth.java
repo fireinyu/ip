@@ -38,17 +38,21 @@ public class TheMyth {
     }
 
     /**
-     * Start the app
+     * Start the app.
+     * @return status message after starting the app
+     * @see Response
      */
-    public void start() {
-        this.interruptCycle(new InitRequest());
+    public Response start() {
+        return this.interruptCycle(new InitRequest());
     }
 
     /**
-     * Stop the app
+     * Stop the app.
+     * @return status message after stopping the app
+     * @see Response
      */
-    public void stop() {
-        this.interruptCycle(new CloseRequest());
+    public Response stop() {
+        return this.interruptCycle(new CloseRequest());
     }
 
     /**
@@ -67,8 +71,10 @@ public class TheMyth {
             response = new FatalResponse(e);
         }
         if (response.doExit()) {
-            this.stop();
+            return this.stop();
         }
+
+
         return response;
     }
 
@@ -76,14 +82,13 @@ public class TheMyth {
      * Runs a single interrupt cycle of The Myth in response to an InterruptEvent <br><br>
      * Interrupt cycles originate from within the program.
      * The cause and details of interrupt are encapsulated in the InterruptEvent<br>
-     * Summary of actions: receive InterruptEvent -> ChatMode handles InterruptEvent
-     * -> obtain Response -> execute Response
-     * @param event: the interrupt event that caused this interrupt cycle
+     * @param event the interrupt event that caused this interrupt cycle
+     * @return reponse to the interrupt event
      * @see  InterruptEvent
      * @see  ChatMode
      * @see  Response
      */
-    private void interruptCycle(InterruptEvent event) {
+    private Response interruptCycle(InterruptEvent event) {
         Response response = null;
         try {
             response = chatMode.respondTo(event);
@@ -92,7 +97,7 @@ public class TheMyth {
         } catch (FatalException e) {
             response = new FatalResponse(e);
         }
-        System.out.println(response.getBody());
+        return response;
     }
 }
 

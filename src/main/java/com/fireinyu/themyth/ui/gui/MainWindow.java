@@ -5,6 +5,8 @@ import java.util.function.DoubleSupplier;
 import com.fireinyu.themyth.TheMyth;
 import com.fireinyu.themyth.responses.Response;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /**
  * Controller for the main GUI.
@@ -84,6 +87,7 @@ public class MainWindow extends AnchorPane {
         // logic component. A null value here would be a programming error in the application's setup.
         assert d != null;
         theMyth = d;
+        executeResponse(theMyth.start());
     }
 
     /**
@@ -103,6 +107,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(input, userImage)
+        );
 
         // This assertion documents the assumption that the TheMyth logic instance
         // has been injected before any user input is handled. If this fails,
@@ -114,18 +121,25 @@ public class MainWindow extends AnchorPane {
         // return a non-null Response object. A failure here would indicate a bug
         // within the TheMyth.handleInput() implementation.
         assert response != null;
+        executeResponse(response);
+    }
+
+    private void executeResponse(Response response) {
         theMythImage = switch (response.getMood()) {
             case HAPPY -> theMythHappyImage;
             case ANGRY -> theMythAngryImage;
             default -> theMythDefaultImage;
         };
         dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
                 DialogBox.getTheMythDialog(response.getBody(), theMythImage)
         );
         userInput.clear();
         if (response.doExit()) {
-            Platform.exit();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(2), event -> Platform.exit())
+            );
+            timeline.setCycleCount(1);
+            timeline.play();
         }
     }
 }
