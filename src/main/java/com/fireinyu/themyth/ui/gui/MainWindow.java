@@ -1,5 +1,7 @@
 package com.fireinyu.themyth.ui.gui;
 
+import java.util.function.DoubleSupplier;
+
 import com.fireinyu.themyth.TheMyth;
 import com.fireinyu.themyth.responses.Response;
 
@@ -9,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -16,6 +19,8 @@ import javafx.scene.layout.VBox;
  * Controller for the main GUI.
  */
 public class MainWindow extends AnchorPane {
+    @FXML
+    private ImageView linusOverlay;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -26,6 +31,7 @@ public class MainWindow extends AnchorPane {
     private Button sendButton;
 
     private TheMyth theMyth;
+    private LinusAnimator linusAnimator;
 
     private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     private final Image theMythDefaultImage = new Image(this.getClass().getResourceAsStream("/images/DaMyth.png"));
@@ -39,6 +45,7 @@ public class MainWindow extends AnchorPane {
      */
     public MainWindow() {
     }
+
     /**
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
@@ -46,9 +53,25 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         // These assertions ensure that the FXML loader has injected the required UI components.
+        assert linusOverlay != null : "fx:id=\"linusOverlay\" was not injected: check your FXML file.";
         assert scrollPane != null : "fx:id=\"scrollPane\" was not injected: check your FXML file.";
         assert dialogContainer != null : "fx:id=\"dialogContainer\" was not injected: check your FXML file.";
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+
+        DoubleSupplier widthSupplier = () -> this.getWidth() > 0 ? this.getWidth() : 400.0;
+        DoubleSupplier heightSupplier = () -> scrollPane.getHeight() > 0 ? scrollPane.getHeight() : 557.0;
+        linusAnimator = new LinusAnimator(linusOverlay, widthSupplier, heightSupplier);
+        linusAnimator.start();
+        DialogBox.addOnDialogCreatedListener(linusAnimator::shakeViolently);
+    }
+
+    /**
+     * Returns the animator controlling the linus overlay.
+     *
+     * @return the linus animator
+     */
+    LinusAnimator getLinusAnimator() {
+        return linusAnimator;
     }
 
     /**
