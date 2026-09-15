@@ -8,7 +8,11 @@ public enum TaskOrder {
     /** Sorts tasks by creation time. */
     CREATED(Comparator.comparing(Task::getCreated).reversed()),
     /** Sorts tasks by modification time. */
-    MODIFIED(Comparator.comparing(Task::getLastModified).reversed());
+    MODIFIED(Comparator.comparing(Task::getLastModified).reversed()),
+    /** Sorts tasks by description. */
+    NAME(Comparator.comparing(Task::getDescription)),
+    /** List unmarked tasks first. */
+    PENDING(Comparator.comparing(Task::isCompleted));
 
     private final Comparator<Task> comparator;
 
