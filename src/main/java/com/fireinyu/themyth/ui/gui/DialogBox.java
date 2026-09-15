@@ -3,6 +3,7 @@ package com.fireinyu.themyth.ui.gui;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,8 @@ import javafx.scene.text.TextFlow;
  * and a text flow containing styled text from the speaker.
  */
 public class DialogBox extends HBox {
+    private static final List<Runnable> ON_DIALOG_CREATED_LISTENERS = new CopyOnWriteArrayList<>();
+
     @FXML
     private TextFlow dialog;
     @FXML
@@ -76,6 +79,37 @@ public class DialogBox extends HBox {
     }
 
     /**
+     * Registers a listener to be notified whenever a dialog box is created.
+     *
+     * @param listener the callback to run on dialog creation
+     */
+    public static void addOnDialogCreatedListener(Runnable listener) {
+        if (listener != null) {
+            ON_DIALOG_CREATED_LISTENERS.add(listener);
+        }
+    }
+
+    /**
+     * Clears all registered dialog creation listeners.
+     */
+    public static void clearOnDialogCreatedListeners() {
+        ON_DIALOG_CREATED_LISTENERS.clear();
+    }
+
+    /**
+     * Notifies all registered listeners that a dialog box has been created.
+     */
+    private static void notifyDialogCreated() {
+        for (Runnable listener : ON_DIALOG_CREATED_LISTENERS) {
+            try {
+                listener.run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Creates a dialog box for the user with sparkle animation.
      *
      * @param text The text from the user.
@@ -85,6 +119,7 @@ public class DialogBox extends HBox {
     public static DialogBox getUserDialog(String text, Image img) {
         var db = new DialogBox(FlamboyantTextFormatter.formatPlain(text), img);
         SparkleAnimator.play(db, false);
+        notifyDialogCreated();
         return db;
     }
 
@@ -100,6 +135,7 @@ public class DialogBox extends HBox {
         var db = new DialogBox(FlamboyantTextFormatter.format(text), img);
         db.flip();
         SparkleAnimator.play(db, true);
+        notifyDialogCreated();
         return db;
     }
 }
