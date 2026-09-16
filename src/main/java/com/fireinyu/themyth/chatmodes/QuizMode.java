@@ -5,7 +5,9 @@ import java.util.Random;
 
 import com.fireinyu.themyth.Defaults;
 import com.fireinyu.themyth.Quiz;
+import com.fireinyu.themyth.exceptions.CheekySlackerException;
 import com.fireinyu.themyth.requests.AnswerRequest;
+import com.fireinyu.themyth.requests.DeleteRequest;
 import com.fireinyu.themyth.requests.MarkRequest;
 import com.fireinyu.themyth.requests.QuizRequest;
 import com.fireinyu.themyth.requests.events.CloseRequest;
@@ -54,6 +56,16 @@ public class QuizMode extends TaskMode {
         return response;
     }
 
+    @Override
+    protected Response respondToDelete(DeleteRequest request) {
+        int itemIndex = request.getArg(1, Integer.class) - 1;
+        Task task = super.getTaskList().get(itemIndex);
+        if (task == this.quizTask) {
+            throw new CheekySlackerException();
+        }
+        return super.respondToDelete(request);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -89,6 +101,7 @@ public class QuizMode extends TaskMode {
                     Response.Mood.HAPPY
             );
         } else {
+            this.activeQuiz = this.quizzes.getRandom();
             this.activeQuiz = this.quizzes.getRandom();
             return new Response(String.format(
                     "Oh honey, bless your gorgeous little heart, but that was NOT it! 🤦‍♀️ "
