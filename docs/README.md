@@ -50,6 +50,7 @@
 
 - View the software engineering quiz question, along with the answer options.
 - The first question is randomly selected.
+- **Example:** `quiz` displays the current quiz question and its answer options.
 
 <a id="cmd-answer"></a>
 
@@ -59,6 +60,7 @@
 - Answering correctly marks the *[Quiz Task](#glossary)* as complete.
 - A random new question is selected after each attempt, regardless of whether it is right or wrong.
 - \<idx>: index of option to use as answer
+- **Example:** After viewing a question with `quiz`, enter `answer 1` to submit option 1. A new question is selected after the attempt.
 
 ### Create [task](#glossary)s
 
@@ -75,6 +77,7 @@
 
 - Create a new [todo task](#glossary).
 - \<desc>: description of the [task](#glossary)
+- **Example:** `todo read_textbook` creates a todo task with the description `read_textbook`.
 
 <a id="cmd-deadline"></a>
 
@@ -83,6 +86,7 @@
 - Create a [deadline task](#glossary) due by a [Datetime](#argument-formats).
 - \<desc>: description of the [task](#glossary)
 - \<by>: [task](#glossary) due [Datetime](#argument-formats)
+- **Example:** `deadline submit_assignment /by 2026-09-25-23-59` creates a deadline task due on 25 September 2026 at 23:59.
 
 <a id="cmd-event"></a>
 
@@ -92,6 +96,7 @@
 - \<desc>: description of the [task](#glossary)
 - \<from>: event start [Datetime](#argument-formats)
 - \<to>: event end [Datetime](#argument-formats)
+- **Example:** `event study_group /from 2026-09-20-14-00 /to 2026-09-20-16-00` creates an event on 20 September 2026 from 14:00 to 16:00.
 
 ### List [task](#glossary)s
 
@@ -111,6 +116,7 @@
 - Sorting the [task](#glossary)s may change their numbering in the displayed list. The [index](#glossary) of each [task](#glossary) **will be updated accordingly**.
 - \[/sort]: [Order](#argument-formats) for sorting the list of [task](#glossary)s
   - defaults to "modified"
+- **Example:** `list /sort name` lists all tasks in alphabetical order of their descriptions and updates their indices to match that order.
 
 <a id="cmd-find"></a>
 
@@ -120,6 +126,7 @@
 - The numbering of [task](#glossary)s in this list **does not represent** the [index](#glossary) of each [task](#glossary).
 - \[/sort]: [Order](#argument-formats) for sorting the list of [task](#glossary)s
   - defaults to "modified"
+- **Example:** `find read /sort name` lists tasks matching `read`, sorted alphabetically by description.
 
 <a id="cmd-due"></a>
 
@@ -129,6 +136,7 @@
 - The numbering of [task](#glossary)s in this list **does not represent** the [index](#glossary) of each [task](#glossary).
 - \[/sort]: [Order](#argument-formats) for sorting the list of [task](#glossary)s
   - defaults to "modified"
+- **Example:** `due 2026-09-26 /sort created` lists deadline tasks due by the start of 26 September 2026, with the most recently created tasks first.
 
 <a id="cmd-at"></a>
 
@@ -138,6 +146,7 @@
 - The numbering of [task](#glossary)s in this list **does not represent** the [index](#glossary) of each [task](#glossary).
 - \[/sort]: [Order](#argument-formats) for sorting the list of [task](#glossary)s
   - defaults to "modified"
+- **Example:** `at 2026-09-20-15-00 /sort name` lists events happening on 20 September 2026 at 15:00, sorted alphabetically by description.
 
 ### Edit [task](#glossary)s
 
@@ -155,6 +164,7 @@
 - Marking the [Quiz Task](#glossary) as [completed](#glossary) is equivalent to [quiz](#cmd-quiz); if the *Quiz [task](#glossary)* was [pending](#glossary), it remains [pending](#glossary).
 - \<idx>: [index](#glossary) of [task](#glossary) to mark as [completed](#glossary)
   - check the [index](#glossary) of each [task](#glossary) using [list](#cmd-list)
+- **Example:** If `list` shows a regular task at index `2`, `mark 2` marks that task as completed.
 
 <a id="cmd-unmark"></a>
 
@@ -163,6 +173,7 @@
 - Mark a [task](#glossary) as [pending](#glossary).
 - \<idx>: [index](#glossary) of [task](#glossary) to mark as [pending](#glossary)
   - check the [index](#glossary) of each [task](#glossary) using [list](#cmd-list)
+- **Example:** If `list` shows a completed task at index `2`, `unmark 2` changes its status to pending.
 
 <a id="cmd-delete"></a>
 
@@ -172,6 +183,7 @@
 - Marking the [Quiz Task](#glossary) is not allowed; doing so will cause an *exception* and the [Quiz Task](#glossary) will remain.
 - \<idx>: [index](#glossary) of [task](#glossary) to mark as [pending](#glossary)
   - check the [index](#glossary) of each [task](#glossary) using [list](#cmd-list)
+- **Example:** If `list` shows a regular task at index `2`, `delete 2` removes that task from the list. Choose a task other than the Quiz Task.
 
 ### Exit the app
 
@@ -181,15 +193,16 @@
 
 - Exit the app and save the current [task](#glossary) list to disk.
 - **Important**: if you don't use this command (e.g. exit by closing the window), any changes you made **will be lost**.
+- **Example:** `bye` saves the current task list to disk and exits the app.
 
 ### Argument Formats
 
-| Type | Format/s | Notes | Examples |
-| --- | --- | --- | --- |
-| String | {characters} | No spaces. | software<br>the_myth |
-| Integer | {digits} | No negative integers. | 9<br>67 |
-| Datetime | YYYY<br>YYYY-MM<br>YYYY-MM-DD<br>YYYY-MM-DD-HH<br>YYYY-MM-DD-HH-mm | Set to the start of the time period.<br>Time is specified in 24-hour format. | 2026-03<br>2026-03-15-21-42 |
-| Order | Choice of:<br>- name<br>- created<br>- modified<br>- pending<br><br><br><br> | Sorting order for [task](#glossary)s.<br>**name**: ascending alphabetical order of descriptions.<br>**created**: descending order of creation<br>**modified**: descending order of modification (such as marking)<br>**pending**: unmarked [task](#glossary)s first<br> | name<br>modified |
+| Type     | Format/s                                                                     | Notes                                                                                                                                                                                                                                                                   | Examples                                |
+| -------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| String   | {characters}                                                                 | Use "..." if you need to use spaces.<br>Use \\" instead of \" for double-quotation literals.                                                                                                                                                                            | software<br>"the myth"<br>"do \\"it\\"" |
+| Integer  | {digits}                                                                     | No negative integers.                                                                                                                                                                                                                                                   | 9<br>67                                 |
+| Datetime | YYYY<br>YYYY-MM<br>YYYY-MM-DD<br>YYYY-MM-DD-HH<br>YYYY-MM-DD-HH-mm           | Set to the start of the time period.<br>Time is specified in 24-hour format.                                                                                                                                                                                            | 2026-03<br>2026-03-15-21-42             |
+| Order    | Choice of:<br>- name<br>- created<br>- modified<br>- pending<br><br><br><br> | Sorting order for [task](#glossary)s.<br>**name**: ascending alphabetical order of descriptions.<br>**created**: descending order of creation<br>**modified**: descending order of modification (such as marking)<br>**pending**: unmarked [task](#glossary)s first<br> | name<br>modified                        |
 
 ### Glossary
 
