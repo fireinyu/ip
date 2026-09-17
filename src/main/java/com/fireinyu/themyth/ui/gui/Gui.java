@@ -7,6 +7,7 @@ import com.fireinyu.themyth.TheMyth;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -28,7 +29,10 @@ public class Gui extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+            Image appIcon = new Image(getClass().getResourceAsStream("/images/linus.png"));
+            stage.getIcons().add(appIcon);
             stage.setScene(scene);
+            stage.setTitle("The Myth");
             stage.setMinHeight(220);
             stage.setMinWidth(417);
             fxmlLoader.<MainWindow>getController().setTheMyth(new TheMyth()); // inject the TheMyth instance
