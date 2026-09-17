@@ -2,6 +2,7 @@ package com.fireinyu.themyth.storage;
 
 import com.fireinyu.themyth.exceptions.ArgumentFormatException;
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
+import com.fireinyu.themyth.exceptions.TaskIndexException;
 import com.fireinyu.themyth.tasks.DeadlineTask;
 import com.fireinyu.themyth.tasks.EventTask;
 import com.fireinyu.themyth.tasks.Task;
@@ -56,6 +57,15 @@ public class TaskList extends CsvBackedList<Task> {
         } catch (IndexOutOfBoundsException | ArgumentFormatException e) {
             String path = super.getPath() != null ? super.getPath().toString() : "in-memory";
             throw new CorruptedTaskFileException(path);
+        }
+    }
+
+    @Override
+    public Task get(int index) {
+        try {
+            return super.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new TaskIndexException(index + 1, size());
         }
     }
 }
