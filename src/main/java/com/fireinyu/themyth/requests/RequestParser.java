@@ -4,13 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
-* Parser which converts each raw line of user input to a Request<br><br>
-* Different user inputs are parsed into different Request types based on the provided command<br>
-* The command is the first word of the user input line.
-*/
+ * Parser which converts each raw line of user input to a Request<br><br>
+ * Different user inputs are parsed into different Request types based on the provided command<br>
+ * The command is the first word of the user input line.
+ */
 public class RequestParser {
+
+    /**
+     * Pattern matching a double-quoted substring (with support for escaped characters) or a non-whitespace token.
+     */
+    private static final Pattern ARG_PATTERN = Pattern.compile("\"((?:\\\\.|[^\"\\\\])*)\"|(\\S+)");
+
     /**
      * Parse an input line into a Request
      * @param message input line
@@ -52,13 +60,46 @@ public class RequestParser {
     }
 
     /**
-     * Splits the message into parts based on whitespace.
+     * Splits the message into arguments, treating each double-quoted substring
+     * as a single argument and accepting escaped double-quotations.
      *
      * @param message The message to split.
-     * @return An array of strings.
+     * @return An array of argument strings.
      */
     private String[] split(String message) {
-        return message.split("\\s+");
+        List<String> args = new ArrayList<>();
+        Matcher matcher = ARG_PATTERN.matcher(message);
+        while (matcher.find()) {
+            if (matcher.group(1) != null) {
+                args.add(unescape(matcher.group(1)));
+            } else {
+                args.add(unescape(matcher.group(2)));
+            }
+        }
+        return args.toArray(new String[0]);
+    }
+
+    /**
+     * Unescapes escaped double-quotations and backslashes in an argument.
+     *
+     * @param token The token string to unescape.
+     * @return The unescaped token string.
+     */
+    private String unescape(String token) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < token.length(); i++) {
+            char c = token.charAt(i);
+            if (c == '\\' && i + 1 < token.length()) {
+                char next = token.charAt(i + 1);
+                if (next == '"' || next == '\\') {
+                    sb.append(next);
+                    i++;
+                    continue;
+                }
+            }
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     /**

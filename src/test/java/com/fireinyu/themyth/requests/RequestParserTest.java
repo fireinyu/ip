@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import org.junit.jupiter.api.Test;
 
+import com.fireinyu.themyth.util.MythDateTime;
+
 /**
  * Unit tests for {@link RequestParser}.
  */
@@ -135,5 +137,99 @@ public class RequestParserTest {
     public void parse_unknownCommand_returnsGenericRequest() {
         Request req = parser.parse("unknown 123");
         assertEquals("unknown", req.getArg(0, String.class));
+    }
+
+    /**
+     * Tests that a double-quoted positional argument containing spaces is treated as a single argument.
+     */
+    @Test
+    public void parse_quotedPositionalArgumentWithSpaces_treatedAsSingleArgument() {
+        Request req = parser.parse("todo \"read a book\"");
+        assertInstanceOf(TodoRequest.class, req);
+        assertEquals("read a book", req.getArg(1, String.class));
+    }
+
+    /**
+     * Tests that an escaped double-quote inside a quoted argument is preserved in the parsed argument.
+     */
+    @Test
+    public void parse_quotedArgumentWithEscapedQuotes_preservesQuotesInArgument() {
+        Request req = parser.parse("todo \"read \\\"The Hobbit\\\" book\"");
+        assertInstanceOf(TodoRequest.class, req);
+        assertEquals("read \"The Hobbit\" book", req.getArg(1, String.class));
+    }
+
+    /**
+     * Tests that escaped double-quotes in unquoted arguments are accepted and unescaped.
+     */
+    @Test
+    public void parse_unquotedArgumentWithEscapedQuotes_preservesQuotesInArgument() {
+        Request req = parser.parse("todo read\\\"book");
+        assertInstanceOf(TodoRequest.class, req);
+        assertEquals("read\"book", req.getArg(1, String.class));
+    }
+
+    /**
+     * Tests that an argument composed entirely of escaped quotes within double quotes is parsed correctly.
+     */
+    @Test
+    public void parse_entirelyEscapedQuotesInQuotedArgument_returnsInnerQuotes() {
+        Request req = parser.parse("todo \"\\\"quoted\\\"\"");
+        assertInstanceOf(TodoRequest.class, req);
+        assertEquals("\"quoted\"", req.getArg(1, String.class));
+    }
+
+    /**
+     * Tests parsing of a quoted keyword argument value containing spaces or datetime formatting.
+     */
+    @Test
+    public void parse_quotedKeywordArgument_treatedAsSingleArgument() {
+        Request req = parser.parse("deadline \"homework assignment\" /by \"2025-10-15-18-00-00\"");
+        assertInstanceOf(DeadlineRequest.class, req);
+        assertEquals("homework assignment", req.getArg(1, String.class));
+        assertEquals("2025-10-15-18-00-00", req.getArg("by", MythDateTime.class).dump());
+    }
+
+    /**
+     * Tests parsing multiple quoted arguments across positional and keyword arguments.
+     */
+    @Test
+    public void parse_multipleQuotedArguments_parsesAllArgumentsCorrectly() {
+        Request req = parser.parse(
+                "event \"annual gala\" /from \"2025-06-01-09-00-00\" /to \"2025-06-01-17-00-00\"");
+        assertInstanceOf(EventRequest.class, req);
+        assertEquals("annual gala", req.getArg(1, String.class));
+        assertEquals("2025-06-01-09-00-00", req.getArg("from", MythDateTime.class).dump());
+        assertEquals("2025-06-01-17-00-00", req.getArg("to", MythDateTime.class).dump());
+    }
+
+    /**
+     * Tests parsing of find command with a double-quoted multi-word keyword.
+     */
+    @Test
+    public void parse_quotedKeywordForFind_parsesMultiwordKeyword() {
+        Request req = parser.parse("find \"software engineering\" /sort name");
+        assertInstanceOf(FindRequest.class, req);
+        assertEquals("software engineering", req.getArg(1, String.class));
+    }
+
+    /**
+     * Tests that an empty double-quoted argument is parsed as an empty string argument.
+     */
+    @Test
+    public void parse_emptyQuotedString_treatedAsEmptyArgument() {
+        Request req = parser.parse("todo \"\"");
+        assertInstanceOf(TodoRequest.class, req);
+        assertEquals("", req.getArg(1, String.class));
+    }
+
+    /**
+     * Tests that extra whitespace around arguments is ignored while spaces inside quotes are preserved.
+     */
+    @Test
+    public void parse_multipleSpacesInsideAndOutsideQuotes_preservesInteriorSpacesOnly() {
+        Request req = parser.parse("   todo    \"read   a   book\"   ");
+        assertInstanceOf(TodoRequest.class, req);
+        assertEquals("read   a   book", req.getArg(1, String.class));
     }
 }
