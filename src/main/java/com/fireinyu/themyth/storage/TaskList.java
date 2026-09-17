@@ -12,15 +12,15 @@ import com.fireinyu.themyth.util.MythDateTime;
 /**
  * List of Tasks that can be synced with a CSV file on disk.
  * @see Task
- * @see LinesDisk
+ * @see FileLinesDisk
  */
 public class TaskList extends CsvBackedList<Task> {
 
     /**
      * Initialises a TaskList.<br><br>
-     * It is initially not backed by any LinesDisk so it acts as an ArrayList of Tasks.<br>
-     * Call open() to sync to a LinesDisk.
-     * @see LinesDisk
+     * It is initially not backed by any FileLinesDisk so it acts as an ArrayList of Tasks.<br>
+     * Call open() to sync to a FileLinesDisk.
+     * @see FileLinesDisk
      * @see Task
      */
     public TaskList() {
@@ -43,7 +43,7 @@ public class TaskList extends CsvBackedList<Task> {
                     break;
                 }
                 default: {
-                    String path = super.getPath() != null ? super.getPath().toString() : "in-memory";
+                    String path = super.getDescriptor() != null ? super.getDescriptor().toString() : "in-memory";
                     throw new CorruptedTaskFileException(path);
                 }
             }
@@ -55,7 +55,7 @@ public class TaskList extends CsvBackedList<Task> {
             task.setAccessTimes(MythDateTime.parse(item[2]), MythDateTime.parse(item[3]));
             return task;
         } catch (IndexOutOfBoundsException | ArgumentFormatException e) {
-            String path = super.getPath() != null ? super.getPath().toString() : "in-memory";
+            String path = super.getDescriptor() != null ? super.getDescriptor().toString() : "in-memory";
             throw new CorruptedTaskFileException(path);
         }
     }

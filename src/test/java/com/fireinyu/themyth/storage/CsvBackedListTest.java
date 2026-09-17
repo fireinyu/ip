@@ -63,11 +63,11 @@ public class CsvBackedListTest {
     @Test
     public void unlinkedList_returnsNullPathAndIgnoresClose() {
         ConcreteCsvBackedList list = new ConcreteCsvBackedList();
-        assertNull(list.getPath());
+        assertNull(list.getDescriptor());
 
         // close should safely do nothing when not linked
         list.close();
-        assertNull(list.getPath());
+        assertNull(list.getDescriptor());
     }
 
     /**
@@ -79,7 +79,7 @@ public class CsvBackedListTest {
         ConcreteCsvBackedList list = new ConcreteCsvBackedList();
         list.open(filePath);
 
-        assertEquals(filePath, list.getPath());
+        assertEquals(filePath.toString(), list.getDescriptor());
         list.add(new SimpleItem("apple", "red"));
         list.add(new SimpleItem("banana", "yellow"));
         list.close();
@@ -122,7 +122,7 @@ public class CsvBackedListTest {
     @Test
     public void open_corruptedRow_throwsCorruptedTaskFileException() {
         Path filePath = tempDir.resolve("corrupted.csv");
-        LinesDisk disk = new LinesDisk(filePath);
+        FileLinesDisk disk = new FileLinesDisk(filePath);
         disk.writeLines(java.util.stream.Stream.of("onlyOneColumn"));
 
         ConcreteCsvBackedList list = new ConcreteCsvBackedList();
@@ -137,7 +137,7 @@ public class CsvBackedListTest {
         QuizList quizList = new QuizList();
         quizList.open("data/questions.csv");
 
-        assertNotNull(quizList.getPath());
+        assertNotNull(quizList.getDescriptor());
         assertFalse(quizList.isEmpty());
     }
 }

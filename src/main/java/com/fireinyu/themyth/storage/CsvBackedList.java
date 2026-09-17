@@ -1,8 +1,6 @@
 package com.fireinyu.themyth.storage;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,20 +11,20 @@ import com.fireinyu.themyth.exceptions.FileAccessException;
 
 /**
  * ArrayList that can be synced with a csv file on disk.<br><br>
- * File access is managed through a LinesDisk.
+ * File access is managed through a LinesDiskDriver.
  * @param <T> The type of elements in this list, which must be CsvSerializable.
- * @see LinesDisk
+ * @see LinesDiskDriver
  */
 public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList<T> {
 
-    private LinesDisk storage;
+    private LinesDiskDriver storage;
     private boolean linked;
 
     /**
      * Initialises a CsvBackedList.<br><br>
-     * It is initially not backed by any LinesDisk so it acts as an ArrayList.<br>
-     * Call open() to sync to a LinesDisk.
-     * @see LinesDisk
+     * It is initially not backed by any FileLinesDisk so it acts as an ArrayList.<br>
+     * Call open() to sync to a FileLinesDisk.
+     * @see LinesDiskDriver
      */
     public CsvBackedList() {
         super();
@@ -34,49 +32,47 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
     }
 
     /**
-     * Creates a LinesDisk instance to back this CsvBackedList<br><br>
+     * Creates a FileLinesDisk instance to back this CsvBackedList<br><br>
      * Automatically pulls the LineDisk content into this CsvBackedList if opened successfully<br>
      * File content is deserialized into T instances<br>
      * Warning: Previous data in this CsvBackedList will be replaced. <br>
-     * @param path path to the CSV file for the LinesDisk instance
+     * @param path path to the CSV file for the FileLinesDisk instance
      * @throws FileAccessException if the file cannot be created or opened for reading
      * @throws CorruptedTaskFileException if the file content is corrupted and cannot be deserialized
      * @see Path
-     * @see LinesDisk
+     * @see FileLinesDisk
      * @see CsvSerializable
      */
     public void open(Path path) {
-        this.storage = new LinesDisk(path);
+        this.storage = new FileLinesDisk(path);
         this.linked = true;
         this.fetch();
     }
 
     /**
-     * Creates a LinesDisk instance to back this CsvBackedList<br><br>
-     * Automatically pulls the LineDisk content into this CsvBackedList if opened successfully<br>
+     * Creates a ResourceLinesDisk instance to back this CsvBackedList<br><br>
+     * Automatically pulls the ResourceLinesDisk content into this CsvBackedList if opened successfully<br>
      * File content is deserialized into T instances<br>
      * Warning: Previous data in this CsvBackedList will be replaced. <br>
-     * @param resourceName name of CSV resource file for the LinesDisk instance
-     * @throws FileAccessException if the file cannot be created or opened for reading
-     * @throws CorruptedTaskFileException if the file content is corrupted and cannot be deserialized
+     * @param  resourceName of the CSV file for the ResourceLinesDisk instance
+     * @throws FileAccessException if the resource file does not exit
+     * @throws CorruptedTaskFileException if the resource file content is corrupted and cannot be deserialized
      * @see Path
-     * @see LinesDisk
+     * @see ResourceLinesDisk
      * @see CsvSerializable
      */
     public void open(String resourceName) {
-        try {
-            this.open(Paths.get(CsvBackedList.class.getClassLoader().getResource(resourceName).toURI()));
-        } catch (URISyntaxException e) {
-            throw new FileAccessException(resourceName);
-        }
+        this.storage = new ResourceLinesDisk(resourceName);
+        this.linked = true;
+        this.fetch();
     }
 
     /**
-     * Close the LinesDisk instance that backs this CsvBackedList, if any<br><br>
-     * Automatically writes the content of this CsvBackedList into the LinesDisk before closing
+     * Close the FileLinesDisk instance that backs this CsvBackedList, if any<br><br>
+     * Automatically writes the content of this CsvBackedList into the FileLinesDisk before closing
      * @throws FileAccessException if the file cannot be created or opened for writing
      * @see Path
-     * @see LinesDisk
+     * @see FileLinesDisk
      */
     public void close() {
         if (!this.linked) {
@@ -95,16 +91,16 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
     }
 
     /**
-     * Get the file path associated with the LinesDisk instance that backs this CsvBackedList
-     * @return the file path associated with the LinesDisk instance that backs this CsvBackedList
-     * @see Path
-     * @see LinesDisk
+     * Get the descriptor associated with the LinesDiskDriver instance that backs this CsvBackedList
+     * @return the descriptor associated with the LinesDiskDriver instance that backs this CsvBackedList
+     * @see String
+     * @see LinesDiskDriver
      */
-    public Path getPath() {
+    public String getDescriptor() {
         if (this.storage == null) {
             return null;
         }
-        return this.storage.getPath();
+        return this.storage.getDescriptor();
     }
 
     /**

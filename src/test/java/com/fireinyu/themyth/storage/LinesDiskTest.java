@@ -16,7 +16,7 @@ import org.junit.jupiter.api.io.TempDir;
 import com.fireinyu.themyth.exceptions.FileAccessException;
 
 /**
- * Unit tests for {@link LinesDisk}.
+ * Unit tests for {@link FileLinesDisk}.
  */
 public class LinesDiskTest {
 
@@ -29,8 +29,8 @@ public class LinesDiskTest {
     @Test
     public void getPath_returnsConfiguredPath() {
         Path targetPath = tempDir.resolve("sample.txt");
-        LinesDisk disk = new LinesDisk(targetPath);
-        assertEquals(targetPath, disk.getPath());
+        FileLinesDisk disk = new FileLinesDisk(targetPath);
+        assertEquals(targetPath.toString(), disk.getDescriptor());
     }
 
     /**
@@ -41,7 +41,7 @@ public class LinesDiskTest {
         Path targetPath = tempDir.resolve("subfolder").resolve("newfile.txt");
         assertFalse(Files.exists(targetPath));
 
-        LinesDisk disk = new LinesDisk(targetPath);
+        FileLinesDisk disk = new FileLinesDisk(targetPath);
         List<String> lines = disk.readLines().toList();
 
         assertTrue(Files.exists(targetPath));
@@ -54,7 +54,7 @@ public class LinesDiskTest {
     @Test
     public void writeAndReadLines_persistsContentCorrectly() {
         Path targetPath = tempDir.resolve("data.txt");
-        LinesDisk disk = new LinesDisk(targetPath);
+        FileLinesDisk disk = new FileLinesDisk(targetPath);
 
         disk.writeLines(Stream.of("first line", "second line", "third line"));
         List<String> readResult = disk.readLines().toList();
@@ -68,7 +68,7 @@ public class LinesDiskTest {
     @Test
     public void readLines_onDirectoryPath_throwsFileAccessException() {
         // tempDir is a directory, not a file, so reading it as a file will cause an IOException
-        LinesDisk disk = new LinesDisk(tempDir);
+        FileLinesDisk disk = new FileLinesDisk(tempDir);
         assertThrows(FileAccessException.class, () -> disk.readLines().toList());
     }
 
@@ -78,7 +78,7 @@ public class LinesDiskTest {
     @Test
     public void writeLines_onDirectoryPath_throwsFileAccessException() {
         // tempDir is a directory, not a file, so writing lines to it will cause an IOException
-        LinesDisk disk = new LinesDisk(tempDir);
+        FileLinesDisk disk = new FileLinesDisk(tempDir);
         assertThrows(FileAccessException.class, () -> disk.writeLines(Stream.of("fail")));
     }
 }

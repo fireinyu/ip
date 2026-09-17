@@ -6,7 +6,7 @@ import java.util.List;
  * A class implements the CsvSerializable interface to indicate that it can be serialized to
  * and deserialized from a line in a CSV file on disk.
  *
- * @see LinesDisk
+ * @see FileLinesDisk
  */
 public interface CsvSerializable {
 

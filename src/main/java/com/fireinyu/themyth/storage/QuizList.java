@@ -30,7 +30,6 @@ public class QuizList extends CsvBackedList<Quiz> {
 
     /**
      * Selects and returns a random quiz question from the list.
-     *
      * @return a randomly chosen {@link Quiz} question
      */
     public Quiz getRandom() {

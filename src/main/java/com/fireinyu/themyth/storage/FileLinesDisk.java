@@ -10,33 +10,29 @@ import com.fireinyu.themyth.exceptions.FileAccessException;
 /**
  * Driver class for reading and writing to a file on Disk.<br><br>
  * File is read and written line-wise.
- * @see LinesDisk
+ * @see FileLinesDisk
  */
-public class LinesDisk {
+public class FileLinesDisk implements LinesDiskDriver {
 
     private Path path;
 
     /**
-     * Initialises a LinesDisk for line-wise access to a file at a given path.<br><br>
+     * Initialises a FileLinesDisk for line-wise access to a file at a given path.<br><br>
      * @param path path to the file
      * @see Path
      * @see Files
      */
-    public LinesDisk(Path path) {
+    public FileLinesDisk(Path path) {
         this.path = path;
     }
 
-    /**
-     * Get the file path associated with this LinesDisk<br><br>
-     * @return the file path associated with this LinesDisk
-     * @see Path
-     */
-    public Path getPath() {
-        return path;
+    @Override
+    public String getDescriptor() {
+        return path.toString();
     }
 
     /**
-     * Read the lines in the file associated with this LinesDisk into a Stream buffer<br><br>
+     * Read the lines in the file associated with this FileLinesDisk into a Stream buffer<br><br>
      * @return Stream of lines in the file
      * @see Stream
      * @see String
@@ -54,7 +50,7 @@ public class LinesDisk {
     }
 
     /**
-     * Write all lines from a String Stream into the file associated with this LinesDisk<br><br>
+     * Write all lines from a String Stream into the file associated with this FileLinesDisk<br><br>
      * @param lines Stream of lines to be written
      * @see Stream
      * @see String
