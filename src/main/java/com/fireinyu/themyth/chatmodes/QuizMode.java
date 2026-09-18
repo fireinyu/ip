@@ -1,7 +1,6 @@
 package com.fireinyu.themyth.chatmodes;
 
 import java.nio.file.Path;
-import java.util.Random;
 
 import com.fireinyu.themyth.Defaults;
 import com.fireinyu.themyth.Quiz;
@@ -51,7 +50,7 @@ public class QuizMode extends TaskMode {
     protected Response respondToInit(InitRequest request) {
         Response response = super.respondToInit(request);
         this.quizzes.open(Defaults.QUIZFILE);
-        this.activeQuiz = this.quizzes.get(new Random().nextInt(0, this.quizzes.size()));
+        this.activeQuiz = this.quizzes.getRandom();
         this.getTaskList().add(this.quizTask);
         return response;
     }
@@ -92,23 +91,23 @@ public class QuizMode extends TaskMode {
 
     @Override
     protected Response respondToAnswer(AnswerRequest request) {
+        Response response;
         if (request.getArg(1, Integer.class) == this.activeQuiz.getAnswerIndex()) {
             this.quizTask.mark();
-            this.activeQuiz = this.quizzes.getRandom();
-            return new Response(
+            response = new Response(
                     "DING DING DING! You are beauty, you are grace, you nailed it right in the face! "
                     + "Absolutely iconic, honey! 🌟💖",
                     Response.Mood.HAPPY
             );
         } else {
-            this.activeQuiz = this.quizzes.getRandom();
-            this.activeQuiz = this.quizzes.getRandom();
-            return new Response(String.format(
+            response = new Response(String.format(
                     "Oh honey, bless your gorgeous little heart, but that was NOT it! 🤦‍♀️ "
                     + "The tea is option %d! Better luck next time, babe! 💅",
                     this.activeQuiz.getAnswerIndex()),
                     Response.Mood.ANGRY);
         }
+        this.activeQuiz = this.quizzes.getRandom();
+        return response;
     }
 
     private Response takeQuiz() {
