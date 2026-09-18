@@ -77,7 +77,6 @@ public class CsvBackedListTest {
         @Override
         protected SimpleItem parse(String... item) throws CorruptedTaskFileException {
             if (item.length < 2) {
-                System.out.println(Arrays.toString(item));
                 throw new CorruptedTaskFileException("test");
             }
             return new SimpleItem(item[0], item[1]);

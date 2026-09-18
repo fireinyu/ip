@@ -204,7 +204,7 @@
 | Datetime | YYYY<br>YYYY-MM<br>YYYY-MM-DD<br>YYYY-MM-DD-HH<br>YYYY-MM-DD-HH-mm           | Set to the start of the time period.<br>Time is specified in 24-hour format.                                                                                                                                                                                            | 2026-03<br>2026-03-15-21-42             |
 | Order    | Choice of:<br>- name<br>- created<br>- modified<br>- pending<br><br><br><br> | Sorting order for [task](#glossary)s.<br>**name**: ascending alphabetical order of descriptions.<br>**created**: descending order of creation<br>**modified**: descending order of modification (such as marking)<br>**pending**: unmarked [task](#glossary)s first<br> | name<br>modified                        |
 
-### Glossary
+## Glossary
 
 | Term | Definition |
 | --- | --- |
@@ -216,3 +216,15 @@
 | **Quiz task** | A persistent built-in task for revising software engineering. It cannot be deleted and is marked as complete upon submitting the correct answer to the quiz via the `answer` command. |
 | **Completed** | The status of a task indicating that it has been completed (displayed with `[X]`). |
 | **Pending** | The status of a task indicating that it has not been completed (displayed with `[ ]`). |
+
+## AI Use Disclaimer
+
+| Tool used       | purpose                                                          | scope(time)   | scope(code)                 |
+| --------------- | ---------------------------------------------------------------- | ------------- | --------------------------- |
+| ChatGPT         | Generate chatbot profile image variations                        | ~Week 5       | main/java/resources/images  |
+| Antigravity     | Heavily used to reimagine JavaFX GUI                             | A-BetterGUI   | main/java.../ui/gui         |
+| Antigravity     | Greatly improve test coverage                                    | A-MoreTesting | test/java                   |
+| Antigravity     | Fill in missing Javadoc                                          | ~Week 4-6     | ~50% of total javadoc       |
+| ChatGPT         | Make responses more quirky with a flamboyant personality         | A-Personality | main/java.../chatmodes      |
+| ChatGPT         | Assist in final refactoring and clean-up to improve code quality | Week 6        | main/java<br>test/java      |
+| Gemini Notebook | Generate software engineering quizzes from se-edu textbook       | ~Week 4       | main/resources/data/quizzes |
