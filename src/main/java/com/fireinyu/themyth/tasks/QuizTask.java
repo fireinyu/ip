@@ -6,7 +6,7 @@ package com.fireinyu.themyth.tasks;
 public class QuizTask extends Task {
 
     /**
-     * Initialises a {@code QuizTask} with the default software engineering revision description.
+     * Initializes a {@code QuizTask} with the default software engineering revision description.
      */
     public QuizTask() {
         super("Revise software engineering with The Myth", "L");

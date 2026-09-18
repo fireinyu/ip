@@ -8,26 +8,26 @@ import com.fireinyu.themyth.requests.Request;
 import com.fireinyu.themyth.responses.Response;
 
 /**
- * InterruptEvent posted immediately after the app is started<br><br>
+ * InterruptEvent posted immediately after the app is started.
+ *
  * @see Request
  * @see Response
  */
 public class InitRequest extends InterruptEvent {
     /**
-     * Initialises an InitRequest event triggered by app initialization
+     * Initializes an InitRequest event triggered by app initialization.
+     *
      * @see Request
      */
     public InitRequest() {
         super(new String[]{});
     }
 
-    /** {@inheritDoc} */
     @Override
     public List<InputFieldParser<?>> getPosArgTypes() {
         return List.of(InputFieldParser.STRING);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Map<String, InputFieldParser<?>> getKwargTypes() {
         return Map.of();

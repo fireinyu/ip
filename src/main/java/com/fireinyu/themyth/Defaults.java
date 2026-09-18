@@ -7,10 +7,10 @@ import com.fireinyu.themyth.chatmodes.QuizMode;
 import com.fireinyu.themyth.tasks.TaskOrder;
 import com.fireinyu.themyth.util.MythDateTime;
 
-
 /**
  * Default values for the app.
  * Uses LocalDateTime internally.
+ *
  * @see MythDateTime
  * @see LocalDateTime
  */

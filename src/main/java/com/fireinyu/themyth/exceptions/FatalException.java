@@ -6,8 +6,9 @@ package com.fireinyu.themyth.exceptions;
 public class FatalException extends RuntimeException {
 
     /**
-     * Initialises a FatalException
-     * @param message exception message
+     * Initializes a FatalException.
+     *
+     * @param message exception message.
      * @see String
      */
     public FatalException(String message) {

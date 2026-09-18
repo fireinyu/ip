@@ -9,6 +9,7 @@ import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 
 /**
  * List of {@link Quiz} questions that can be loaded from and synced with a CSV file on disk or in resources.
+ *
  * @see Quiz
  * @see CsvBackedList
  */
@@ -17,7 +18,7 @@ public class QuizList extends CsvBackedList<Quiz> {
     private final Random random = new Random(LocalDateTime.now().getNano());
 
     /**
-     * Initialises an empty {@code QuizList}.
+     * Initializes an empty {@code QuizList}.
      */
     public QuizList() {
         super();
@@ -30,10 +31,11 @@ public class QuizList extends CsvBackedList<Quiz> {
 
     /**
      * Selects and returns a random quiz question from the list.
-     * @return a randomly chosen {@link Quiz} question
+     *
+     * @return a randomly chosen {@link Quiz} question.
      */
     public Quiz getRandom() {
-        return this.get(this.random.nextInt(0, this.size()));
+        return get(random.nextInt(0, size()));
     }
 
 }

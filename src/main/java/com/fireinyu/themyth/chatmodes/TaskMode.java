@@ -27,10 +27,9 @@ import com.fireinyu.themyth.tasks.TodoTask;
 import com.fireinyu.themyth.util.MythDateTime;
 
 /**
- * Request-Response model that acts a task list/ manager<br><br>
- * The user can create, view and delete different types of tasks.<br>
- * Tasks can be marked or unmarked as completed.<br>
- * Created are saved on disk and synced automatically.
+ * Handles requests to create, find, sort, complete, and delete tasks.
+ * Loads tasks when the mode starts and saves them when it closes.
+ *
  * @see Task
  * @see com.fireinyu.themyth.requests.Request
  * @see Response
@@ -40,8 +39,9 @@ public class TaskMode extends ChatMode {
     private final Path taskFile;
 
     /**
-     * Initialises a TaskMode which syncs created Tasks with a given task file
-     * @param taskFile Path to task file that syncs with this TaskMode
+     * Initializes a TaskMode which syncs created Tasks with a given task file.
+     *
+     * @param taskFile Path to task file that syncs with this TaskMode.
      * @see Path
      */
     public TaskMode(Path taskFile) {
@@ -49,7 +49,8 @@ public class TaskMode extends ChatMode {
     }
 
     /**
-     * Initialises a TaskMode which syncs created Tasks with a task file at the default path
+     * Initializes a TaskMode which syncs created Tasks with a task file at the default path.
+     *
      * @see Defaults
      * @see Path
      */
@@ -57,51 +58,36 @@ public class TaskMode extends ChatMode {
         this(Path.of(Defaults.TASKFILE));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToInit(InitRequest request) {
         taskList.open(taskFile);
         return new Response("The archives are unlocked and looking drop-dead gorgeous! All tasks loaded, honey! 💅✨");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToCloseEvent(CloseRequest request) {
         taskList.close();
         return super.respondToCloseEvent(request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToFind(FindRequest request) {
         return listTasks(
                 "Found them! These matching gems were practically begging for my spotlight:",
                 new ArrayList<>(
-                    taskList.stream()
-                            .filter(task -> task.toString().contains(request.getArg(1, String.class)))
-                            .toList()
+                        taskList.stream()
+                                .filter(task -> task.toString().contains(request.getArg(1, String.class)))
+                                .toList()
                 ),
                 request.getArg("sort", TaskOrder.class)
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToTodo(TodoRequest request) {
         return addTask(new TodoTask(request.getArg(1, String.class)));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToDeadline(DeadlineRequest request) {
         return addTask(new DeadlineTask(
@@ -110,9 +96,6 @@ public class TaskMode extends ChatMode {
         ));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToEvent(EventRequest request) {
         return addTask(new EventTask(
@@ -122,9 +105,6 @@ public class TaskMode extends ChatMode {
         ));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToList(ListRequest request) {
         return listTasks(
@@ -134,9 +114,6 @@ public class TaskMode extends ChatMode {
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToAt(AtRequest request) {
         MythDateTime at = request.getArg(1, MythDateTime.class);
@@ -147,13 +124,9 @@ public class TaskMode extends ChatMode {
                                 .toList()
                 ),
                 request.getArg("sort", TaskOrder.class)
-
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToDue(DueRequest request) {
         MythDateTime due = request.getArg(1, MythDateTime.class);
@@ -168,15 +141,15 @@ public class TaskMode extends ChatMode {
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToMark(MarkRequest request) {
         int itemIndex = request.getArg(1, Integer.class) - 1;
-        return this.mark(itemIndex);
+        return mark(itemIndex);
     }
 
+    /**
+     * Marks the task at a zero-based index as complete and returns its confirmation.
+     */
     Response mark(int index) {
         Task task = taskList.get(index);
         task.mark();
@@ -184,15 +157,15 @@ public class TaskMode extends ChatMode {
         return new Response(message, Response.Mood.HAPPY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToUnmark(UnmarkRequest request) {
         int itemIndex = request.getArg(1, Integer.class) - 1;
         return respondToUnmark(itemIndex);
     }
 
+    /**
+     * Marks the task at a zero-based index as incomplete and returns its confirmation.
+     */
     Response respondToUnmark(int itemIndex) {
         Task task = taskList.get(itemIndex);
         task.unmark();
@@ -204,9 +177,6 @@ public class TaskMode extends ChatMode {
         return taskList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToDelete(DeleteRequest request) {
         int itemIndex = request.getArg(1, Integer.class) - 1;
@@ -238,10 +208,11 @@ public class TaskMode extends ChatMode {
     }
 
     /**
-     * Formats a list of tasks into a response for the user.
+     * Sorts the supplied list in place and formats it into a numbered response.
      *
      * @param header The header message for the list.
      * @param tasks The list of tasks to format.
+     * @param order The ordering to apply before numbering the tasks.
      * @return The response containing the formatted list.
      */
     Response listTasks(String header, List<Task> tasks, TaskOrder order) {

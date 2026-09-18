@@ -6,26 +6,28 @@ import java.util.Map;
 import com.fireinyu.themyth.requests.InputFieldParser;
 import com.fireinyu.themyth.requests.Request;
 import com.fireinyu.themyth.responses.Response;
+
 /**
- * InterruptEvent posted immediately before the app terminates.<br><br>
+ * InterruptEvent posted immediately before the app terminates.
+ *
  * @see Request
  * @see Response
  */
 public class CloseRequest extends InterruptEvent {
     /**
-     * Initialises a CloseRequest event triggered by app termination
+     * Initializes a CloseRequest event triggered by app termination.
+     *
      * @see Request
      */
     public CloseRequest() {
         super(new String[]{});
     }
-    /** {@inheritDoc} */
+
     @Override
     public List<InputFieldParser<?>> getPosArgTypes() {
         return List.of(InputFieldParser.STRING);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Map<String, InputFieldParser<?>> getKwargTypes() {
         return Map.of();

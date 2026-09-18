@@ -19,6 +19,7 @@ import com.fireinyu.themyth.tasks.Task;
 /**
  * Request-Response model that provides interactive trivia quiz capabilities in addition to task management.
  * Loads a collection of quiz questions, maintains an active quiz question, and allows the user to answer questions.
+ *
  * @see TaskMode
  * @see Quiz
  * @see QuizTask
@@ -29,29 +30,27 @@ public class QuizMode extends TaskMode {
     private Quiz activeQuiz;
 
     /**
-     * Initialises a QuizMode with default configuration.
+     * Initializes a QuizMode with default configuration.
      */
     public QuizMode() {
         super();
     }
 
     /**
-     * Initialises a QuizMode which syncs tasks with a given task file.
-     * @param taskFile Path to task file that syncs with this QuizMode
+     * Initializes a QuizMode which syncs tasks with a given task file.
+     *
+     * @param taskFile Path to task file that syncs with this QuizMode.
      */
     public QuizMode(Path taskFile) {
         super(taskFile);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToInit(InitRequest request) {
         Response response = super.respondToInit(request);
-        this.quizzes.open(Defaults.QUIZFILE);
-        this.activeQuiz = this.quizzes.getRandom();
-        this.getTaskList().add(this.quizTask);
+        quizzes.open(Defaults.QUIZFILE);
+        activeQuiz = quizzes.getRandom();
+        getTaskList().add(quizTask);
         return response;
     }
 
@@ -59,41 +58,38 @@ public class QuizMode extends TaskMode {
     protected Response respondToDelete(DeleteRequest request) {
         int itemIndex = request.getArg(1, Integer.class) - 1;
         Task task = super.getTaskList().get(itemIndex);
-        if (task == this.quizTask) {
+        if (task == quizTask) {
             throw new CheekySlackerException();
         }
         return super.respondToDelete(request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Response respondToMark(MarkRequest request) {
         int itemIndex = request.getArg(1, Integer.class) - 1;
         Task task = super.getTaskList().get(itemIndex);
         if (task instanceof QuizTask) {
-            return this.takeQuiz();
+            return takeQuiz();
         }
         return super.mark(itemIndex);
     }
 
     @Override
     protected Response respondToCloseEvent(CloseRequest request) {
-        this.getTaskList().remove(this.quizTask);
+        getTaskList().remove(quizTask);
         return super.respondToCloseEvent(request);
     }
 
     @Override
     protected Response respondToQuiz(QuizRequest request) {
-        return this.takeQuiz();
+        return takeQuiz();
     }
 
     @Override
     protected Response respondToAnswer(AnswerRequest request) {
         Response response;
-        if (request.getArg(1, Integer.class) == this.activeQuiz.getAnswerIndex()) {
-            this.quizTask.mark();
+        if (request.getArg(1, Integer.class) == activeQuiz.getAnswerIndex()) {
+            quizTask.mark();
             response = new Response(
                     "DING DING DING! You are beauty, you are grace, you nailed it right in the face! "
                     + "Absolutely iconic, honey! 🌟💖",
@@ -103,13 +99,16 @@ public class QuizMode extends TaskMode {
             response = new Response(String.format(
                     "Oh honey, bless your gorgeous little heart, but that was NOT it! 🤦‍♀️ "
                     + "The tea is option %d! Better luck next time, babe! 💅",
-                    this.activeQuiz.getAnswerIndex()),
+                    activeQuiz.getAnswerIndex()),
                     Response.Mood.ANGRY);
         }
-        this.activeQuiz = this.quizzes.getRandom();
+        activeQuiz = quizzes.getRandom();
         return response;
     }
 
+    /**
+     * Returns the current quiz question and its answer choices.
+     */
     private Response takeQuiz() {
         return new Response(activeQuiz.toString());
     }

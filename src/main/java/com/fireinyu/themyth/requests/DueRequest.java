@@ -7,7 +7,8 @@ import com.fireinyu.themyth.Defaults;
 import com.fireinyu.themyth.responses.Response;
 
 /**
- * User request to list all DeadlineTasks due by a given datetime
+ * User request to list all DeadlineTasks due by a given datetime.
+ *
  * @see com.fireinyu.themyth.tasks.DeadlineTask
  * @see Response
  */
@@ -22,17 +23,11 @@ public class DueRequest extends Request {
         super(posArgs, kwargs, Map.of("sort", Defaults.TASK_ORDER));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<InputFieldParser<?>> getPosArgTypes() {
         return List.of(InputFieldParser.STRING, InputFieldParser.DATETIME);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<String, InputFieldParser<?>> getKwargTypes() {
         return Map.of("sort", InputFieldParser.ORDER);

@@ -6,8 +6,9 @@ package com.fireinyu.themyth.tasks;
 public class TodoTask extends Task {
 
     /**
-     * Initialises a TodoTask
-     * @param description description of the task
+     * Initializes a TodoTask.
+     *
+     * @param description description of the task.
      * @see String
      */
     public TodoTask(String description) {

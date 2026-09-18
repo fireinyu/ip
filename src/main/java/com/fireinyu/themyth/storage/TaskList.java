@@ -11,53 +11,67 @@ import com.fireinyu.themyth.util.MythDateTime;
 
 /**
  * List of Tasks that can be synced with a CSV file on disk.
+ *
  * @see Task
  * @see FileLinesDisk
  */
 public class TaskList extends CsvBackedList<Task> {
+    private static final int COLUMN_TYPE = 0;
+    private static final int COLUMN_COMPLETED = 1;
+    private static final int COLUMN_CREATED = 2;
+    private static final int COLUMN_MODIFIED = 3;
+    private static final int COLUMN_DESCRIPTION = 4;
+    private static final int COLUMN_START_OR_DEADLINE = 5;
+    private static final int COLUMN_END = 6;
 
     /**
-     * Initialises a TaskList.<br><br>
-     * It is initially not backed by any FileLinesDisk so it acts as an ArrayList of Tasks.<br>
+     * Initializes a TaskList.
+     * It is initially not backed by any FileLinesDisk so it acts as an ArrayList of Tasks.
      * Call open() to sync to a FileLinesDisk.
+     *
      * @see FileLinesDisk
      * @see Task
      */
     public TaskList() {
     }
+
     @Override
-    protected Task parse(String... item) {
+    protected Task parse(String... fields) {
         try {
-            Task task = null;
-            switch (item[0]) {
-                case "T": {
-                    task = new TodoTask(item[4]);
-                    break;
-                }
-                case "D": {
-                    task = new DeadlineTask(item[4], MythDateTime.parse(item[5]));
-                    break;
-                }
-                case "E": {
-                    task = new EventTask(item[4], MythDateTime.parse(item[5]), MythDateTime.parse(item[6]));
-                    break;
-                }
-                default: {
-                    String path = super.getDescriptor() != null ? super.getDescriptor().toString() : "in-memory";
-                    throw new CorruptedTaskFileException(path);
-                }
-            }
-            if (Boolean.parseBoolean(item[1])) {
+            Task task = createTask(fields);
+            if (Boolean.parseBoolean(fields[COLUMN_COMPLETED])) {
                 task.mark();
             } else {
                 task.unmark();
             }
-            task.setAccessTimes(MythDateTime.parse(item[2]), MythDateTime.parse(item[3]));
+            task.setAccessTimes(MythDateTime.parse(fields[COLUMN_CREATED]),
+                    MythDateTime.parse(fields[COLUMN_MODIFIED]));
             return task;
         } catch (IndexOutOfBoundsException | ArgumentFormatException e) {
-            String path = super.getDescriptor() != null ? super.getDescriptor().toString() : "in-memory";
-            throw new CorruptedTaskFileException(path);
+            throw corruptedTaskFile();
         }
+    }
+
+    /**
+     * Creates the task subtype from its stored type code and description fields.
+     */
+    private Task createTask(String[] fields) {
+        return switch (fields[COLUMN_TYPE]) {
+            case "T" -> new TodoTask(fields[COLUMN_DESCRIPTION]);
+            case "D" -> new DeadlineTask(fields[COLUMN_DESCRIPTION],
+                    MythDateTime.parse(fields[COLUMN_START_OR_DEADLINE]));
+            case "E" -> new EventTask(fields[COLUMN_DESCRIPTION],
+                    MythDateTime.parse(fields[COLUMN_START_OR_DEADLINE]), MythDateTime.parse(fields[COLUMN_END]));
+            default -> throw corruptedTaskFile();
+        };
+    }
+
+    /**
+     * Creates an error identifying the backing file, or the in-memory list if no file is open.
+     */
+    private CorruptedTaskFileException corruptedTaskFile() {
+        String path = super.getDescriptor() != null ? super.getDescriptor().toString() : "in-memory";
+        return new CorruptedTaskFileException(path);
     }
 
     @Override

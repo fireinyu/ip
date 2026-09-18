@@ -8,8 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Parser which converts each raw line of user input to a Request<br><br>
- * Different user inputs are parsed into different Request types based on the provided command<br>
+ * Parser which converts each raw line of user input to a Request.
+ * Different user inputs are parsed into different Request types based on the provided command.
  * The command is the first word of the user input line.
  */
 public class RequestParser {
@@ -20,26 +20,34 @@ public class RequestParser {
     private static final Pattern ARG_PATTERN = Pattern.compile("\"((?:\\\\.|[^\"\\\\])*)\"|(\\S+)");
 
     /**
-     * Parse an input line into a Request
-     * @param message input line
-     * @return Request corresponding to input line
+     * Parses an input line into a Request.
+     *
+     * @param message input line.
+     * @return Request corresponding to input line.
      * @see String
      * @see Request
      */
     public Request parse(String message) {
-        String[] args = split(message.trim());
-        List<String> posArgs = new ArrayList<>();
-        Map<String, String> kwargs = new HashMap<>();
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            if (isKeyword(arg)) {
+        String[] arguments = split(message.trim());
+        List<String> positionalArguments = new ArrayList<>();
+        Map<String, String> keywordArguments = new HashMap<>();
+        for (int i = 0; i < arguments.length; i++) {
+            String argument = arguments[i];
+            if (isKeyword(argument)) {
                 i++;
-                String val = args[i];
-                kwargs.put(arg.substring(1), val);
+                String value = arguments[i];
+                keywordArguments.put(argument.substring(1), value);
             } else {
-                posArgs.add(arg);
+                positionalArguments.add(argument);
             }
         }
+        return createRequest(positionalArguments, keywordArguments);
+    }
+
+    /**
+     * Creates the request for the command, retaining only the command for unknown request types.
+     */
+    private Request createRequest(List<String> posArgs, Map<String, String> kwargs) {
         String command = posArgs.isEmpty() ? "" : posArgs.get(0);
         return switch (command) {
             case "bye" -> new ExitRequest(posArgs, kwargs);
@@ -86,20 +94,20 @@ public class RequestParser {
      * @return The unescaped token string.
      */
     private String unescape(String token) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder unescaped = new StringBuilder();
         for (int i = 0; i < token.length(); i++) {
-            char c = token.charAt(i);
-            if (c == '\\' && i + 1 < token.length()) {
+            char character = token.charAt(i);
+            if (character == '\\' && i + 1 < token.length()) {
                 char next = token.charAt(i + 1);
                 if (next == '"' || next == '\\') {
-                    sb.append(next);
+                    unescaped.append(next);
                     i++;
                     continue;
                 }
             }
-            sb.append(c);
+            unescaped.append(character);
         }
-        return sb.toString();
+        return unescaped.toString();
     }
 
     /**

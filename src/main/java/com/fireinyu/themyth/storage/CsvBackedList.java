@@ -4,14 +4,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import com.fireinyu.themyth.exceptions.CorruptedTaskFileException;
 import com.fireinyu.themyth.exceptions.FileAccessException;
 
 /**
- * ArrayList that can be synced with a csv file on disk.<br><br>
+ * ArrayList that can be synced with a csv file on disk.
  * File access is managed through a LinesDiskDriver.
+ *
  * @param <T> The type of elements in this list, which must be CsvSerializable.
  * @see LinesDiskDriver
  */
@@ -21,86 +21,83 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
     private boolean linked;
 
     /**
-     * Initialises a CsvBackedList.<br><br>
-     * It is initially not backed by any FileLinesDisk so it acts as an ArrayList.<br>
+     * Initializes a CsvBackedList.
+     * It is initially not backed by any FileLinesDisk so it acts as an ArrayList.
      * Call open() to sync to a FileLinesDisk.
+     *
      * @see LinesDiskDriver
      */
     public CsvBackedList() {
         super();
-        this.linked = false;
+        linked = false;
     }
 
     /**
-     * Creates a FileLinesDisk instance to back this CsvBackedList<br><br>
-     * Automatically pulls the LineDisk content into this CsvBackedList if opened successfully<br>
-     * File content is deserialized into T instances<br>
-     * Warning: Previous data in this CsvBackedList will be replaced. <br>
-     * @param path path to the CSV file for the FileLinesDisk instance
-     * @throws FileAccessException if the file cannot be created or opened for reading
-     * @throws CorruptedTaskFileException if the file content is corrupted and cannot be deserialized
+     * Creates a FileLinesDisk instance to back this CsvBackedList.
+     * Automatically pulls the LineDisk content into this CsvBackedList if opened successfully.
+     * File content is deserialized into T instances.
+     * Replaces any previous data in this list.
+     *
+     * @param path path to the CSV file for the FileLinesDisk instance.
+     * @throws FileAccessException if the file cannot be created or opened for reading.
+     * @throws CorruptedTaskFileException if the file content is corrupted and cannot be deserialized.
      * @see Path
      * @see FileLinesDisk
      * @see CsvSerializable
      */
     public void open(Path path) {
-        this.storage = new FileLinesDisk(path);
-        this.linked = true;
-        this.fetch();
+        storage = new FileLinesDisk(path);
+        linked = true;
+        fetch();
     }
 
     /**
-     * Creates a ResourceLinesDisk instance to back this CsvBackedList<br><br>
-     * Automatically pulls the ResourceLinesDisk content into this CsvBackedList if opened successfully<br>
-     * File content is deserialized into T instances<br>
-     * Warning: Previous data in this CsvBackedList will be replaced. <br>
-     * @param  resourceName of the CSV file for the ResourceLinesDisk instance
-     * @throws FileAccessException if the resource file does not exit
-     * @throws CorruptedTaskFileException if the resource file content is corrupted and cannot be deserialized
+     * Creates a ResourceLinesDisk instance to back this CsvBackedList.
+     * Automatically pulls the ResourceLinesDisk content into this CsvBackedList if opened successfully.
+     * File content is deserialized into T instances.
+     * Replaces any previous data in this list.
+     *
+     * @param resourceName Name of the CSV resource to load.
+     * @throws FileAccessException If the resource cannot be read.
+     * @throws CorruptedTaskFileException if the resource file content is corrupted and cannot be deserialized.
      * @see Path
      * @see ResourceLinesDisk
      * @see CsvSerializable
      */
     public void open(String resourceName) {
-        this.storage = new ResourceLinesDisk(resourceName);
-        this.linked = true;
-        this.fetch();
+        storage = new ResourceLinesDisk(resourceName);
+        linked = true;
+        fetch();
     }
 
     /**
-     * Close the FileLinesDisk instance that backs this CsvBackedList, if any<br><br>
-     * Automatically writes the content of this CsvBackedList into the FileLinesDisk before closing
-     * @throws FileAccessException if the file cannot be created or opened for writing
+     * Closes the FileLinesDisk instance that backs this CsvBackedList, if any.
+     * Writes the current contents to the backing storage before unlinking the list.
+     *
+     * @throws FileAccessException if the file cannot be created or opened for writing.
      * @see Path
      * @see FileLinesDisk
      */
     public void close() {
-        if (!this.linked) {
+        if (!linked) {
             return;
         }
-        this.storage.writeLines(
-                this.stream()
-                    .map(CsvSerializable::extract)
-                    .map(List::stream)
-                    .map(stream -> stream.map(field -> field.replace("\"", "\"\"")))
-                    .map(stream -> stream.map(field -> field.replace(",", "\",\"")))
-                    .map(Stream::toList)
-                    .map(row -> String.join(", ", row))
-        );
-        this.linked = false;
+        storage.writeLines(stream().map(CsvSerializable::extract).map(CsvBackedList::encodeRow));
+        linked = false;
     }
 
     /**
-     * Get the descriptor associated with the LinesDiskDriver instance that backs this CsvBackedList
-     * @return the descriptor associated with the LinesDiskDriver instance that backs this CsvBackedList
+     * Returns the descriptor associated with the LinesDiskDriver instance that backs this CsvBackedList.
+     *
+     * @return the descriptor associated with the LinesDiskDriver instance that backs this CsvBackedList.
      * @see String
      * @see LinesDiskDriver
      */
     public String getDescriptor() {
-        if (this.storage == null) {
+        if (storage == null) {
             return null;
         }
-        return this.storage.getDescriptor();
+        return storage.getDescriptor();
     }
 
     /**
@@ -113,31 +110,47 @@ public abstract class CsvBackedList<T extends CsvSerializable> extends ArrayList
     protected abstract T parse(String... item) throws CorruptedTaskFileException;
 
     private T parse(List<String> item) throws CorruptedTaskFileException {
-        return this.parse(item.toArray(new String[0]));
+        return parse(item.toArray(new String[0]));
     }
+
+    /**
+     * Encodes a row using the existing comma-space separator and quote-escaping format.
+     */
+    private static String encodeRow(List<String> fields) {
+        List<String> escapedFields = fields.stream()
+                .map(field -> field.replace("\"", "\"\""))
+                .map(field -> field.replace(",", "\",\""))
+                .toList();
+        return String.join(", ", escapedFields);
+    }
+
+    /**
+     * Decodes a stored row, undoing comma escaping before quote escaping.
+     */
+    private static List<String> decodeRow(String line) {
+        return Arrays.stream(line.split(", "))
+                .map(field -> field.replace("\",\"", ","))
+                .map(field -> field.replace("\"\"", "\""))
+                .toList();
+    }
+
     /**
      * Fetches data from the backing file.
      * It clears the current list and repopulates it with data from the file.
      * The data is deserialized from CSV format to objects of type T.
      */
     private void fetch() {
-        if (!this.linked) {
+        if (!linked) {
             return;
         }
-        // Temporarily unlink the list to prevent any overridden add/clear methods
-        // from causing recursive file writes while we are repopulating the list
-        // from the file.
-        this.linked = false;
-        this.clear();
-        super.addAll(this.storage.readLines()
-                .map(line -> line.split(", "))
-                .map(Arrays::stream)
-                .map(stream -> stream.map(field -> field.replace("\",\"", ",")))
-                .map(stream -> stream.map(field -> field.replace("\"\"", "\"")))
-                .map(Stream::toList)
+        // Keep the list unlinked during loading so a failed load cannot overwrite the source file on close.
+        linked = false;
+        clear();
+        super.addAll(storage.readLines()
+                .map(CsvBackedList::decodeRow)
                 .map(this::parse)
                 .toList()
         );
-        this.linked = true;
+        linked = true;
     }
 }

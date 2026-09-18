@@ -3,7 +3,9 @@ package com.fireinyu.themyth.tasks;
 import java.util.Comparator;
 import java.util.List;
 
-/** Defines supported task ordering strategies. */
+/**
+ * Defines supported task ordering strategies.
+ */
 public enum TaskOrder {
     /** Sorts tasks by creation time. */
     CREATED(Comparator.comparing(Task::getCreated).reversed()),
@@ -23,9 +25,9 @@ public enum TaskOrder {
     /**
      * Sorts the supplied tasks using this ordering.
      *
-     * @param tasks tasks to sort
+     * @param tasks tasks to sort.
      */
     public void apply(List<Task> tasks) {
-        tasks.sort(this.comparator);
+        tasks.sort(comparator);
     }
 }

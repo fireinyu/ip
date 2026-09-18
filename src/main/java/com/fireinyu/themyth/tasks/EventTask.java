@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.fireinyu.themyth.util.MythDateTime;
 
-
 /**
- * Task occurring between start and end datetimes
+ * Task occurring between start and end datetimes.
+ *
  * @see MythDateTime
  */
 public class EventTask extends Task {
@@ -14,10 +14,11 @@ public class EventTask extends Task {
     private MythDateTime to;
 
     /**
-     * Initialises an EventTask occurring between start and end datetimes
-     * @param description description of the task
-     * @param from start datetime of the task
-     * @param to end datetime of the task
+     * Initializes an EventTask occurring between start and end datetimes.
+     *
+     * @param description description of the task.
+     * @param from start datetime of the task.
+     * @param to end datetime of the task.
      * @see MythDateTime
      * @see String
      */
@@ -28,8 +29,9 @@ public class EventTask extends Task {
     }
 
     /**
-     * Serializes this EventTask into a List of String attributes<br><br>
-     * @return List of String attributes representing the serialized EventTask object
+     * Serializes this EventTask into a List of String attributes.
+     *
+     * @return List of String attributes representing the serialized EventTask object.
      * @see List
      * @see String
      */
@@ -54,9 +56,10 @@ public class EventTask extends Task {
     }
 
     /**
-     * Obtain a detailed String representation of this Task.<br><br>
+     * Returns a detailed String representation of this Task.
      * Includes its type, whether it is completed, its description, start and end dates
-     * @return detailed String representation of this Task
+     *
+     * @return detailed String representation of this Task.
      */
     @Override
     public String toString() {

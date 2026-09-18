@@ -4,7 +4,8 @@ import com.fireinyu.themyth.requests.Request;
 import com.fireinyu.themyth.responses.Response;
 
 /**
- * Request-Response model that echos the user input.
+ * Request-Response model that echoes the user input.
+ *
  * @see Request
  * @see Response
  */
@@ -16,4 +17,3 @@ public class EchoMode extends ChatMode {
                 request.getArg(0, String.class)));
     }
 }
-

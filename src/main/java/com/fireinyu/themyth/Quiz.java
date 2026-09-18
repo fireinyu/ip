@@ -17,9 +17,9 @@ public class Quiz implements CsvSerializable {
     /**
      * Constructs a new {@code Quiz} instance.
      *
-     * @param question the question prompt text
-     * @param choices the list of possible answer choices
-     * @param answerIndex the zero-based index of the correct answer choice
+     * @param question the question prompt text.
+     * @param choices the list of possible answer choices.
+     * @param answerIndex the zero-based index of the correct answer choice.
      */
     public Quiz(String question, List<String> choices, int answerIndex) {
         this.question = question;
@@ -30,7 +30,7 @@ public class Quiz implements CsvSerializable {
     /**
      * Returns the quiz question text.
      *
-     * @return the question text
+     * @return the question text.
      */
     public String getQuestion() {
         return question;
@@ -39,7 +39,7 @@ public class Quiz implements CsvSerializable {
     /**
      * Returns the list of possible choices for this quiz question.
      *
-     * @return the list of choices
+     * @return the list of choices.
      */
     public List<String> getChoices() {
         return choices;
@@ -48,34 +48,33 @@ public class Quiz implements CsvSerializable {
     /**
      * Returns the zero-based index of the correct answer.
      *
-     * @return the correct answer index
+     * @return the correct answer index.
      */
     public int getAnswerIndex() {
         return answerIndex;
     }
 
-    /** {@inheritDoc} */
     @Override
     public List<String> extract() {
         List<String> extracted = new ArrayList<>();
-        extracted.add(this.question);
-        extracted.add(String.valueOf(this.answerIndex));
-        extracted.addAll(this.choices);
+        extracted.add(question);
+        extracted.add(String.valueOf(answerIndex));
+        extracted.addAll(choices);
         return extracted;
     }
 
     /**
      * Returns a formatted string representation of the quiz question and its choices.
      *
-     * @return formatted question and choices
+     * @return formatted question and choices.
      */
     @Override
     public String toString() {
         StringBuilder body = new StringBuilder();
-        body.append(this.question);
-        for (int i = 0; i < this.choices.size(); i++) {
+        body.append(question);
+        for (int i = 0; i < choices.size(); i++) {
             body.append(
-                    String.format("\n   %d: %s", i, this.choices.get(i))
+                    String.format("\n   %d: %s", i, choices.get(i))
             );
         }
         return body.toString();

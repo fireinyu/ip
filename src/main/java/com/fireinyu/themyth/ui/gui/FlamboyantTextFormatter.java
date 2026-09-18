@@ -66,7 +66,7 @@ public class FlamboyantTextFormatter {
      * Constructs a FlamboyantTextFormatter with a specified {@link Random} instance,
      * useful for deterministic testing.
      *
-     * @param random the random number generator to use
+     * @param random the random number generator to use.
      */
     public FlamboyantTextFormatter(Random random) {
         this.random = random;
@@ -75,8 +75,8 @@ public class FlamboyantTextFormatter {
     /**
      * Formats a response string into a list of styled {@link Text} nodes using the default formatter.
      *
-     * @param text the message body to format
-     * @return a list of styled {@link Text} nodes
+     * @param text the message body to format.
+     * @return a list of styled {@link Text} nodes.
      */
     public static List<Text> format(String text) {
         return DEFAULT_FORMATTER.formatResponse(text);
@@ -85,27 +85,22 @@ public class FlamboyantTextFormatter {
     /**
      * Formats a user string into plain {@link Text} nodes with standard weight and neutral color.
      *
-     * @param text the user input string
-     * @return a list containing a plain {@link Text} node
+     * @param text the user input string.
+     * @return a list containing a plain {@link Text} node.
      */
     public static List<Text> formatPlain(String text) {
         if (text == null || text.isEmpty()) {
             return List.of();
         }
-        Text node = new Text(text);
-        node.setFill(Color.web(DEFAULT_TEXT_COLOR));
-        node.setFont(Font.font(null, FontWeight.NORMAL, BASE_FONT_SIZE));
-        node.setStyle("-fx-fill: " + DEFAULT_TEXT_COLOR + "; -fx-font-weight: normal; -fx-font-size: "
-                + (int) BASE_FONT_SIZE + "px;");
-        return List.of(node);
+        return List.of(createPlainText(text));
     }
 
     /**
      * Formats a response string into a list of styled {@link Text} nodes, randomly emphasizing
      * parts with vibrant font colors and heavy font weights.
      *
-     * @param text the message body to format
-     * @return a list of styled {@link Text} nodes
+     * @param text the message body to format.
+     * @return a list of styled {@link Text} nodes.
      */
     public List<Text> formatResponse(String text) {
         if (text == null || text.isEmpty()) {
@@ -124,11 +119,24 @@ public class FlamboyantTextFormatter {
             tokens.add(token);
         }
 
-        boolean[] isEmphasized = new boolean[tokens.size()];
+        boolean[] isEmphasized = selectEmphasis(tokens.size(), wordIndices);
+        List<Text> result = new ArrayList<>();
+        for (int i = 0; i < tokens.size(); i++) {
+            String token = tokens.get(i);
+            result.add(isEmphasized[i] ? createEmphasizedText(token) : createPlainText(token));
+        }
+        return result;
+    }
+
+    /**
+     * Selects words for emphasis, choosing at least one whenever the response contains words.
+     */
+    private boolean[] selectEmphasis(int tokenCount, List<Integer> wordIndices) {
+        boolean[] isEmphasized = new boolean[tokenCount];
         boolean hasAnyEmphasis = false;
 
         for (int wordIndex : wordIndices) {
-            if (this.random.nextDouble() < EMPHASIS_PROBABILITY) {
+            if (random.nextDouble() < EMPHASIS_PROBABILITY) {
                 isEmphasized[wordIndex] = true;
                 hasAnyEmphasis = true;
             }
@@ -136,40 +144,45 @@ public class FlamboyantTextFormatter {
 
         // Guarantee at least one emphasized word if words exist, so every response exhibits flair
         if (!hasAnyEmphasis && !wordIndices.isEmpty()) {
-            int selectedWord = wordIndices.get(this.random.nextInt(wordIndices.size()));
+            int selectedWord = wordIndices.get(random.nextInt(wordIndices.size()));
             isEmphasized[selectedWord] = true;
         }
 
-        List<Text> result = new ArrayList<>();
-        for (int i = 0; i < tokens.size(); i++) {
-            String token = tokens.get(i);
-            Text textNode = new Text(token);
+        return isEmphasized;
+    }
 
-            if (isEmphasized[i]) {
-                String colorHex = FLAMBOYANT_COLORS[this.random.nextInt(FLAMBOYANT_COLORS.length)];
-                FontWeight weight = FLAMBOYANT_WEIGHTS[this.random.nextInt(FLAMBOYANT_WEIGHTS.length)];
-                String weightCss = (weight == FontWeight.EXTRA_BOLD) ? "800" : "bold";
+    /**
+     * Creates a text node using the standard dialog styling.
+     */
+    private static Text createPlainText(String text) {
+        Text node = new Text(text);
+        node.setFill(Color.web(DEFAULT_TEXT_COLOR));
+        node.setFont(Font.font(null, FontWeight.NORMAL, BASE_FONT_SIZE));
+        node.setStyle("-fx-fill: " + DEFAULT_TEXT_COLOR + "; -fx-font-weight: normal; -fx-font-size: "
+                + (int) BASE_FONT_SIZE + "px;");
+        return node;
+    }
 
-                textNode.setFill(Color.web(colorHex));
-                textNode.setFont(Font.font(null, weight, BASE_FONT_SIZE));
-                textNode.setStyle("-fx-fill: " + colorHex + "; -fx-font-weight: " + weightCss
-                        + "; -fx-font-size: " + (int) BASE_FONT_SIZE + "px;");
-            } else {
-                textNode.setFill(Color.web(DEFAULT_TEXT_COLOR));
-                textNode.setFont(Font.font(null, FontWeight.NORMAL, BASE_FONT_SIZE));
-                textNode.setStyle("-fx-fill: " + DEFAULT_TEXT_COLOR + "; -fx-font-weight: normal; -fx-font-size: "
-                        + (int) BASE_FONT_SIZE + "px;");
-            }
-            result.add(textNode);
-        }
+    /**
+     * Creates an emphasized text node, choosing its color before its font weight.
+     */
+    private Text createEmphasizedText(String text) {
+        Text node = new Text(text);
+        String colorHex = FLAMBOYANT_COLORS[random.nextInt(FLAMBOYANT_COLORS.length)];
+        FontWeight weight = FLAMBOYANT_WEIGHTS[random.nextInt(FLAMBOYANT_WEIGHTS.length)];
+        String weightCss = (weight == FontWeight.EXTRA_BOLD) ? "800" : "bold";
 
-        return result;
+        node.setFill(Color.web(colorHex));
+        node.setFont(Font.font(null, weight, BASE_FONT_SIZE));
+        node.setStyle("-fx-fill: " + colorHex + "; -fx-font-weight: " + weightCss
+                + "; -fx-font-size: " + (int) BASE_FONT_SIZE + "px;");
+        return node;
     }
 
     /**
      * Returns the array of available flamboyant colors.
      *
-     * @return copy of the flamboyant color palette
+     * @return copy of the flamboyant color palette.
      */
     public static String[] getFlamboyantColors() {
         return FLAMBOYANT_COLORS.clone();
@@ -178,7 +191,7 @@ public class FlamboyantTextFormatter {
     /**
      * Returns the array of available flamboyant font weights.
      *
-     * @return copy of the flamboyant font weights
+     * @return copy of the flamboyant font weights.
      */
     public static FontWeight[] getFlamboyantWeights() {
         return FLAMBOYANT_WEIGHTS.clone();

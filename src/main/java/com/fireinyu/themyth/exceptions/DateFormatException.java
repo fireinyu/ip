@@ -8,8 +8,9 @@ import com.fireinyu.themyth.Defaults;
 public class DateFormatException extends ArgumentFormatException {
 
     /**
-     * Initialises a DateFormatException caused by a malformed datetime argument to a Request
-     * @param badArg malformed datetime String
+     * Initializes a DateFormatException caused by a malformed datetime argument to a Request.
+     *
+     * @param badArg malformed datetime String.
      * @see String
      * @see com.fireinyu.themyth.requests.Request
      * @see com.fireinyu.themyth.util.MythDateTime

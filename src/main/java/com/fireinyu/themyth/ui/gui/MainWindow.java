@@ -22,6 +22,8 @@ import javafx.util.Duration;
  * Controller for the main GUI.
  */
 public class MainWindow extends AnchorPane {
+    private static final double EXIT_DELAY_SECONDS = 2.0;
+
     @FXML
     private ImageView linusOverlay;
     @FXML
@@ -36,10 +38,10 @@ public class MainWindow extends AnchorPane {
     private TheMyth theMyth;
     private LinusAnimator linusAnimator;
 
-    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private final Image theMythDefaultImage = new Image(this.getClass().getResourceAsStream("/images/DaMyth.png"));
-    private final Image theMythHappyImage = new Image(this.getClass().getResourceAsStream("/images/DaMythHappy.png"));
-    private final Image theMythAngryImage = new Image(this.getClass().getResourceAsStream("/images/DaMythAngry.png"));
+    private final Image userImage = new Image(getClass().getResourceAsStream("/images/DaUser.png"));
+    private final Image theMythDefaultImage = new Image(getClass().getResourceAsStream("/images/DaMyth.png"));
+    private final Image theMythHappyImage = new Image(getClass().getResourceAsStream("/images/DaMythHappy.png"));
+    private final Image theMythAngryImage = new Image(getClass().getResourceAsStream("/images/DaMythAngry.png"));
     private Image theMythImage = theMythDefaultImage;
 
     /**
@@ -61,8 +63,9 @@ public class MainWindow extends AnchorPane {
         assert dialogContainer != null : "fx:id=\"dialogContainer\" was not injected: check your FXML file.";
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
 
-        DoubleSupplier widthSupplier = () -> this.getWidth() > 0 ? this.getWidth() : 400.0;
-        DoubleSupplier heightSupplier = () -> scrollPane.getHeight() > 0 ? scrollPane.getHeight() : 557.0;
+        DoubleSupplier widthSupplier = () -> getWidth() > 0 ? getWidth() : LinusAnimator.FALLBACK_WIDTH;
+        DoubleSupplier heightSupplier = () -> scrollPane.getHeight() > 0
+                ? scrollPane.getHeight() : LinusAnimator.FALLBACK_HEIGHT;
         linusAnimator = new LinusAnimator(linusOverlay, widthSupplier, heightSupplier);
         linusAnimator.start();
         DialogBox.addOnDialogCreatedListener(linusAnimator::shakeViolently);
@@ -71,7 +74,7 @@ public class MainWindow extends AnchorPane {
     /**
      * Returns the animator controlling the linus overlay.
      *
-     * @return the linus animator
+     * @return the linus animator.
      */
     LinusAnimator getLinusAnimator() {
         return linusAnimator;
@@ -80,20 +83,18 @@ public class MainWindow extends AnchorPane {
     /**
      * Sets the TheMyth instance for the main window.
      *
-     * @param d The TheMyth instance.
+     * @param theMyth The application logic instance.
      */
-    public void setTheMyth(TheMyth d) {
-        // This assertion documents the assumption that the main window should never be given a null
-        // logic component. A null value here would be a programming error in the application's setup.
-        assert d != null;
-        theMyth = d;
+    public void setTheMyth(TheMyth theMyth) {
+        assert theMyth != null;
+        this.theMyth = theMyth;
         executeResponse(theMyth.start());
     }
 
     /**
      * Returns the current profile image used for TheMyth.
      *
-     * @return the current {@link Image}
+     * @return the current {@link Image}.
      */
     Image getTheMythImage() {
         return theMythImage;
@@ -111,19 +112,17 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getUserDialog(input, userImage)
         );
 
-        // This assertion documents the assumption that the TheMyth logic instance
-        // has been injected before any user input is handled. If this fails,
-        // it points to a programming error in the application's initialization sequence.
+        // Application logic must be injected before handling user input.
         assert theMyth != null;
         Response response = theMyth.handleInput(input);
 
-        // This assertion documents the post-condition that handleInput should always
-        // return a non-null Response object. A failure here would indicate a bug
-        // within the TheMyth.handleInput() implementation.
         assert response != null;
         executeResponse(response);
     }
 
+    /**
+     * Displays a response using its mood and schedules application exit when requested.
+     */
     private void executeResponse(Response response) {
         theMythImage = switch (response.getMood()) {
             case HAPPY -> theMythHappyImage;
@@ -136,7 +135,7 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
         if (response.doExit()) {
             Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.seconds(2), event -> Platform.exit())
+                    new KeyFrame(Duration.seconds(EXIT_DELAY_SECONDS), event -> Platform.exit())
             );
             timeline.setCycleCount(1);
             timeline.play();

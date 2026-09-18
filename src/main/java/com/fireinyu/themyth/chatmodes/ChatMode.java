@@ -22,15 +22,17 @@ import com.fireinyu.themyth.responses.Response;
 
 /**
  * Request-Response model of the app. Responds to different types of Requests by returning Responses.
+ *
  * @see Request
  * @see Response
  */
 public abstract class ChatMode {
 
     /**
-     * Provide a Response to a Request
-     * @param request the Request to respond to
-     * @return the Response
+     * Provides a Response to a Request.
+     *
+     * @param request the Request to respond to.
+     * @return the Response.
      * @see Request
      * @see Response
      */
@@ -62,7 +64,7 @@ public abstract class ChatMode {
      * @return A {@link Response} object.
      */
     protected Response respondToAnswer(AnswerRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
 
     /**
@@ -142,7 +144,7 @@ public abstract class ChatMode {
      * @return A {@link Response} object.
      */
     protected Response respondToFind(FindRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
 
     /**
@@ -162,7 +164,7 @@ public abstract class ChatMode {
      * @return A {@link Response} object.
      */
     protected Response respondToList(ListRequest request) {
-        return this.respondToRemaining(request);
+        return respondToRemaining(request);
     }
 
     /**

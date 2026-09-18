@@ -6,9 +6,10 @@ package com.fireinyu.themyth.exceptions;
 public class TaskIndexException extends TweakingException {
 
     /**
-     * Initialises a TaskIndexException caused by the user referencing a task index outside the range of existing tasks
-     * @param index Task index reference
-     * @param size Size of task list
+     * Initializes a TaskIndexException caused by the user referencing a task index outside the range of existing tasks.
+     *
+     * @param index Task index reference.
+     * @param size Size of task list.
      * @see String
      */
     public TaskIndexException(int index, int size) {

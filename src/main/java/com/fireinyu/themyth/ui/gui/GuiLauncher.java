@@ -8,6 +8,7 @@ import javafx.application.Application;
 public class GuiLauncher {
     /**
      * The main entry point for the application.
+     *
      * @param args Command line arguments.
      */
     public static void main(String... args) {

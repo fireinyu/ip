@@ -6,10 +6,11 @@ package com.fireinyu.themyth.exceptions;
 public class ArgumentFormatException extends TweakingException {
 
     /**
-     * Initialises a ArgumentFormatException caused by a malformed argument to a Request
-     * @param type name of type of argument that is malformed
-     * @param badArg malformed argument
-     * @param format expected argument format
+     * Initializes a ArgumentFormatException caused by a malformed argument to a Request.
+     *
+     * @param type name of type of argument that is malformed.
+     * @param badArg malformed argument.
+     * @param format expected argument format.
      * @see String
      * @see com.fireinyu.themyth.requests.Request
      */

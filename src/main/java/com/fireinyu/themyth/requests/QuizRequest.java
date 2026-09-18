@@ -7,6 +7,7 @@ import com.fireinyu.themyth.responses.Response;
 
 /**
  * User request to display the current active quiz question and choices.
+ *
  * @see com.fireinyu.themyth.chatmodes.QuizMode
  * @see Response
  */
@@ -22,13 +23,11 @@ public class QuizRequest extends Request {
         super(posArgs, kwargs);
     }
 
-    /** {@inheritDoc} */
     @Override
     public List<InputFieldParser<?>> getPosArgTypes() {
         return List.of(InputFieldParser.STRING);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Map<String, InputFieldParser<?>> getKwargTypes() {
         return Map.of();

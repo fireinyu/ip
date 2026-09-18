@@ -12,8 +12,9 @@ import java.util.stream.Stream;
 import com.fireinyu.themyth.exceptions.FileAccessException;
 
 /**
- * Driver class for reading and writing to a resource on Disk.<br><br>
+ * Driver class for reading and writing to a resource on Disk.
  * Resource is read and written line-wise.
+ *
  * @see ResourceLinesDisk
  */
 public class ResourceLinesDisk implements LinesDiskDriver {
@@ -21,8 +22,9 @@ public class ResourceLinesDisk implements LinesDiskDriver {
     private final String resourceName;
 
     /**
-     * Initialises a ResourceLinesDisk for line-wise access to a resource with a given resourceName.<br><br>
-     * @param resourceName resourceName to the file
+     * Initializes a ResourceLinesDisk for line-wise access to a resource with a given resourceName.
+     *
+     * @param resourceName resourceName to the file.
      * @see String
      * @see Files
      */
@@ -36,8 +38,9 @@ public class ResourceLinesDisk implements LinesDiskDriver {
     }
 
     /**
-     * Read the lines in the resource associated with this ResourceLinesDisk into a Stream buffer<br><br>
-     * @return Stream of lines in the resource
+     * Reads the lines in the resource associated with this ResourceLinesDisk into a Stream buffer.
+     *
+     * @return Stream of lines in the resource.
      * @see Stream
      * @see String
      */
@@ -53,6 +56,7 @@ public class ResourceLinesDisk implements LinesDiskDriver {
 
     /**
      * Cannot write to resource files.
+     *
      * @throws UnmodifiableModuleException when trying to write to resource file.
      */
     @Override

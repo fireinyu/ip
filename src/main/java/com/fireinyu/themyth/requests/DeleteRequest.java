@@ -6,12 +6,15 @@ import java.util.Map;
 import com.fireinyu.themyth.responses.Response;
 
 /**
- * User request to delete an existing Task
+ * User request to delete an existing Task.
+ *
  * @see com.fireinyu.themyth.tasks.Task
  * @see Response
  */
 public class DeleteRequest extends Request {
     /**
+     * Creates a request to delete a task by its displayed index.
+     *
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
@@ -19,13 +22,11 @@ public class DeleteRequest extends Request {
         super(posArgs, kwargs);
     }
 
-    /** {@inheritDoc} */
     @Override
     public List<InputFieldParser<?>> getPosArgTypes() {
         return List.of(InputFieldParser.STRING, InputFieldParser.INT);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Map<String, InputFieldParser<?>> getKwargTypes() {
         return Map.of();

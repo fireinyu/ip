@@ -7,12 +7,15 @@ import com.fireinyu.themyth.responses.Response;
 
 /**
  * User request to create a new DeadlineRequest due by a certain datetime.
+ *
  * @see com.fireinyu.themyth.tasks.DeadlineTask
  * @see Response
  */
 public class DeadlineRequest extends Request {
 
     /**
+     * Creates a request to add a task with a deadline.
+     *
      * @param posArgs Positional arguments.
      * @param kwargs Keyword arguments.
      */
@@ -20,13 +23,11 @@ public class DeadlineRequest extends Request {
         super(posArgs, kwargs, Map.of());
     }
 
-    /** {@inheritDoc} */
     @Override
     public List<InputFieldParser<?>> getPosArgTypes() {
         return List.of(InputFieldParser.STRING, InputFieldParser.STRING);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Map<String, InputFieldParser<?>> getKwargTypes() {
         return Map.of("by", InputFieldParser.DATETIME);

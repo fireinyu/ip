@@ -27,15 +27,15 @@ public class Gui extends Application {
     public void start(Stage stage) throws Exception {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/view/MainWindow.fxml"));
-            AnchorPane ap = fxmlLoader.load();
-            Scene scene = new Scene(ap);
+            AnchorPane rootPane = fxmlLoader.load();
+            Scene scene = new Scene(rootPane);
             Image appIcon = new Image(getClass().getResourceAsStream("/images/linus.png"));
             stage.getIcons().add(appIcon);
             stage.setScene(scene);
             stage.setTitle("The Myth");
             stage.setMinHeight(220);
             stage.setMinWidth(417);
-            fxmlLoader.<MainWindow>getController().setTheMyth(new TheMyth()); // inject the TheMyth instance
+            fxmlLoader.<MainWindow>getController().setTheMyth(new TheMyth());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +50,6 @@ public class Gui extends Application {
      */
     @Override
     public void stop() throws Exception {
-        this.model.stop();
+        model.stop();
     }
 }

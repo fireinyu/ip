@@ -6,8 +6,9 @@ package com.fireinyu.themyth.exceptions;
 public class CorruptedTaskFileException extends TweakingException {
 
     /**
-     * Initialises a CorruptedTaskFileException
-     * @param filename name of file with corrupted data
+     * Initializes a CorruptedTaskFileException.
+     *
+     * @param filename name of file with corrupted data.
      * @see String
      */
     public CorruptedTaskFileException(String filename) {

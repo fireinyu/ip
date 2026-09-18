@@ -53,9 +53,9 @@ public class DialogBox extends HBox {
      * Flips the dialog box such that the ImageView is on the left and text on the right.
      */
     private void flip() {
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
-        getChildren().setAll(tmp);
+        ObservableList<Node> reversedChildren = FXCollections.observableArrayList(getChildren());
+        Collections.reverse(reversedChildren);
+        getChildren().setAll(reversedChildren);
         setAlignment(Pos.TOP_LEFT);
         dialog.getStyleClass().add("reply-label");
     }
@@ -63,7 +63,7 @@ public class DialogBox extends HBox {
     /**
      * Returns the text flow node containing the dialog message.
      *
-     * @return the text flow node
+     * @return the text flow node.
      */
     TextFlow getDialog() {
         return dialog;
@@ -72,7 +72,7 @@ public class DialogBox extends HBox {
     /**
      * Returns the image view displaying the speaker's avatar.
      *
-     * @return the avatar image view
+     * @return the avatar image view.
      */
     ImageView getDisplayPicture() {
         return displayPicture;
@@ -81,7 +81,7 @@ public class DialogBox extends HBox {
     /**
      * Registers a listener to be notified whenever a dialog box is created.
      *
-     * @param listener the callback to run on dialog creation
+     * @param listener the callback to run on dialog creation.
      */
     public static void addOnDialogCreatedListener(Runnable listener) {
         if (listener != null) {
@@ -117,10 +117,10 @@ public class DialogBox extends HBox {
      * @return A new DialogBox for the user.
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        var db = new DialogBox(FlamboyantTextFormatter.formatPlain(text), img);
-        SparkleAnimator.play(db, false);
+        DialogBox dialogBox = new DialogBox(FlamboyantTextFormatter.formatPlain(text), img);
+        SparkleAnimator.play(dialogBox, false);
         notifyDialogCreated();
-        return db;
+        return dialogBox;
     }
 
     /**
@@ -132,10 +132,10 @@ public class DialogBox extends HBox {
      * @return A new DialogBox for TheMyth.
      */
     public static DialogBox getTheMythDialog(String text, Image img) {
-        var db = new DialogBox(FlamboyantTextFormatter.format(text), img);
-        db.flip();
-        SparkleAnimator.play(db, true);
+        DialogBox dialogBox = new DialogBox(FlamboyantTextFormatter.format(text), img);
+        dialogBox.flip();
+        SparkleAnimator.play(dialogBox, true);
         notifyDialogCreated();
-        return db;
+        return dialogBox;
     }
 }

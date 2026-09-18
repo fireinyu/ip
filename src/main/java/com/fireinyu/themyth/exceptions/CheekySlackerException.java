@@ -6,7 +6,8 @@ package com.fireinyu.themyth.exceptions;
 public class CheekySlackerException extends TweakingException {
 
     /**
-     * Initialises a CheekySlackerException
+     * Initializes a CheekySlackerException.
+     *
      * @see String
      */
     public CheekySlackerException() {

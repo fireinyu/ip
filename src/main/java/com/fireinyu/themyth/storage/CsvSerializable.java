@@ -11,8 +11,9 @@ import java.util.List;
 public interface CsvSerializable {
 
     /**
-     * Serializes this object into a List of String attributes<br><br>
-     * @return List of String attributes representing the serialized CsvSerializable object
+     * Serializes this object into a List of String attributes.
+     *
+     * @return List of String attributes representing the serialized CsvSerializable object.
      * @see List
      * @see String
      */

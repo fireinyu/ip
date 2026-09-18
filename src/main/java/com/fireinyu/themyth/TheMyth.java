@@ -21,47 +21,49 @@ public class TheMyth {
     private final ChatMode chatMode;
 
     /**
-     * Initialises an instance of The Myth app<br><br>
-     * The app will display a banner, then enter idle mode
+     * Initializes the application using the shared default chat mode.
      */
     public TheMyth() {
         this(Defaults.STARTMODE);
     }
 
     /**
-     * Initialises an instance of The Myth app with a specified ChatMode.
+     * Initializes an instance of The Myth app with a specified ChatMode.
      *
-     * @param chatMode the chat mode to use
+     * @param chatMode the chat mode to use.
      */
     public TheMyth(ChatMode chatMode) {
         this.chatMode = chatMode;
     }
 
     /**
-     * Start the app.
-     * @return status message after starting the app
+     * Starts the app.
+     *
+     * @return status message after starting the app.
      * @see Response
      */
     public Response start() {
-        return this.interruptCycle(new InitRequest());
+        return interruptCycle(new InitRequest());
     }
 
     /**
-     * Stop the app.
-     * @return status message after stopping the app
+     * Stops the app.
+     *
+     * @return status message after stopping the app.
      * @see Response
      */
     public Response stop() {
-        return this.interruptCycle(new CloseRequest());
+        return interruptCycle(new CloseRequest());
     }
 
     /**
-     * Handles input
-     * @param input input
-     * @return response to input
+     * Handles user input and returns the close response if the command requests exit.
+     *
+     * @param input input.
+     * @return response to input.
      */
     public Response handleInput(String input) {
-        Response response = null;
+        Response response;
         try {
             Request request = parser.parse(input);
             response = chatMode.respondTo(request);
@@ -71,33 +73,29 @@ public class TheMyth {
             response = new FatalResponse(e);
         }
         if (response.doExit()) {
-            return this.stop();
+            return stop();
         }
-
-
         return response;
     }
 
     /**
-     * Runs a single interrupt cycle of The Myth in response to an InterruptEvent <br><br>
+     * Runs a single interrupt cycle of The Myth in response to an InterruptEvent .
      * Interrupt cycles originate from within the program.
-     * The cause and details of interrupt are encapsulated in the InterruptEvent<br>
-     * @param event the interrupt event that caused this interrupt cycle
-     * @return reponse to the interrupt event
+     * The cause and details of interrupt are encapsulated in the InterruptEvent.
+     *
+     * @param event the interrupt event that caused this interrupt cycle.
+     * @return response to the interrupt event.
      * @see  InterruptEvent
      * @see  ChatMode
      * @see  Response
      */
     private Response interruptCycle(InterruptEvent event) {
-        Response response = null;
         try {
-            response = chatMode.respondTo(event);
+            return chatMode.respondTo(event);
         } catch (TweakingException e) {
-            response = new ExceptionResponse(e);
+            return new ExceptionResponse(e);
         } catch (FatalException e) {
-            response = new FatalResponse(e);
+            return new FatalResponse(e);
         }
-        return response;
     }
 }
-
