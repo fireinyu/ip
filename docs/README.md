@@ -130,9 +130,9 @@
 
 <a id="cmd-due"></a>
 
-#### due \<dt:[String](#argument-formats)> \[/sort:[Order](#argument-formats)]
+#### due \<dt:[Datetime](#argument-formats)> \[/sort:[Order](#argument-formats)]
 
-- List "deadline" [task](#glossary)s due by a [Datetime](#argument-formats), optionally in a sorted order.
+- List [deadline task](#glossary)s due by a [Datetime](#argument-formats), optionally in a sorted order.
 - The numbering of [task](#glossary)s in this list **does not represent** the [index](#glossary) of each [task](#glossary).
 - \[/sort]: [Order](#argument-formats) for sorting the list of [task](#glossary)s
   - defaults to "modified"
@@ -140,9 +140,9 @@
 
 <a id="cmd-at"></a>
 
-#### at \<dt:[String](#argument-formats)> \[/sort:[Order](#argument-formats)]
+#### at \<dt:[Datetime](#argument-formats)> \[/sort:[Order](#argument-formats)]
 
-- List "event" [task](#glossary)s happening at a [Datetime](#argument-formats), optionally in a sorted order.
+- List [event task](#glossary)s happening at a [Datetime](#argument-formats), optionally in a sorted order.
 - The numbering of [task](#glossary)s in this list **does not represent** the [index](#glossary) of each [task](#glossary).
 - \[/sort]: [Order](#argument-formats) for sorting the list of [task](#glossary)s
   - defaults to "modified"
@@ -186,8 +186,6 @@
 - **Example:** If `list` shows a regular task at index `2`, `delete 2` removes that task from the list. Choose a task other than the Quiz Task.
 
 ### Exit the app
-
-<a id="cmd-bye"></a>
 
 #### bye
 
