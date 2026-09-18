@@ -14,6 +14,7 @@ import com.fireinyu.themyth.chatmodes.EchoMode;
 import com.fireinyu.themyth.exceptions.FatalException;
 import com.fireinyu.themyth.exceptions.TweakingException;
 import com.fireinyu.themyth.requests.Request;
+import com.fireinyu.themyth.requests.events.CloseRequest;
 import com.fireinyu.themyth.requests.events.InitRequest;
 import com.fireinyu.themyth.responses.ExceptionResponse;
 import com.fireinyu.themyth.responses.FatalResponse;
@@ -23,6 +24,25 @@ import com.fireinyu.themyth.responses.Response;
  * Unit tests for {@link TheMyth} application lifecycle and request orchestration.
  */
 public class TheMythTest {
+
+    @Test
+    public void handleInput_fatalFailure_returnsCloseResponse() {
+        ChatMode mode = new ChatMode() {
+            @Override
+            protected Response respondToRemaining(Request request) {
+                throw new FatalException("input failure");
+            }
+
+            @Override
+            protected Response respondToCloseEvent(CloseRequest request) {
+                return new Response("closed", true);
+            }
+        };
+
+        Response response = new TheMyth(mode).handleInput("unknown");
+        assertEquals("closed", response.getBody());
+        assertTrue(response.doExit());
+    }
 
     /**
      * Tests standard startup, input handling, and exit flow using {@link EchoMode}.

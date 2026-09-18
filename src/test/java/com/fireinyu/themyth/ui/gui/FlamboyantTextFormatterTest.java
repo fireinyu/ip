@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +20,35 @@ import javafx.scene.text.Text;
  * Unit tests for {@link FlamboyantTextFormatter}.
  */
 public class FlamboyantTextFormatterTest {
+
+    /** Records the random calls that determine word emphasis, color, and weight. */
+    private static class RecordingRandom extends Random {
+        private final List<String> calls = new ArrayList<>();
+
+        @Override
+        public double nextDouble() {
+            calls.add("double");
+            return calls.size() == 1 ? 0.9 : 0.1;
+        }
+
+        @Override
+        public int nextInt(int bound) {
+            calls.add("int " + bound);
+            return bound - 1;
+        }
+    }
+
+    @Test
+    public void formatResponse_scriptedRandom_preservesStylesAndCallOrder() {
+        RecordingRandom random = new RecordingRandom();
+        List<Text> nodes = new FlamboyantTextFormatter(random).formatResponse("Hello world");
+
+        assertEquals(List.of("double", "double", "int 9", "int 2"), random.calls);
+        assertEquals(List.of("Hello", " ", "world"), nodes.stream().map(Text::getText).toList());
+        assertEquals("-fx-fill: #212121; -fx-font-weight: normal; -fx-font-size: 14px;", nodes.get(0).getStyle());
+        assertEquals(nodes.get(0).getStyle(), nodes.get(1).getStyle());
+        assertEquals("-fx-fill: #9C27B0; -fx-font-weight: 800; -fx-font-size: 14px;", nodes.get(2).getStyle());
+    }
 
     @Test
     public void formatResponse_nullOrEmptyInput_returnsEmptyList() {

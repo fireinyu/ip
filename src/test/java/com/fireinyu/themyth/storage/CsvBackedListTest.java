@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +24,31 @@ public class CsvBackedListTest {
 
     @TempDir
     Path tempDir;
+
+    @Test
+    public void close_specialCharacters_preservesFileFormat() throws IOException {
+        Path filePath = tempDir.resolve("exact-format.csv");
+        ConcreteCsvBackedList list = new ConcreteCsvBackedList();
+        list.open(filePath);
+        list.add(new SimpleItem("hello, world", "\"quoted\""));
+        list.close();
+
+        assertEquals(List.of("hello\",\" world, \"\"quoted\"\""), Files.readAllLines(filePath));
+    }
+
+    @Test
+    public void open_corruptedFile_clearsListAndLeavesFileUntouched() throws IOException {
+        Path filePath = tempDir.resolve("failed-load.csv");
+        List<String> originalLines = List.of("valid, row", "invalid");
+        Files.write(filePath, originalLines);
+        ConcreteCsvBackedList list = new ConcreteCsvBackedList();
+        list.add(new SimpleItem("previous", "entry"));
+
+        assertThrows(CorruptedTaskFileException.class, () -> list.open(filePath));
+        assertEquals(0, list.size());
+        list.close();
+        assertEquals(originalLines, Files.readAllLines(filePath));
+    }
 
     private static class SimpleItem implements CsvSerializable {
         private final String col1;

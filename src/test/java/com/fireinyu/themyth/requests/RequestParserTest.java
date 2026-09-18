@@ -2,9 +2,11 @@ package com.fireinyu.themyth.requests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import com.fireinyu.themyth.tasks.TaskOrder;
 import com.fireinyu.themyth.util.MythDateTime;
 
 /**
@@ -13,6 +15,24 @@ import com.fireinyu.themyth.util.MythDateTime;
 public class RequestParserTest {
 
     private final RequestParser parser = new RequestParser();
+
+    @Test
+    public void parse_missingKeywordValue_preservesIndexException() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> parser.parse("list /sort"));
+    }
+
+    @Test
+    public void parse_duplicateKeyword_usesLastValue() {
+        Request request = parser.parse("list /sort created /sort name");
+        assertEquals(TaskOrder.NAME, request.getArg("sort", TaskOrder.class));
+    }
+
+    @Test
+    public void parse_unknownCommand_discardsExtraArguments() {
+        Request request = parser.parse("unknown extra /unused value");
+        assertEquals("unknown", request.getArg(0, String.class));
+        assertThrows(IndexOutOfBoundsException.class, () -> request.getArg(1, String.class));
+    }
 
     /**
      * Tests parsing of exit command.
